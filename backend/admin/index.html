@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7fc">
+    <title>Adventure Admin</title>
+    <link rel="stylesheet" href="/admin/styles.css">
+    <script src="/admin/app.js" defer></script>
+  </head>
+  <body>
+    <section id="login-view" class="login-wrap">
+      <form id="login-form" class="login-card">
+        <div class="brand-mark">✦</div>
+        <p class="eyebrow">KIDS ENGLISH ADVENTURE</p>
+        <h1>Chào mừng trở lại</h1>
+        <p class="muted">Đăng nhập để quản lý nội dung và người chơi.</p>
+        <label>Tên quản trị<input name="username" autocomplete="username" required></label>
+        <label>Mật khẩu<input name="password" type="password" autocomplete="current-password" required></label>
+        <button class="primary-btn" type="submit">Đăng nhập</button>
+        <p id="login-error" class="error-text" role="alert"></p>
+      </form>
+    </section>
+
+    <div id="admin-view" class="app-shell" hidden>
+      <aside class="sidebar">
+        <a class="brand" href="/admin"><span class="brand-icon">✦</span><span>Adventure<small>ADMIN STUDIO</small></span></a>
+        <p class="nav-caption">QUẢN LÝ</p>
+        <nav id="main-nav" aria-label="Điều hướng quản trị">
+          <button class="nav-item active" data-page="overview"><span>◫</span>Tổng quan</button>
+          <button class="nav-item" data-page="users"><span>♙</span>Người chơi</button>
+          <button class="nav-item" data-page="vocabulary"><span>▤</span>Câu hỏi</button>
+          <button class="nav-item" data-page="pets"><span>♧</span>Thú cưng</button>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="admin-label"><span class="admin-avatar">A</span><span>Quản trị viên<small>Quản lý nội dung</small></span></div>
+          <button id="logout-btn" class="logout-btn">Đăng xuất</button>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div><p class="eyebrow">KIDS ENGLISH ADVENTURE</p><h1 id="page-title">Tổng quan</h1></div>
+          <a class="open-app" href="/" target="_blank" rel="noreferrer">Mở API <span>↗</span></a>
+        </header>
+        <div id="toast" class="toast" role="status"></div>
+        <section id="page-overview" class="page-section">
+          <div class="welcome-row">
+            <div><h2>Chào bạn, quản trị viên! 👋</h2><p>Theo dõi hoạt động học tập và nội dung ứng dụng.</p></div>
+            <span id="today-label" class="date-pill"></span>
+          </div>
+          <div id="stat-grid" class="stat-grid"></div>
+          <div class="panel">
+            <div class="panel-heading"><div><h2>Điểm minigame gần đây</h2><p>Các lượt chơi mới được lưu từ ứng dụng.</p></div></div>
+            <div class="table-wrap"><table><thead><tr><th>Người chơi</th><th>Trò chơi</th><th>Điểm</th><th>Quãng đường</th><th>Thời gian</th></tr></thead><tbody id="recent-scores"></tbody></table></div>
+          </div>
+        </section>
+
+        <section id="page-users" class="page-section" hidden>
+          <div class="panel">
+            <div class="panel-heading"><div><h2>Người chơi</h2><p>Tài khoản, xu, thể lực và tiến độ học tập.</p></div><input id="user-search" class="search-input" placeholder="Tìm tên người chơi..." aria-label="Tìm người chơi"></div>
+            <div class="table-wrap"><table><thead><tr><th>Người chơi</th><th>Xu</th><th>Thể lực</th><th>Kinh nghiệm</th><th>Cúp</th><th>Bài hoàn thành</th><th>Ngày tham gia</th></tr></thead><tbody id="users-table"></tbody></table></div>
+            <p id="users-empty" class="empty-state" hidden>Chưa có người chơi phù hợp.</p>
+          </div>
+        </section>
+
+        <section id="page-vocabulary" class="page-section" hidden>
+          <div class="panel">
+            <div class="panel-heading"><div><h2>Ngân hàng câu hỏi</h2><p>Thêm và chỉnh sửa câu hỏi theo kỹ năng, cấp độ.</p></div><button id="add-question-btn" class="primary-btn">＋ Thêm câu hỏi</button></div>
+            <div class="toolbar"><input id="question-search" class="search-input" placeholder="Tìm câu hỏi, đáp án..." aria-label="Tìm câu hỏi"><select id="zone-filter" aria-label="Lọc kỹ năng"><option value="">Tất cả kỹ năng</option><option value="listening">Nghe</option><option value="speaking">Nói</option><option value="reading">Đọc</option><option value="writing">Viết</option></select></div>
+            <div class="table-wrap"><table><thead><tr><th>Kỹ năng</th><th>Cấp độ</th><th>Câu hỏi</th><th>Đáp án</th><th>Nghĩa</th><th></th></tr></thead><tbody id="questions-table"></tbody></table></div>
+            <p id="questions-empty" class="empty-state" hidden>Chưa có câu hỏi phù hợp.</p>
+          </div>
+        </section>
+
+        <section id="page-pets" class="page-section" hidden>
+          <div class="panel">
+            <div class="panel-heading"><div><h2>Bộ sưu tập thú cưng</h2><p>Quản lý danh sách thú cưng và độ hiếm trong game.</p></div><button id="add-pet-btn" class="primary-btn">＋ Thêm thú cưng</button></div>
+            <div id="pet-grid" class="pet-grid"></div>
+            <p id="pets-empty" class="empty-state" hidden>Chưa có thú cưng nào.</p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="question-dialog" class="edit-dialog">
+      <form id="question-form">
+        <div class="dialog-heading"><div><p class="eyebrow">NGÂN HÀNG HỌC TẬP</p><h2 id="question-dialog-title">Thêm câu hỏi</h2></div><button type="button" class="icon-btn" data-close="question-dialog" aria-label="Đóng">×</button></div>
+        <input name="id" type="hidden">
+        <div class="form-grid">
+          <label>Kỹ năng<select name="zone" required><option value="listening">Nghe</option><option value="speaking">Nói</option><option value="reading">Đọc</option><option value="writing">Viết</option></select></label>
+          <label>Cấp độ<input name="level" type="number" min="1" max="100" value="1" required></label>
+          <label class="full-field">Câu hỏi / gợi ý<input name="prompt" maxlength="500" required></label>
+          <label>Đáp án tiếng Anh<input name="answer" maxlength="100" required></label>
+          <label>Nghĩa tiếng Việt<input name="translation" maxlength="100" required></label>
+          <label class="full-field">Lựa chọn (mỗi dòng một đáp án)<textarea name="choices" rows="4" required></textarea></label>
+          <label class="full-field">Đường dẫn âm thanh (không bắt buộc)<input name="audioUrl" type="url" maxlength="2048"></label>
+        </div>
+        <p id="question-form-error" class="error-text" role="alert"></p>
+        <div class="dialog-actions"><button type="button" class="secondary-btn" data-close="question-dialog">Hủy</button><button type="submit" class="primary-btn">Lưu câu hỏi</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="pet-dialog" class="edit-dialog">
+      <form id="pet-form">
+        <div class="dialog-heading"><div><p class="eyebrow">BỘ SƯU TẬP</p><h2 id="pet-dialog-title">Thêm thú cưng</h2></div><button type="button" class="icon-btn" data-close="pet-dialog" aria-label="Đóng">×</button></div>
+        <input name="id" type="hidden">
+        <div class="form-grid">
+          <label>Tên<input name="name" maxlength="48" required></label>
+          <label>Loài<input name="species" maxlength="48" required></label>
+          <label>Độ hiếm<select name="rarity" required><option value="common">Thường</option><option value="rare">Hiếm</option><option value="epic">Sử thi</option><option value="legendary">Huyền thoại</option></select></label>
+          <label>Ảnh URL (không bắt buộc)<input name="imageUrl" type="url" maxlength="2048"></label>
+        </div>
+        <p id="pet-form-error" class="error-text" role="alert"></p>
+        <div class="dialog-actions"><button type="button" class="secondary-btn" data-close="pet-dialog">Hủy</button><button type="submit" class="primary-btn">Lưu thú cưng</button></div>
+      </form>
+    </dialog>
+  </body>
+</html>
