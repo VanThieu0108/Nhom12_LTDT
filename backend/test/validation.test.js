@@ -11,11 +11,13 @@ let loginSchema;
 let scoreSchema;
 let completeLevelSchema;
 let incubateSchema;
+let isPassingScore;
 
 before(async () => {
   ({ registerSchema, loginSchema } = await import('../src/controllers/authController.js'));
   ({ scoreSchema } = await import('../src/controllers/minigameController.js'));
   ({ completeLevelSchema } = await import('../src/controllers/studyController.js'));
+  ({ isPassingScore } = await import('../src/controllers/studyController.js'));
   ({ incubateSchema } = await import('../src/controllers/petController.js'));
 });
 
@@ -52,4 +54,11 @@ test('incubation only accepts supported egg types', () => {
   assert.equal(incubateSchema.safeParse({ eggType: 'rare' }).success, true);
   assert.equal(incubateSchema.safeParse({ eggType: 'mythic' }).success, false);
   assert.equal(incubateSchema.safeParse({}).data.eggType, 'common');
+});
+
+test('level progression requires at least 80 percent correct answers', () => {
+  assert.equal(isPassingScore(8, 10), true);
+  assert.equal(isPassingScore(7, 10), false);
+  assert.equal(isPassingScore(4, 5), true);
+  assert.equal(isPassingScore(0, 1), false);
 });

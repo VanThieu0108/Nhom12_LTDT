@@ -9,6 +9,7 @@ import minigameRoutes from './routes/minigame.routes.js';
 import petRoutes from './routes/pet.routes.js';
 import leaderboardRoutes from './routes/leaderboard.routes.js';
 import adminRoutes from './routes/admin.routes.js';
+import vocabularyRoutes from './routes/vocabulary.routes.js';
 import { notFoundHandler, errorHandler } from './middleware/errorHandler.js';
 import { asyncHandler } from './utils/asyncHandler.js';
 import { query } from './config/db.js';
@@ -60,7 +61,8 @@ export function createApp() {
         '/api/minigames',
         '/api/pets',
         '/api/leaderboard',
-        '/api/admin'
+        '/api/admin',
+        '/api/v1/vocabulary'
       ]
     });
   });
@@ -75,6 +77,7 @@ export function createApp() {
   app.use('/api/pets', petRoutes);
   app.use('/api/leaderboard', leaderboardRoutes);
   app.use('/api/admin', adminRoutes);
+  app.use('/api/v1/vocabulary', vocabularyRoutes);
   app.use(notFoundHandler);
   app.use(errorHandler);
   return app;

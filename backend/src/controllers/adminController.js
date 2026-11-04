@@ -16,8 +16,11 @@ const vocabularySchema = z.object({
   prompt: z.string().trim().min(1).max(500),
   answer: z.string().trim().min(1).max(100),
   translation: z.string().trim().min(1).max(100),
+  category: z.string().trim().min(1).max(50),
+  phonetic: z.string().trim().max(100).nullable().optional(),
   choices: z.array(z.string().trim().min(1).max(100)).min(2).max(8),
-  audioUrl: z.string().trim().max(2048).url().nullable().optional()
+  audioUrl: z.string().trim().max(2048).url().nullable().optional(),
+  imageUrl: z.string().trim().max(2048).url().nullable().optional()
 });
 const petSchema = z.object({
   name: z.string().trim().min(1).max(48),
@@ -52,6 +55,7 @@ export async function overview(_request, response) {
       SELECT
         (SELECT COUNT(*)::int FROM users WHERE deleted_at IS NULL) AS users,
         (SELECT COUNT(*)::int FROM vocabulary) AS questions,
+        (SELECT COUNT(*)::int FROM vocabulary_words) AS vocabulary_words,
         (SELECT COUNT(*)::int FROM pets) AS pets,
         (SELECT COUNT(*)::int FROM user_progress) AS completions,
         (SELECT COUNT(*)::int FROM minigame_scores) AS minigame_scores
@@ -66,6 +70,25 @@ export async function overview(_request, response) {
     `)
   ]);
   response.json({ counts: counts.rows[0], recentScores: recentScores.rows });
+}
+
+export async function listWords(request, response) {
+  const { search, limit, offset } = paginationSchema.parse(request.query);
+  const rawLevel = request.query.level;
+  const level = rawLevel === undefined || rawLevel === ''
+    ? null
+    : z.coerce.number().int().min(1).max(100).parse(rawLevel);
+  const result = await query(
+    `SELECT id, word_en, meaning_vi, difficulty_level, category,
+            phonetic, audio_url, image_url, created_at
+     FROM vocabulary_words
+     WHERE ($1::int IS NULL OR difficulty_level = $1)
+       AND ($2 = '' OR word_en ILIKE '%' || $2 || '%' OR meaning_vi ILIKE '%' || $2 || '%')
+     ORDER BY difficulty_level, category, word_en
+     LIMIT $3 OFFSET $4`,
+    [level, search, limit, offset]
+  );
+  response.json({ words: result.rows, limit, offset });
 }
 
 export async function listUsers(request, response) {
@@ -92,14 +115,19 @@ export async function listVocabulary(request, response) {
   if (zone && !['listening', 'speaking', 'reading', 'writing'].includes(zone)) {
     throw new HttpError(400, 'Unknown learning zone.', 'invalid_zone');
   }
+  const category = typeof request.query.category === 'string'
+    ? request.query.category.trim().slice(0, 50)
+    : '';
   const result = await query(
-    `SELECT id, zone, level, prompt, answer, translation, choices, audio_url, created_at
+    `SELECT id, zone, level, category, prompt, answer, translation,
+            phonetic, choices, audio_url, image_url, created_at
      FROM vocabulary
      WHERE ($1::text IS NULL OR zone = $1)
-       AND ($2 = '' OR prompt ILIKE '%' || $2 || '%' OR answer ILIKE '%' || $2 || '%' OR translation ILIKE '%' || $2 || '%')
-     ORDER BY zone, level, created_at DESC
-     LIMIT $3 OFFSET $4`,
-    [zone || null, search, limit, offset]
+       AND ($2 = '' OR prompt ILIKE '%' || $2 || '%' OR answer ILIKE '%' || $2 || '%' OR translation ILIKE '%' || $2 || '%' OR category ILIKE '%' || $2 || '%')
+       AND ($3 = '' OR category ILIKE '%' || $3 || '%')
+     ORDER BY zone, level, category, created_at DESC
+     LIMIT $4 OFFSET $5`,
+    [zone || null, search, category, limit, offset]
   );
   response.json({ questions: result.rows, limit, offset });
 }
@@ -107,10 +135,13 @@ export async function listVocabulary(request, response) {
 export async function createVocabulary(request, response) {
   const data = vocabularySchema.parse(request.body);
   const result = await query(
-    `INSERT INTO vocabulary (zone, level, prompt, answer, translation, choices, audio_url)
-     VALUES ($1, $2, $3, $4, $5, $6, $7)
-     RETURNING id, zone, level, prompt, answer, translation, choices, audio_url, created_at`,
-    [data.zone, data.level, data.prompt, data.answer, data.translation, JSON.stringify(data.choices), data.audioUrl ?? null]
+    `INSERT INTO vocabulary (zone, level, prompt, answer, translation, category,
+                             phonetic, choices, audio_url, image_url)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+     RETURNING id, zone, level, category, prompt, answer, translation,
+               phonetic, choices, audio_url, image_url, created_at`,
+    [data.zone, data.level, data.prompt, data.answer, data.translation, data.category,
+      data.phonetic ?? null, JSON.stringify(data.choices), data.audioUrl ?? null, data.imageUrl ?? null]
   );
   response.status(201).json({ question: result.rows[0] });
 }
@@ -121,10 +152,12 @@ export async function updateVocabulary(request, response) {
   const result = await query(
     `UPDATE vocabulary
      SET zone = $2, level = $3, prompt = $4, answer = $5, translation = $6,
-         choices = $7, audio_url = $8
+         category = $7, phonetic = $8, choices = $9, audio_url = $10, image_url = $11
      WHERE id = $1
-     RETURNING id, zone, level, prompt, answer, translation, choices, audio_url, created_at`,
-    [id, data.zone, data.level, data.prompt, data.answer, data.translation, JSON.stringify(data.choices), data.audioUrl ?? null]
+     RETURNING id, zone, level, category, prompt, answer, translation,
+               phonetic, choices, audio_url, image_url, created_at`,
+    [id, data.zone, data.level, data.prompt, data.answer, data.translation, data.category,
+      data.phonetic ?? null, JSON.stringify(data.choices), data.audioUrl ?? null, data.imageUrl ?? null]
   );
   if (!result.rowCount) throw new HttpError(404, 'Question not found.', 'question_not_found');
   response.json({ question: result.rows[0] });

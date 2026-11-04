@@ -5,6 +5,7 @@ let toastTimer;
 const pageNames = {
   overview: 'Tổng quan',
   users: 'Người chơi',
+  words: 'Từ vựng',
   vocabulary: 'Câu hỏi',
   pets: 'Thú cưng'
 };
@@ -60,6 +61,7 @@ function openPage(page) {
   $('#page-title').textContent = pageNames[page];
   if (page === 'overview') loadOverview();
   if (page === 'users') loadUsers();
+  if (page === 'words') loadWords();
   if (page === 'vocabulary') loadVocabulary();
   if (page === 'pets') loadPets();
 }
@@ -73,6 +75,7 @@ async function loadOverview() {
     const data = await api('/overview');
     const cards = [
       ['Người chơi', data.counts.users, 'Tài khoản đang hoạt động', '♙'],
+      ['Từ vựng', data.counts.vocabulary_words, 'Trong từ điển theo cấp độ', '⌕'],
       ['Câu hỏi', data.counts.questions, 'Trong ngân hàng học tập', '▤'],
       ['Thú cưng', data.counts.pets, 'Có thể mở khóa trong game', '♧'],
       ['Bài đã hoàn thành', data.counts.completions, `${data.counts.minigame_scores} lượt chơi minigame`, '☆']
@@ -133,6 +136,42 @@ async function loadUsers() {
   } catch (error) { showError(error); }
 }
 
+async function loadWords() {
+  try {
+    const search = encodeURIComponent($('#word-search').value.trim());
+    const level = encodeURIComponent($('#word-level-filter').value);
+    const data = await api(`/words?search=${search}&level=${level}&limit=100`);
+    const body = $('#words-table');
+    body.replaceChildren(...data.words.map((word) => {
+      const row = document.createElement('tr');
+      const values = [word.word_en, word.meaning_vi, word.phonetic || '—', word.difficulty_level, word.category];
+      values.forEach((value, index) => {
+        const cell = document.createElement('td');
+        if (index < 2) {
+          const strong = document.createElement('strong');
+          strong.textContent = escapeText(value);
+          cell.append(strong);
+        } else cell.textContent = escapeText(value);
+        row.append(cell);
+      });
+      for (const [label, url] of [['Âm thanh', word.audio_url], ['Hình ảnh', word.image_url]]) {
+        const cell = document.createElement('td');
+        if (url) {
+          const link = document.createElement('a');
+          link.href = url;
+          link.target = '_blank';
+          link.rel = 'noreferrer';
+          link.textContent = label;
+          cell.append(link);
+        } else cell.textContent = '—';
+        row.append(cell);
+      }
+      return row;
+    }));
+    $('#words-empty').hidden = data.words.length > 0;
+  } catch (error) { showError(error); }
+}
+
 async function loadVocabulary() {
   try {
     const search = encodeURIComponent($('#question-search').value.trim());
@@ -141,7 +180,7 @@ async function loadVocabulary() {
     const body = $('#questions-table');
     body.replaceChildren(...data.questions.map((question) => {
       const row = document.createElement('tr');
-      const values = [zoneNames[question.zone], question.level, question.prompt, question.answer, question.translation];
+      const values = [zoneNames[question.zone], question.level, question.category, question.prompt, question.answer, question.translation];
       values.forEach((value, index) => {
         const cell = document.createElement('td');
         cell.textContent = escapeText(value);
@@ -221,11 +260,14 @@ function openQuestionDialog(question = null) {
   form.elements.id.value = question?.id || '';
   form.elements.zone.value = question?.zone || 'listening';
   form.elements.level.value = question?.level || 1;
+  form.elements.category.value = question?.category || '';
   form.elements.prompt.value = question?.prompt || '';
   form.elements.answer.value = question?.answer || '';
   form.elements.translation.value = question?.translation || '';
+  form.elements.phonetic.value = question?.phonetic || '';
   form.elements.choices.value = question?.choices?.join('\n') || '';
   form.elements.audioUrl.value = question?.audio_url || '';
+  form.elements.imageUrl.value = question?.image_url || '';
   $('#question-dialog-title').textContent = question ? 'Chỉnh sửa câu hỏi' : 'Thêm câu hỏi';
   $('#question-form-error').textContent = '';
   $('#question-dialog').showModal();
@@ -286,6 +328,8 @@ $('#main-nav').addEventListener('click', (event) => {
   if (button) openPage(button.dataset.page);
 });
 $('#user-search').addEventListener('input', debounce(loadUsers, 250));
+$('#word-search').addEventListener('input', debounce(loadWords, 250));
+$('#word-level-filter').addEventListener('change', loadWords);
 $('#question-search').addEventListener('input', debounce(loadVocabulary, 250));
 $('#zone-filter').addEventListener('change', loadVocabulary);
 $('#add-question-btn').addEventListener('click', () => openQuestionDialog());
@@ -298,14 +342,19 @@ $('#question-form').addEventListener('submit', async (event) => {
   const id = form.elements.id.value;
   const choices = form.elements.choices.value.split(/\r?\n/).map((choice) => choice.trim()).filter(Boolean);
   const audioUrl = form.elements.audioUrl.value.trim();
+  const imageUrl = form.elements.imageUrl.value.trim();
+  const phonetic = form.elements.phonetic.value.trim();
   const payload = {
     zone: form.elements.zone.value,
     level: Number(form.elements.level.value),
+    category: form.elements.category.value.trim(),
     prompt: form.elements.prompt.value.trim(),
     answer: form.elements.answer.value.trim(),
     translation: form.elements.translation.value.trim(),
+    phonetic: phonetic || null,
     choices,
-    audioUrl: audioUrl || null
+    audioUrl: audioUrl || null,
+    imageUrl: imageUrl || null
   };
   try {
     await api(`/vocabulary${id ? `/${id}` : ''}`, { method: id ? 'PUT' : 'POST', body: JSON.stringify(payload) });

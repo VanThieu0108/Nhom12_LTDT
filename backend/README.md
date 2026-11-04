@@ -29,6 +29,38 @@ For production, use TLS for PostgreSQL/Redis, a managed secret store, a restrict
 - `POST /api/minigames/scores`, `GET /api/minigames/scores`
 - `GET /api/pets`, `POST /api/pets/incubators`, `POST /api/pets/incubators/:id/claim`
 - `GET /api/leaderboard?limit=20`
+- `GET /api/v1/vocabulary/levels`
+- `GET /api/v1/vocabulary/categories?level=2`
+- `GET /api/v1/vocabulary?level=2&category=Animals&limit=10`
+
+Vocabulary endpoints are read-only and public so the mobile app can preload
+learning content before a learner signs in. A CSV bulk import uses
+`npm run import:vocabulary -- --file .\data\vocabulary.csv`. Required CSV headers
+are `word_en,meaning_vi,difficulty_level,category`; optional headers are
+`phonetic,audio_url,image_url`. The importer validates every row before writing,
+uses one transaction, skips existing duplicates, and reports inserted/skipped
+counts. Example:
+
+```csv
+word_en,meaning_vi,difficulty_level,category,phonetic,audio_url,image_url
+Apple,Quả táo,1,Fruits,/ˈæp.əl/,https://example.com/apple.mp3,https://example.com/apple.png
+Dog,Con chó,1,Animals,/dɒɡ/,,
+```
+
+The Android debug build connects to the development backend through the
+emulator's `10.0.2.2` host alias. For a physical phone, build with
+`-PVOCABULARY_API_BASE_URL=http://<computer-LAN-IP>:3000` while both devices are
+on the same trusted network. Release builds should use an HTTPS API URL.
+
+`word_en` and `meaning_vi` are stored as vocabulary dictionary entries, separate
+from quiz questions in `vocabulary`. Quiz-question levels also include category,
+phonetic, and image metadata, so existing lesson routes keep working.
+
+Study levels unlock in order within each learning zone. Level 1 is open by
+default; the learner must answer at least 80% correctly to pass and unlock the
+next level. Failed attempts can be retried, but do not grant gold or trophy
+points. The study-zone response includes an `unlocked` flag for each available
+zone/level, and progress entries include `passed`.
 
 ## Admin website
 
@@ -36,8 +68,8 @@ Open `http://localhost:3000/admin` to manage the app. Configure `ADMIN_USERNAME`
 and a unique `ADMIN_PASSWORD` (at least 16 characters) in `.env` before signing
 in. The admin session is a short-lived bearer token stored for the current browser
 tab. The dashboard shows app usage and lets administrators view players and
-create, edit, or delete vocabulary questions and pets. A pet cannot be deleted
-while it is in a player's collection.
+imported dictionary entries, create/edit/delete quiz questions and pets. A pet
+cannot be deleted while it is in a player's collection.
 
 Level completion body: `{ "answers": [{ "questionId": "uuid", "answer": "Apple" }] }`.
 Minigame score body: `{ "gameType": "word_match", "score": 80, "distance": 0, "metadata": {} }`.

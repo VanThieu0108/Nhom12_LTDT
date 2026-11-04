@@ -58,7 +58,13 @@ fun ListeningGameScreen(context: Context, viewModel: MainViewModel, navigate: (S
         layoutParams = LinearLayout.LayoutParams(-1, UiKit.dp(context, 94))
     })
     page.addView(UiKit.text(context, "Which word did you hear?", 15, UiKit.MUTED, gravity = Gravity.CENTER))
-    val choices = viewModel.words.map { it.english }.shuffled(java.util.Random(viewModel.activeWordIndex.toLong()))
+    val choices = (viewModel.words
+        .asSequence()
+        .filter { it.english != viewModel.currentWord.english }
+        .map { it.english }
+        .take(3)
+        .toList() + viewModel.currentWord.english)
+        .shuffled(java.util.Random(viewModel.activeWordIndex.toLong()))
     choices.forEach { answer ->
         val selected = viewModel.selectedAnswer == answer
         page.addView(UiKit.button(
@@ -72,6 +78,7 @@ fun ListeningGameScreen(context: Context, viewModel: MainViewModel, navigate: (S
             navigate("listening")
         }.apply { isEnabled = viewModel.selectedAnswer == null })
     }
+    page.addView(UiKit.text(context, viewModel.vocabularyMessage, 11, UiKit.MUTED, gravity = Gravity.CENTER))
     if (viewModel.selectedAnswer != null) {
         page.addView(UiKit.text(
             context,

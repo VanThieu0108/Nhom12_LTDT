@@ -33,7 +33,7 @@ fun ReadingGameScreen(context: Context, viewModel: MainViewModel, navigate: (Str
         addView(UiKit.text(context, "📖  Read this word", 13, UiKit.MUTED, gravity = Gravity.CENTER))
         addView(UiKit.text(context, viewModel.currentWord.english.uppercase(), 34, UiKit.INK, true, Gravity.CENTER))
     })
-    val choices = (viewModel.currentWord.distractors + viewModel.currentWord.vietnamese)
+    val choices = (viewModel.currentWord.distractors.take(3) + viewModel.currentWord.vietnamese)
         .shuffled(Random(viewModel.activeWordIndex))
     choices.forEach { answer ->
         val selected = viewModel.selectedAnswer == answer
@@ -47,6 +47,7 @@ fun ReadingGameScreen(context: Context, viewModel: MainViewModel, navigate: (Str
             navigate("reading")
         }.apply { isEnabled = viewModel.selectedAnswer == null })
     }
+    page.addView(UiKit.text(context, viewModel.vocabularyMessage, 11, UiKit.MUTED, gravity = Gravity.CENTER))
     if (viewModel.feedback.isNotBlank()) {
         page.addView(UiKit.text(
             context,

@@ -25,13 +25,14 @@ fun MinigameMeteorScreen(context: Context, viewModel: MainViewModel, navigate: (
     page.addView(UiKit.text(context, "✦       ·        ✨       ·       ✦", 22, 0xFFAAA9FF.toInt(), gravity = Gravity.CENTER))
     page.addView(UiKit.text(context, "       🔥☄️🔥", 52, gravity = Gravity.CENTER))
     page.addView(UiKit.card(context, 0xFF343E67.toInt(), 15).apply {
-        addView(UiKit.text(context, "Translate:  Làm vườn", 16, UiKit.WHITE, true, Gravity.CENTER))
+        addView(UiKit.text(context, "Translate:  ${viewModel.currentWord.vietnamese}", 16, UiKit.WHITE, true, Gravity.CENTER))
         val targetDisplay = viewModel.meteorTarget.mapIndexed { index, letter ->
             if (index < viewModel.meteorInput.length) letter else '_'
         }.joinToString("  ")
         addView(UiKit.text(context, targetDisplay, 24, UiKit.GOLD, true, Gravity.CENTER))
         addView(UiKit.text(context, viewModel.meteorInput.uppercase(), 17, UiKit.WHITE, true, Gravity.CENTER))
     })
+    page.addView(UiKit.text(context, viewModel.vocabularyMessage, 11, 0xFFD6DDF7.toInt(), gravity = Gravity.CENTER))
     page.addView(UiKit.text(context, "Tap letters to destroy the meteor!", 13, 0xFFD6DDF7.toInt(), gravity = Gravity.CENTER))
     listOf("QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM").forEach { letters ->
         page.addView(UiKit.row(context, 3).apply {

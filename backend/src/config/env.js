@@ -11,8 +11,10 @@ const schema = z.object({
   JWT_ISSUER: z.string().default('kids-english-adventure'),
   JWT_AUDIENCE: z.string().default('kids-english-mobile'),
   JWT_TTL: z.string().default('15m'),
-  ADMIN_USERNAME: z.string().default(''),
-  ADMIN_PASSWORD: z.string().default(''),
+  ADMIN_USERNAME: z.string().max(64).default(''),
+  ADMIN_PASSWORD: z.string().default('').refine((value) => !value || value.length >= 16, {
+    message: 'ADMIN_PASSWORD must contain at least 16 characters when configured.'
+  }),
   CORS_ORIGINS: z.string().default(''),
   SOCKET_CORS_ORIGINS: z.string().default(''),
   TRUST_PROXY: z.string().default(''),

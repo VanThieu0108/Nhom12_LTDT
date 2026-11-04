@@ -4,6 +4,9 @@ plugins {
 
 android {
     namespace = "com.example.englishapp"
+    buildFeatures {
+        buildConfig = true
+    }
     compileSdk {
         version = release(37) {
             minorApiLevel = 1
@@ -18,6 +21,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        val vocabularyApiBaseUrl = providers.gradleProperty("VOCABULARY_API_BASE_URL")
+            .getOrElse("http://10.0.2.2:3000")
+        buildConfigField("String", "VOCABULARY_API_BASE_URL", "\"$vocabularyApiBaseUrl\"")
     }
 
     buildTypes {

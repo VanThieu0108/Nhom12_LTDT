@@ -29,6 +29,7 @@
         <nav id="main-nav" aria-label="Điều hướng quản trị">
           <button class="nav-item active" data-page="overview"><span>◫</span>Tổng quan</button>
           <button class="nav-item" data-page="users"><span>♙</span>Người chơi</button>
+          <button class="nav-item" data-page="words"><span>⌕</span>Từ vựng</button>
           <button class="nav-item" data-page="vocabulary"><span>▤</span>Câu hỏi</button>
           <button class="nav-item" data-page="pets"><span>♧</span>Thú cưng</button>
         </nav>
@@ -64,11 +65,20 @@
           </div>
         </section>
 
+        <section id="page-words" class="page-section" hidden>
+          <div class="panel">
+            <div class="panel-heading"><div><h2>Từ điển học tập</h2><p>Từ vựng được nạp từ CSV; xem định dạng và lệnh import trong README.</p></div></div>
+            <div class="toolbar"><input id="word-search" class="search-input" placeholder="Tìm từ hoặc nghĩa..." aria-label="Tìm từ vựng"><input id="word-level-filter" class="search-input" type="number" min="1" max="100" placeholder="Mọi cấp độ" aria-label="Lọc cấp độ"></div>
+            <div class="table-wrap"><table><thead><tr><th>Từ tiếng Anh</th><th>Nghĩa tiếng Việt</th><th>Phiên âm</th><th>Cấp độ</th><th>Chủ đề</th><th>Âm thanh</th><th>Hình ảnh</th></tr></thead><tbody id="words-table"></tbody></table></div>
+            <p id="words-empty" class="empty-state" hidden>Chưa có từ vựng phù hợp.</p>
+          </div>
+        </section>
+
         <section id="page-vocabulary" class="page-section" hidden>
           <div class="panel">
-            <div class="panel-heading"><div><h2>Ngân hàng câu hỏi</h2><p>Thêm và chỉnh sửa câu hỏi theo kỹ năng, cấp độ.</p></div><button id="add-question-btn" class="primary-btn">＋ Thêm câu hỏi</button></div>
+            <div class="panel-heading"><div><h2>Ngân hàng câu hỏi</h2><p>Thêm và chỉnh sửa câu hỏi theo kỹ năng, cấp độ, chủ đề; nhập số lượng lớn bằng CSV qua backend.</p></div><button id="add-question-btn" class="primary-btn">＋ Thêm câu hỏi</button></div>
             <div class="toolbar"><input id="question-search" class="search-input" placeholder="Tìm câu hỏi, đáp án..." aria-label="Tìm câu hỏi"><select id="zone-filter" aria-label="Lọc kỹ năng"><option value="">Tất cả kỹ năng</option><option value="listening">Nghe</option><option value="speaking">Nói</option><option value="reading">Đọc</option><option value="writing">Viết</option></select></div>
-            <div class="table-wrap"><table><thead><tr><th>Kỹ năng</th><th>Cấp độ</th><th>Câu hỏi</th><th>Đáp án</th><th>Nghĩa</th><th></th></tr></thead><tbody id="questions-table"></tbody></table></div>
+            <div class="table-wrap"><table><thead><tr><th>Kỹ năng</th><th>Cấp độ</th><th>Chủ đề</th><th>Câu hỏi</th><th>Đáp án</th><th>Nghĩa</th><th></th></tr></thead><tbody id="questions-table"></tbody></table></div>
             <p id="questions-empty" class="empty-state" hidden>Chưa có câu hỏi phù hợp.</p>
           </div>
         </section>
@@ -90,11 +100,14 @@
         <div class="form-grid">
           <label>Kỹ năng<select name="zone" required><option value="listening">Nghe</option><option value="speaking">Nói</option><option value="reading">Đọc</option><option value="writing">Viết</option></select></label>
           <label>Cấp độ<input name="level" type="number" min="1" max="100" value="1" required></label>
+          <label>Chủ đề<input name="category" maxlength="50" placeholder="Animals" required></label>
           <label class="full-field">Câu hỏi / gợi ý<input name="prompt" maxlength="500" required></label>
           <label>Đáp án tiếng Anh<input name="answer" maxlength="100" required></label>
           <label>Nghĩa tiếng Việt<input name="translation" maxlength="100" required></label>
+          <label>Phiên âm IPA (không bắt buộc)<input name="phonetic" maxlength="100" placeholder="/ˈæp.əl/"></label>
           <label class="full-field">Lựa chọn (mỗi dòng một đáp án)<textarea name="choices" rows="4" required></textarea></label>
           <label class="full-field">Đường dẫn âm thanh (không bắt buộc)<input name="audioUrl" type="url" maxlength="2048"></label>
+          <label class="full-field">Đường dẫn hình ảnh (không bắt buộc)<input name="imageUrl" type="url" maxlength="2048"></label>
         </div>
         <p id="question-form-error" class="error-text" role="alert"></p>
         <div class="dialog-actions"><button type="button" class="secondary-btn" data-close="question-dialog">Hủy</button><button type="submit" class="primary-btn">Lưu câu hỏi</button></div>

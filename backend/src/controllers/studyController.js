@@ -15,13 +15,23 @@ export const completeLevelSchema = z.object({
 
 const zones = new Set(['listening', 'speaking', 'reading', 'writing']);
 
+export function isPassingScore(correctAnswers, totalQuestions) {
+  return correctAnswers * 5 >= totalQuestions * 4;
+}
+
 export async function getZones(request, response) {
   const [available, progress, stamina] = await Promise.all([
     vocabularyModel.listZones(null),
     progressModel.listUserProgress(null, request.user.id),
     withTransaction((client) => refreshStamina(client, request.user.id))
   ]);
-  response.json({ zones: available, progress, stamina });
+  const unlockedZones = available.map((item) => ({
+    ...item,
+    unlocked: item.level === 1 || progress.some((entry) =>
+      entry.zone === item.zone && entry.level === item.level - 1 && entry.passed
+    )
+  }));
+  response.json({ zones: unlockedZones, progress, stamina });
 }
 
 export async function getQuestions(request, response) {
@@ -31,6 +41,10 @@ export async function getQuestions(request, response) {
     throw new HttpError(400, 'Unknown zone or level.', 'invalid_level');
   }
   const result = await withTransaction(async (client) => {
+    const unlocked = await progressModel.hasPassedLevel(client, request.user.id, zone, level);
+    if (!unlocked) {
+      throw new HttpError(403, 'Complete the previous level with at least 80% correct answers to unlock this level.', 'level_locked');
+    }
     const stamina = await refreshStamina(client, request.user.id);
     const questions = await vocabularyModel.getQuestions(client, zone, level, 10);
     return { stamina, questions };
@@ -59,12 +73,18 @@ export async function completeLevel(request, response) {
     if (!lockedUser.rowCount) throw new HttpError(404, 'Account not found.', 'user_not_found');
 
     const prior = await client.query(
-      'SELECT id, points FROM user_progress WHERE user_id = $1 AND zone = $2 AND level = $3',
+      'SELECT id, points, passed FROM user_progress WHERE user_id = $1 AND zone = $2 AND level = $3',
       [request.user.id, zone, level]
     );
     const stamina = await refreshStamina(client, request.user.id);
-    if (prior.rowCount) return { alreadyCompleted: true, points: prior.rows[0].points, stamina };
+    if (prior.rows[0]?.passed) {
+      return { alreadyCompleted: true, passed: true, points: prior.rows[0].points, stamina };
+    }
     if (stamina.stamina < 1) throw new HttpError(429, 'You are out of stamina. Please wait for it to recharge.', 'insufficient_stamina');
+    const unlocked = await progressModel.hasPassedLevel(client, request.user.id, zone, level);
+    if (!unlocked) {
+      throw new HttpError(403, 'Complete the previous level with at least 80% correct answers to unlock this level.', 'level_locked');
+    }
 
     const questions = await vocabularyModel.findQuestionsByIds(client, ids);
     if (questions.length !== ids.length || questions.some((question) => question.zone !== zone || question.level !== level)) {
@@ -76,7 +96,8 @@ export async function completeLevel(request, response) {
       const expected = zone === 'reading' ? question.translation : question.answer;
       return count + (expected.toLocaleLowerCase() === item.answer.trim().toLocaleLowerCase() ? 1 : 0);
     }, 0);
-    const points = correctAnswers * 10;
+    const passed = isPassingScore(correctAnswers, answers.length);
+    const points = passed ? correctAnswers * 10 : 0;
 
     const progress = await progressModel.createCompletion(client, {
       userId: request.user.id,
@@ -84,13 +105,10 @@ export async function completeLevel(request, response) {
       level,
       correctAnswers,
       totalQuestions: answers.length,
-      points
+      points,
+      passed
     });
-    if (!progress) {
-      const currentStamina = await refreshStamina(client, request.user.id);
-      return { alreadyCompleted: true, points: 0, stamina: currentStamina };
-    }
-    const gold = correctAnswers * 5 + 10;
+    const gold = passed ? correctAnswers * 5 + 10 : 0;
     await client.query(
       `UPDATE users SET stamina = stamina - 1, coins = coins + $2,
        experience = experience + $3, trophy_points = trophy_points + $3,
@@ -101,10 +119,18 @@ export async function completeLevel(request, response) {
       'SELECT stamina, coins, trophy_points FROM users WHERE id = $1',
       [request.user.id]
     );
-    return { alreadyCompleted: false, progress, points, gold, stamina: updatedUser.rows[0] };
+    return {
+      alreadyCompleted: false,
+      passed,
+      requiredCorrectAnswers: Math.ceil(answers.length * 0.8),
+      progress,
+      points,
+      gold,
+      stamina: updatedUser.rows[0]
+    };
   });
 
-  if (!result.alreadyCompleted && result.stamina.trophy_points !== undefined) {
+  if (result.passed && !result.alreadyCompleted && result.stamina.trophy_points !== undefined) {
     await syncUserScore(request.user.id, result.stamina.trophy_points);
   }
   response.json(result);

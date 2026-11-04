@@ -22,6 +22,7 @@ const loginLimiter = rateLimit({
 router.post('/login', loginLimiter, asyncHandler(controller.login));
 router.use(requireAdmin);
 router.get('/overview', asyncHandler(controller.overview));
+router.get('/words', asyncHandler(controller.listWords));
 router.get('/users', asyncHandler(controller.listUsers));
 router.get('/vocabulary', asyncHandler(controller.listVocabulary));
 router.post('/vocabulary', asyncHandler(controller.createVocabulary));

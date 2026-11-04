@@ -17,6 +17,7 @@ fun WritingGameScreen(context: Context, viewModel: MainViewModel, navigate: (Str
         addView(UiKit.text(context, "Writing Quest", 21, UiKit.INK, true))
     })
     page.addView(UiKit.pill(context, "❤️".repeat(viewModel.hearts) + "     ⭐ ${viewModel.score}", 0xFFFFE9AE.toInt()))
+    page.addView(UiKit.text(context, viewModel.vocabularyMessage, 11, UiKit.MUTED, gravity = Gravity.CENTER))
     page.addView(UiKit.card(context, UiKit.WHITE, 20).apply {
         addView(UiKit.text(context, "Write this word in English", 14, UiKit.MUTED, gravity = Gravity.CENTER))
         addView(UiKit.text(context, viewModel.currentWord.vietnamese, 25, UiKit.INK, true, Gravity.CENTER))

@@ -19,9 +19,24 @@ fun MinigameRunnerScreen(context: Context, viewModel: MainViewModel, navigate: (
     })
     page.addView(UiKit.pill(context, "Best: ${maxOf(1_500, viewModel.runnerBestDistance)} m     ❤️".plus("❤️".repeat(viewModel.hearts)), 0xFFFFE8B1.toInt()))
     page.addView(UiKit.text(context, "Find the English word for", 15, UiKit.MUTED, gravity = Gravity.CENTER))
-    page.addView(UiKit.text(context, "🍎  QUẢ TÁO", 27, UiKit.INK, true, Gravity.CENTER))
+    page.addView(UiKit.text(
+        context,
+        "🍎  ${viewModel.currentWord.vietnamese.uppercase()}",
+        27,
+        UiKit.INK,
+        true,
+        Gravity.CENTER
+    ))
+    val runnerOptions = viewModel.words.asSequence()
+        .filter { it.english != viewModel.currentWord.english }
+        .map { it.english.uppercase() }
+        .distinct()
+        .take(2)
+        .toList()
+        .let { (it + viewModel.currentWord.english.uppercase()).shuffled(kotlin.random.Random(viewModel.activeWordIndex)) }
+    val laneLabels = listOf(runnerOptions[0], viewModel.currentWord.english.uppercase(), runnerOptions[1])
     page.addView(UiKit.row(context, 6).apply {
-        listOf("🍌 BANANA", "🍎 APPLE", "🍊 ORANGE").forEachIndexed { lane, label ->
+        laneLabels.forEachIndexed { lane, label ->
             addView(UiKit.card(context, if (lane == viewModel.runnerLane) 0xFFFFE9AE.toInt() else 0xFFE7F4FE.toInt(), 8).apply {
                 gravity = Gravity.CENTER
                 addView(UiKit.text(context, "🚧", 26, gravity = Gravity.CENTER))
@@ -29,6 +44,7 @@ fun MinigameRunnerScreen(context: Context, viewModel: MainViewModel, navigate: (
             }, LinearLayout.LayoutParams(0, UiKit.dp(context, 90), 1f))
         }
     })
+    page.addView(UiKit.text(context, viewModel.vocabularyMessage, 11, UiKit.MUTED, gravity = Gravity.CENTER))
     page.addView(UiKit.column(context, 0).apply {
         gravity = Gravity.CENTER
         setPadding(0, UiKit.dp(context, 10), 0, UiKit.dp(context, 10))

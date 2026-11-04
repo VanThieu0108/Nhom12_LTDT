@@ -17,8 +17,8 @@ fun SpeakingGameScreen(context: Context, viewModel: MainViewModel, navigate: (St
     page.addView(UiKit.pill(context, "QUESTION 1 / 10      ❤️❤️❤️", 0xFFDFF7EB.toInt(), 0xFF3B9C70.toInt()))
     page.addView(UiKit.text(context, "Say this word out loud", 15, UiKit.MUTED, gravity = Gravity.CENTER))
     page.addView(UiKit.card(context, UiKit.WHITE, 20).apply {
-        addView(UiKit.text(context, "🍎", 35, gravity = Gravity.CENTER))
-        addView(UiKit.text(context, "APPLE", 34, UiKit.INK, true, Gravity.CENTER))
+        addView(UiKit.text(context, "🗣️", 35, gravity = Gravity.CENTER))
+        addView(UiKit.text(context, viewModel.currentWord.english.uppercase(), 34, UiKit.INK, true, Gravity.CENTER))
         addView(UiKit.text(context, viewModel.currentWord.vietnamese, 16, UiKit.MUTED, gravity = Gravity.CENTER))
     })
     page.addView(UiKit.button(context, "🎙️", UiKit.GREEN, UiKit.WHITE) {
@@ -40,5 +40,6 @@ fun SpeakingGameScreen(context: Context, viewModel: MainViewModel, navigate: (St
         viewModel.nextQuestion()
         navigate("speaking")
     })
+    page.addView(UiKit.text(context, viewModel.vocabularyMessage, 11, UiKit.MUTED, gravity = Gravity.CENTER))
     return UiKit.scrollContent(context, page)
 }

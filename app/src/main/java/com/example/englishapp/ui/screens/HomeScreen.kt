@@ -36,6 +36,13 @@ fun HomeScreen(context: Context, viewModel: MainViewModel, navigate: (String) ->
         }, LinearLayout.LayoutParams(0, -2, 1f))
         addView(UiKit.pill(context, "🔥 ${viewModel.user.streakDays} DAY STREAK!", 0xFFFFEBD8.toInt(), 0xFFEB8245.toInt()))
     })
+    page.addView(UiKit.row(context, 8).apply {
+        gravity = Gravity.CENTER_VERTICAL
+        addView(UiKit.text(context, viewModel.vocabularyMessage, 11, UiKit.MUTED), LinearLayout.LayoutParams(0, -2, 1f))
+        addView(UiKit.button(context, if (viewModel.isVocabularyLoading) "Loading..." else "Sync", UiKit.WHITE, UiKit.BLUE) {
+            if (!viewModel.isVocabularyLoading) viewModel.loadVocabulary()
+        })
+    })
 
     val zones = listOf(
         Triple("Listening", "🔊", UiKit.BLUE),

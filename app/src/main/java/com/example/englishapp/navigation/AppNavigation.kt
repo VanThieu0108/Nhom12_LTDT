@@ -19,7 +19,7 @@ import com.example.englishapp.viewmodel.MainViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class AppNavigation(private val activity: AppCompatActivity) {
-    private val mainViewModel = ViewModelProvider(activity)[MainViewModel::class.java]
+    val mainViewModel = ViewModelProvider(activity)[MainViewModel::class.java]
     private val authViewModel = ViewModelProvider(activity)[AuthViewModel::class.java]
     private lateinit var navController: NavController
     private lateinit var bottomNavigation: BottomNavigationView
@@ -38,6 +38,7 @@ class AppNavigation(private val activity: AppCompatActivity) {
         navController = navHost.navController
         navController.graph = createGraph()
         NavigationUI.setupWithNavController(bottomNavigation, navController)
+        mainViewModel.loadVocabulary()
         navController.addOnDestinationChangedListener { _, destination, _ ->
             updateBottomNavigation(destination.id)
         }
@@ -180,7 +181,7 @@ class AppNavigation(private val activity: AppCompatActivity) {
             ROUTE_TROPHIES -> com.example.englishapp.ui.screens.TrophiesScreen(activity, mainViewModel, navigate)
             ROUTE_PROFILE -> com.example.englishapp.ui.screens.ProfileScreen(activity, mainViewModel, navigate)
             ROUTE_BATTLE -> com.example.englishapp.ui.screens.BattleScreen(activity, mainViewModel, navigate)
-            else -> com.example.englishapp.ui.screens.ZoneMapScreen(activity, zone, navigate)
+            else -> com.example.englishapp.ui.screens.ZoneMapScreen(activity, mainViewModel, zone, navigate)
         }
     }
 

@@ -20,12 +20,7 @@ fun MinigameMatchScreen(context: Context, viewModel: MainViewModel, navigate: (S
     })
     page.addView(UiKit.text(context, "Word Match", 25, UiKit.INK, true, Gravity.CENTER))
     page.addView(UiKit.text(context, "Tap a word, then its meaning", 14, UiKit.MUTED, gravity = Gravity.CENTER))
-    val pairs = listOf(
-        "Apple" to "Quả táo",
-        "Cat" to "Con mèo",
-        "Dog" to "Con chó",
-        "Sun" to "Mặt trời"
-    )
+    val pairs = viewModel.words.take(4).map { it.english to it.vietnamese }
     val activePairs = pairs.filterNot { viewModel.matchedWords.contains(it.first) }
     val vietnamese = activePairs.map { it.second }.shuffled(Random(2026 + viewModel.matchedWords.size))
     activePairs.forEachIndexed { index, pair ->
@@ -55,6 +50,7 @@ fun MinigameMatchScreen(context: Context, viewModel: MainViewModel, navigate: (S
         })
     }
     if (viewModel.feedback.isNotBlank()) page.addView(UiKit.text(context, viewModel.feedback, 14, UiKit.GREEN, true, Gravity.CENTER))
+    page.addView(UiKit.text(context, viewModel.vocabularyMessage, 11, UiKit.MUTED, gravity = Gravity.CENTER))
     if (viewModel.matchedWords.size == pairs.size) {
         viewModel.completeGame("Word Match")
         page.addView(UiKit.text(context, "🎉 All pairs matched!", 20, UiKit.GREEN, true, Gravity.CENTER))

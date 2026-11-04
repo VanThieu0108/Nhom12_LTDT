@@ -1,0 +1,1001 @@
+﻿word_en,meaning_vi,phonetic,audio_url,image_url,difficulty_level,category
+ant,kiến,ˈænt,,,1,Animals
+bear,gấu,bˈɛ‍ɹ,,,1,Animals
+bee,ong,bˈiː,,,1,Animals
+bird,chim,bˈɜːd,,,1,Animals
+butterfly,bướm,bˈʌɾɚflˌa‍ɪ,,,1,Animals
+camel,lạc đà,kˈæmə‍l,,,1,Animals
+cat,mèo,kˈæt,,,1,Animals
+chicken,gà,t‍ʃˈɪkɪn,,,1,Animals
+cow,bò,kˈa‍ʊ,,,1,Animals
+crab,cua,kɹˈæb,,,1,Animals
+deer,hươu,dˈɪ‍ɹ,,,1,Animals
+dog,chó,dˈɑːɡ,,,1,Animals
+dolphin,cá heo,dˈɑːlfɪn,,,1,Animals
+duck,vịt,dˈʌk,,,1,Animals
+elephant,voi,ˈɛlɪfənt,,,1,Animals
+fish,cá,fˈɪʃ,,,1,Animals
+fox,cáo,fˈɑːks,,,1,Animals
+frog,ếch,fɹˈɑːɡ,,,1,Animals
+giraffe,hươu cao cổ,d‍ʒɪɹˈæf,,,1,Animals
+goat,dê,ɡˈo‍ʊt,,,1,Animals
+horse,ngựa,hˈɔː‍ɹs,,,1,Animals
+lion,sư tử,lˈa‍ɪ‍ən,,,1,Animals
+monkey,khỉ,mˈʌnki,,,1,Animals
+mouse,chuột,mˈa‍ʊs,,,1,Animals
+owl,cú mèo,ˈa‍ʊl,,,1,Animals
+parrot,vẹt,pˈæɹət,,,1,Animals
+peacock,công,pˈiːkɑːk,,,1,Animals
+penguin,chim cánh cụt,pˈɛŋɡwɪn,,,1,Animals
+pig,lợn,pˈɪɡ,,,1,Animals
+rabbit,thỏ,ɹˈæbɪt,,,1,Animals
+shark,cá mập,ʃˈɑː‍ɹk,,,1,Animals
+sheep,cừu,ʃˈiːp,,,1,Animals
+snail,ốc sên,snˈe‍ɪl,,,1,Animals
+snake,rắn,snˈe‍ɪk,,,1,Animals
+spider,nhện,spˈa‍ɪdɚ,,,1,Animals
+tiger,hổ,tˈa‍ɪɡɚ,,,1,Animals
+turtle,rùa,tˈɜːɾə‍l,,,1,Animals
+whale,cá voi,wˈe‍ɪl,,,1,Animals
+wolf,sói,wˈʊlf,,,1,Animals
+zebra,ngựa vằn,zˈiːbɹə,,,1,Animals
+ankle,mắt cá chân,ˈæŋkə‍l,,,1,Body
+arm,cánh tay,ˈɑː‍ɹm,,,1,Body
+back,lưng,bˈæk,,,1,Body
+body,cơ thể,bˈɑːdi,,,1,Body
+bone,xương,bˈo‍ʊn,,,1,Body
+brain,não,bɹˈe‍ɪn,,,1,Body
+cheek,má,t‍ʃˈiːk,,,1,Body
+chest,ngực,t‍ʃˈɛst,,,1,Body
+chin,cằm,t‍ʃˈɪn,,,1,Body
+ear,tai,ˈɪ‍ɹ,,,1,Body
+elbow,khuỷu tay,ˈɛlbo‍ʊ,,,1,Body
+eye,mắt,ˈa‍ɪ,,,1,Body
+eyebrow,lông mày,ˈa‍ɪbɹa‍ʊ,,,1,Body
+eyelash,lông mi,ˈa‍ɪlæʃ,,,1,Body
+face,khuôn mặt,fˈe‍ɪs,,,1,Body
+feet,bàn chân,fˈiːt,,,1,Body
+finger,ngón tay,fˈɪŋɡɚ,,,1,Body
+foot,bàn chân,fˈʊt,,,1,Body
+forehead,trán,fˈɔː‍ɹhɛd,,,1,Body
+hair,tóc,hˈɛ‍ɹ,,,1,Body
+hand,bàn tay,hˈænd,,,1,Body
+head,đầu,hˈɛd,,,1,Body
+heart,tim,hˈɑː‍ɹt,,,1,Body
+heel,gót chân,hˈiːl,,,1,Body
+knee,đầu gối,nˈiː,,,1,Body
+leg,chân,lˈɛɡ,,,1,Body
+lip,môi,lˈɪp,,,1,Body
+mouth,miệng,mˈa‍ʊθ,,,1,Body
+muscle,cơ bắp,mˈʌsə‍l,,,1,Body
+neck,cổ,nˈɛk,,,1,Body
+nose,mũi,nˈo‍ʊz,,,1,Body
+shoulder,vai,ʃˈo‍ʊldɚ,,,1,Body
+skin,da,skˈɪn,,,1,Body
+stomach,bụng,stˈʌmək,,,1,Body
+teeth,răng,tˈiːθ,,,1,Body
+thumb,ngón cái,θˈʌm,,,1,Body
+toe,ngón chân,tˈo‍ʊ,,,1,Body
+tongue,lưỡi,tˈʌŋ,,,1,Body
+tooth,răng,tˈuːθ,,,1,Body
+wrist,cổ tay,ɹˈɪst,,,1,Body
+beige,be,bˈe‍ɪʒ,,,1,Colors
+black,đen,blˈæk,,,1,Colors
+blue,xanh dương,blˈuː,,,1,Colors
+brown,nâu,bɹˈa‍ʊn,,,1,Colors
+charcoal,xám than,t‍ʃˈɑː‍ɹko‍ʊl,,,1,Colors
+colorful,nhiều màu,kˈʌlɚfə‍l,,,1,Colors
+coral,san hô,kˈɔːɹə‍l,,,1,Colors
+cream,kem,kɹˈiːm,,,1,Colors
+cyan,xanh lơ,sa‍ɪˈæn,,,1,Colors
+dark blue,xanh đậm,dˈɑː‍ɹk blˈuː,,,1,Colors
+dark green,xanh lá đậm,dˈɑː‍ɹk ɡɹˈiːn,,,1,Colors
+gold,vàng kim,ɡˈo‍ʊld,,,1,Colors
+gray,xám,ɡɹˈe‍ɪ,,,1,Colors
+green,xanh lá,ɡɹˈiːn,,,1,Colors
+grey,xám,ɡɹˈe‍ɪ,,,1,Colors
+hot pink,hồng đậm,hˈɑːt pˈɪŋk,,,1,Colors
+indigo,chàm,ˈɪndɪɡˌo‍ʊ,,,1,Colors
+ivory,trắng ngà,ˈa‍ɪvɚɹi,,,1,Colors
+lavender,tím oải hương,lˈævəndɚ,,,1,Colors
+light blue,xanh nhạt,lˈa‍ɪt blˈuː,,,1,Colors
+light green,xanh lá nhạt,lˈa‍ɪt ɡɹˈiːn,,,1,Colors
+lime green,xanh nõn chuối,lˈa‍ɪm ɡɹˈiːn,,,1,Colors
+magenta,đỏ tươi,məd‍ʒˈɛntə,,,1,Colors
+maroon,đỏ nâu,mɚɹˈuːn,,,1,Colors
+mustard,vàng mù tạt,mˈʌstɚd,,,1,Colors
+navy,xanh hải quân,nˈe‍ɪvi,,,1,Colors
+olive,xanh ô liu,ˈɑːlɪv,,,1,Colors
+pink,hồng,pˈɪŋk,,,1,Colors
+purple,tím,pˈɜːpə‍l,,,1,Colors
+rainbow,cầu vồng,ɹˈe‍ɪnbo‍ʊ,,,1,Colors
+red,đỏ,ɹˈɛd,,,1,Colors
+silver,bạc,sˈɪlvɚ,,,1,Colors
+sky blue,xanh da trời,skˈa‍ɪ blˈuː,,,1,Colors
+teal,xanh mòng két,tˈiːl,,,1,Colors
+turquoise,xanh ngọc,tˈɜːkwɔ‍ɪs,,,1,Colors
+violet,tím violet,vˈa‍ɪ‍ələt,,,1,Colors
+white,trắng,wˈa‍ɪt,,,1,Colors
+yellow,vàng,jˈɛlo‍ʊ,,,1,Colors
+aunt,cô/dì/bác,ˈænt,,,1,Family
+baby,em bé,bˈe‍ɪbi,,,1,Family
+big family,gia đình đông người,bˈɪɡ fˈæmɪli,,,1,Family
+big sister,chị gái,bˈɪɡ sˈɪstɚ,,,1,Family
+brother,anh/em trai,bɹˈʌðɚ,,,1,Family
+child,đứa trẻ,t‍ʃˈa‍ɪld,,,1,Family
+children,trẻ em,t‍ʃˈɪldɹən,,,1,Family
+cousin,anh chị em họ,kˈʌzən,,,1,Family
+dad,bố,dˈæd,,,1,Family
+daughter,con gái,dˈɔːɾɚ,,,1,Family
+family,gia đình,fˈæmɪli,,,1,Family
+father,bố,fˈɑːðɚ,,,1,Family
+grandchild,cháu,ɡɹˈændt‍ʃa‍ɪld,,,1,Family
+granddaughter,cháu gái,ɡɹˈændɔːɾɚ,,,1,Family
+grandfather,ông,ɡɹˈændfɑːðɚ,,,1,Family
+grandma,bà,ɡɹˈændmɑː,,,1,Family
+grandmother,bà,ɡɹˈændmʌðɚ,,,1,Family
+grandpa,ông,ɡɹˈændpɑː,,,1,Family
+grandparents,ông bà,ɡɹˈændpɛɹənts,,,1,Family
+grandson,cháu trai,ɡɹˈændsʌn,,,1,Family
+husband,chồng,hˈʌsbənd,,,1,Family
+little brother,em trai,lˈɪɾə‍l bɹˈʌðɚ,,,1,Family
+mom,mẹ,mˈɑːm,,,1,Family
+mother,mẹ,mˈʌðɚ,,,1,Family
+nephew,cháu trai,nˈɛfjuː,,,1,Family
+newborn,trẻ sơ sinh,nˈuːbɔː‍ɹn,,,1,Family
+niece,cháu gái,nˈiːs,,,1,Family
+only child,con một,ˈo‍ʊnli t‍ʃˈa‍ɪld,,,1,Family
+parent,cha hoặc mẹ,pˈɛɹənt,,,1,Family
+parents,bố mẹ,pˈɛɹənts,,,1,Family
+relative,họ hàng,ɹˈɛlətˌɪv,,,1,Family
+sister,chị/em gái,sˈɪstɚ,,,1,Family
+son,con trai,sˈʌn,,,1,Family
+stepbrother,anh/em trai kế,stˈɛpbɹʌðɚ,,,1,Family
+stepfather,cha dượng,stˈɛpfɑːðɚ,,,1,Family
+stepmother,mẹ kế,stˈɛpmʌðɚ,,,1,Family
+stepsister,chị/em gái kế,stˈɛpsɪstɚ,,,1,Family
+twins,sinh đôi,twˈɪnz,,,1,Family
+uncle,chú/bác/cậu,ˈʌŋkə‍l,,,1,Family
+wife,vợ,wˈa‍ɪf,,,1,Family
+beef,thịt bò,bˈiːf,,,1,Food
+biscuit,bánh quy,bˈɪskɪt,,,1,Food
+bread,bánh mì,bɹˈɛd,,,1,Food
+breakfast,bữa sáng,bɹˈɛkfəst,,,1,Food
+butter,bơ,bˈʌɾɚ,,,1,Food
+cake,bánh ngọt,kˈe‍ɪk,,,1,Food
+candy,kẹo,kˈændi,,,1,Food
+cheese,phô mai,t‍ʃˈiːz,,,1,Food
+chicken meat,thịt gà,t‍ʃˈɪkɪn mˈiːt,,,1,Food
+chocolate,sô cô la,t‍ʃˈɑːklət,,,1,Food
+cookie,bánh quy,kˈʊki,,,1,Food
+dumpling,bánh bao,dˈʌmplɪŋ,,,1,Food
+egg,trứng,ˈɛɡ,,,1,Food
+fish sauce,nước mắm,fˈɪʃ sˈɔːs,,,1,Food
+hamburger,bánh hamburger,hˈæmbɜːɡɚ,,,1,Food
+honey,mật ong,hˈʌni,,,1,Food
+hot dog,bánh mì xúc xích,hˈɑːt dˈɑːɡ,,,1,Food
+ice cream,kem,ˈa‍ɪs kɹˈiːm,,,1,Food
+jam,mứt,d‍ʒˈæm,,,1,Food
+meat,thịt,mˈiːt,,,1,Food
+milk,sữa,mˈɪlk,,,1,Food
+noodle,mì,nˈuːdə‍l,,,1,Food
+noodles,mì,nˈuːdə‍lz,,,1,Food
+pancake,bánh kếp,pˈænke‍ɪk,,,1,Food
+pepper,tiêu,pˈɛpɚ,,,1,Food
+pie,bánh nướng,pˈa‍ɪ,,,1,Food
+pizza,bánh pizza,pˈiːtsə,,,1,Food
+popcorn,bỏng ngô,pˈɑːpkɔː‍ɹn,,,1,Food
+pork,thịt heo,pˈoː‍ɹk,,,1,Food
+porridge,cháo,pˈɔːɹɪd‍ʒ,,,1,Food
+rice,cơm/gạo,ɹˈa‍ɪs,,,1,Food
+salad,rau trộn,sˈæləd,,,1,Food
+salt,muối,sˈɑːlt,,,1,Food
+sandwich,bánh mì kẹp,sˈændwɪt‍ʃ,,,1,Food
+sausage,xúc xích,sˈɔːsɪd‍ʒ,,,1,Food
+snack,đồ ăn nhẹ,snˈæk,,,1,Food
+soup,súp,sˈuːp,,,1,Food
+sugar,đường,ʃˈʊɡɚ,,,1,Food
+waffle,bánh quế,wˈɑːfə‍l,,,1,Food
+yogurt,sữa chua,jˈo‍ʊɡɚt,,,1,Food
+apple,táo,ˈæpə‍l,,,1,Fruits
+apricot,mơ,ˈe‍ɪpɹɪkˌɑːt,,,1,Fruits
+avocado,bơ,ˌævəkˈɑːdo‍ʊ,,,1,Fruits
+banana,chuối,bɐnˈænə,,,1,Fruits
+blackberry,mâm xôi đen,blˈækbɛɹi,,,1,Fruits
+blueberry,việt quất,blˈuːbɛɹi,,,1,Fruits
+cherry,anh đào,t‍ʃˈɛɹi,,,1,Fruits
+coconut,dừa,kˈo‍ʊkənˌʌt,,,1,Fruits
+cranberry,nam việt quất,kɹˈænbɛɹi,,,1,Fruits
+date,chà là,dˈe‍ɪt,,,1,Fruits
+dragon fruit,thanh long,dɹˈæɡən fɹˈuːt,,,1,Fruits
+durian,sầu riêng,dˈʊ‍ɹɹi‍ən,,,1,Fruits
+fig,sung,fˈɪɡ,,,1,Fruits
+grape,nho,ɡɹˈe‍ɪp,,,1,Fruits
+grapefruit,bưởi,ɡɹˈe‍ɪpfɹuːt,,,1,Fruits
+guava,ổi,ɡwˈɑːvə,,,1,Fruits
+jackfruit,mít,d‍ʒˈækfɹuːt,,,1,Fruits
+kiwi,kiwi,kˈiːwiː,,,1,Fruits
+lemon,chanh,lˈɛmən,,,1,Fruits
+lime,chanh xanh,lˈa‍ɪm,,,1,Fruits
+longan,nhãn,lˈɑːŋɡən,,,1,Fruits
+lychee,vải,lˈiːt‍ʃiː,,,1,Fruits
+mandarin,cam quýt,mˈændɚɹˌɪn,,,1,Fruits
+mango,xoài,mˈæŋɡo‍ʊ,,,1,Fruits
+melon,dưa lưới,mˈɛlən,,,1,Fruits
+mulberry,dâu tằm,mˈʌlbɛɹi,,,1,Fruits
+orange,cam,ˈɔːɹɪnd‍ʒ,,,1,Fruits
+papaya,đu đủ,pɐpˈa‍ɪə,,,1,Fruits
+passion fruit,chanh dây,pˈæʃən fɹˈuːt,,,1,Fruits
+peach,đào,pˈiːt‍ʃ,,,1,Fruits
+pear,lê,pˈɛ‍ɹ,,,1,Fruits
+persimmon,hồng,pˈɜːsɪmən,,,1,Fruits
+pineapple,dứa,pˈa‍ɪnæpə‍l,,,1,Fruits
+plum,mận,plˈʌm,,,1,Fruits
+pomelo,bưởi,pɑːmˈiːlo‍ʊ,,,1,Fruits
+raspberry,mâm xôi,ɹˈæsbɛɹi,,,1,Fruits
+star fruit,khế,stˈɑː‍ɹ fɹˈuːt,,,1,Fruits
+strawberry,dâu tây,stɹˈɔːbɛɹi,,,1,Fruits
+tangerine,quýt,tˌænd‍ʒɚɹˈiːn,,,1,Fruits
+watermelon,dưa hấu,wˈɔːɾɚmˌɛlən,,,1,Fruits
+eight,tám,ˈe‍ɪt,,,1,Numbers
+eighteen,mười tám,ˈe‍ɪtiːn,,,1,Numbers
+eighty,tám mươi,ˈe‍ɪɾi,,,1,Numbers
+eleven,mười một,ᵻlˈɛvən,,,1,Numbers
+few,ít,fjˈuː,,,1,Numbers
+fifteen,mười lăm,fˈɪftiːn,,,1,Numbers
+fifth,thứ năm,fˈɪfθ,,,1,Numbers
+fifty,năm mươi,fˈɪfti,,,1,Numbers
+first,thứ nhất,fˈɜːst,,,1,Numbers
+five,năm,fˈa‍ɪv,,,1,Numbers
+forty,bốn mươi,fˈɔː‍ɹɾi,,,1,Numbers
+four,bốn,fˈoː‍ɹ,,,1,Numbers
+fourteen,mười bốn,fˈoː‍ɹtiːn,,,1,Numbers
+fourth,thứ tư,fˈoː‍ɹθ,,,1,Numbers
+half,một nửa,hˈæf,,,1,Numbers
+hundred,một trăm,hˈʌndɹəd,,,1,Numbers
+last,cuối cùng,lˈæst,,,1,Numbers
+less,ít hơn,lˈɛs,,,1,Numbers
+many,nhiều,mˈɛni,,,1,Numbers
+more,nhiều hơn,mˈoː‍ɹ,,,1,Numbers
+nine,chín,nˈa‍ɪn,,,1,Numbers
+nineteen,mười chín,nˈa‍ɪntiːn,,,1,Numbers
+ninety,chín mươi,nˈa‍ɪnti,,,1,Numbers
+one,một,wˈʌn,,,1,Numbers
+second,thứ hai,sˈɛkənd,,,1,Numbers
+seven,bảy,sˈɛvən,,,1,Numbers
+seventeen,mười bảy,sˈɛvəntˌiːn,,,1,Numbers
+seventy,bảy mươi,sˈɛvɛnti,,,1,Numbers
+six,sáu,sˈɪks,,,1,Numbers
+sixteen,mười sáu,sˈɪkstiːn,,,1,Numbers
+sixty,sáu mươi,sˈɪksti,,,1,Numbers
+ten,mười,tˈɛn,,,1,Numbers
+third,thứ ba,θˈɜːd,,,1,Numbers
+thirteen,mười ba,θˈɜːtiːn,,,1,Numbers
+thirty,ba mươi,θˈɜːɾi,,,1,Numbers
+three,ba,θɹˈiː,,,1,Numbers
+twelve,mười hai,twˈɛlv,,,1,Numbers
+twenty,hai mươi,twˈɛnti,,,1,Numbers
+two,hai,tˈuː,,,1,Numbers
+zero,số không,zˈi‍əɹo‍ʊ,,,1,Numbers
+bag,cặp sách,bˈæɡ,,,1,School
+board,bảng,bˈoː‍ɹd,,,1,School
+book,sách,bˈʊk,,,1,School
+chair,ghế,t‍ʃˈɛ‍ɹ,,,1,School
+class,lớp học,klˈæs,,,1,School
+classroom,phòng học,klˈæsɹuːm,,,1,School
+desk,bàn học,dˈɛsk,,,1,School
+eraser,cục tẩy,ɪɹˈe‍ɪsɚ,,,1,School
+notebook,vở,nˈo‍ʊtbʊk,,,1,School
+paper,giấy,pˈe‍ɪpɚ,,,1,School
+pen,bút mực,pˈɛn,,,1,School
+pencil,bút chì,pˈɛnsə‍l,,,1,School
+ruler,thước kẻ,ɹˈuːlɚ,,,1,School
+school,trường học,skˈuːl,,,1,School
+student,học sinh,stˈuːdənt,,,1,School
+teacher,giáo viên,tˈiːt‍ʃɚ,,,1,School
+ambulance,xe cứu thương,ˈæmbjʊləns,,,1,Vehicles
+bicycle,xe đạp,bˈa‍ɪsɪkə‍l,,,1,Vehicles
+bike,xe đạp,bˈa‍ɪk,,,1,Vehicles
+boat,thuyền,bˈo‍ʊt,,,1,Vehicles
+bulldozer,xe ủi,bˈʊldo‍ʊzɚ,,,1,Vehicles
+bus,xe buýt,bˈʌs,,,1,Vehicles
+canoe,xuồng,kənˈuː,,,1,Vehicles
+car,ô tô,kˈɑː‍ɹ,,,1,Vehicles
+convertible,xe mui trần,kənvˈɜːɾəbə‍l,,,1,Vehicles
+crane truck,xe cần cẩu,kɹˈe‍ɪn tɹˈʌk,,,1,Vehicles
+delivery van,xe giao hàng,dɪlˈɪvɚɹi vˈæn,,,1,Vehicles
+ferry,phà,fˈɛɹi,,,1,Vehicles
+fire truck,xe cứu hỏa,fˈa‍ɪ‍ɚ tɹˈʌk,,,1,Vehicles
+forklift,xe nâng,fˈɔː‍ɹklɪft,,,1,Vehicles
+garbage truck,xe chở rác,ɡˈɑː‍ɹbɪd‍ʒ tɹˈʌk,,,1,Vehicles
+helicopter,trực thăng,hˈɛlɪkˌɑːptɚ,,,1,Vehicles
+hot-air balloon,khinh khí cầu,hˈɑːtˈɛ‍ɹ bəlˈuːn,,,1,Vehicles
+jeep,xe jeep,d‍ʒˈiːp,,,1,Vehicles
+limousine,xe limousine,lˈɪməzˌiːn,,,1,Vehicles
+minibus,xe buýt nhỏ,mˈɪnɪbˌʌs,,,1,Vehicles
+motorbike,xe máy,mˈo‍ʊɾɚbˌa‍ɪk,,,1,Vehicles
+motorcycle,xe mô tô,mˈo‍ʊɾɚsˌa‍ɪkə‍l,,,1,Vehicles
+plane,máy bay,plˈe‍ɪn,,,1,Vehicles
+police car,xe cảnh sát,pəlˈiːs kˈɑː‍ɹ,,,1,Vehicles
+rocket,tên lửa,ɹˈɑːkɪt,,,1,Vehicles
+roller skates,giày trượt patin,ɹˈo‍ʊlɚ skˈe‍ɪts,,,1,Vehicles
+school bus,xe buýt trường học,skˈuːl bˈʌs,,,1,Vehicles
+scooter,xe tay ga,skˈuːɾɚ,,,1,Vehicles
+ship,tàu thủy,ʃˈɪp,,,1,Vehicles
+skateboard,ván trượt,skˈe‍ɪtboː‍ɹd,,,1,Vehicles
+spaceship,tàu vũ trụ,spˈe‍ɪsʃɪp,,,1,Vehicles
+subway,tàu điện ngầm,sˈʌbwe‍ɪ,,,1,Vehicles
+taxi,taxi,tˈæksi,,,1,Vehicles
+tractor,máy kéo,tɹˈæktɚ,,,1,Vehicles
+train,tàu hỏa,tɹˈe‍ɪn,,,1,Vehicles
+tram,xe điện,tɹˈæm,,,1,Vehicles
+truck,xe tải,tɹˈʌk,,,1,Vehicles
+unicycle,xe đạp một bánh,jˈuːnɪsˌa‍ɪkə‍l,,,1,Vehicles
+van,xe tải nhỏ,vˈæn,,,1,Vehicles
+yacht,du thuyền,jˈɑːt,,,1,Vehicles
+alligator,cá sấu Mỹ,ˈælᵻɡˌe‍ɪɾɚ,,,2,Animals
+antelope,linh dương,ˈæntɪlˌo‍ʊp,,,2,Animals
+badger,lửng,bˈæd‍ʒɚ,,,2,Animals
+bat,dơi,bˈæt,,,2,Animals
+beaver,hải ly,bˈiːvɚ,,,2,Animals
+bison,bò rừng,bˈa‍ɪsən,,,2,Animals
+buffalo,trâu rừng,bˈʌfəlˌo‍ʊ,,,2,Animals
+cheetah,báo gêpa,t‍ʃˈiːɾə,,,2,Animals
+chimpanzee,tinh tinh,t‍ʃˌɪmpɐnzˈiː,,,2,Animals
+crocodile,cá sấu,kɹˈɑːkədˌa‍ɪl,,,2,Animals
+eagle,đại bàng,ˈiːɡə‍l,,,2,Animals
+elk,hươu wapiti,ˈɛlk,,,2,Animals
+falcon,chim ưng,fˈælkən,,,2,Animals
+flamingo,hồng hạc,flɐmˈɪŋɡo‍ʊ,,,2,Animals
+gorilla,khỉ đột,ɡɚɹˈɪlə,,,2,Animals
+hedgehog,nhím gai,hˈɛd‍ʒhɑːɡ,,,2,Animals
+hippopotamus,hà mã,hˈɪpəpˌɑːɾæməs,,,2,Animals
+hummingbird,chim ruồi,hˈʌmɪŋbˌɜːd,,,2,Animals
+hyena,linh cẩu,ha‍ɪˈiːnə,,,2,Animals
+jackal,chó rừng,d‍ʒˈækə‍l,,,2,Animals
+kangaroo,chuột túi,kˈæŋɡɐɹˌuː,,,2,Animals
+koala,gấu koala,ko‍ʊˈɑːlə,,,2,Animals
+lemur,vượn cáo,lˈiːmɚ,,,2,Animals
+leopard,báo hoa mai,lˈɛpɚd,,,2,Animals
+llama,lạc đà không bướu,lˈɑːmə,,,2,Animals
+meerkat,chồn đất,mˈɪ‍ɹkæt,,,2,Animals
+moose,nai sừng tấm,mˈuːs,,,2,Animals
+orangutan,đười ươi,ˈoːɹɐŋɡjˌuːtən,,,2,Animals
+ostrich,đà điểu,ˈɑːstɹɪt‍ʃ,,,2,Animals
+otter,rái cá,ˈɑːɾɚ,,,2,Animals
+panda,gấu trúc,pˈændə,,,2,Animals
+pelican,bồ nông,pˈɛlɪkən,,,2,Animals
+porcupine,nhím,pˈoː‍ɹkjuːpˌa‍ɪn,,,2,Animals
+raccoon,gấu mèo,ɹækˈuːn,,,2,Animals
+rhinoceros,tê giác,ɹa‍ɪnˈɑːsɚɹəs,,,2,Animals
+seagull,mòng biển,sˈiːɡʌl,,,2,Animals
+skunk,chồn hôi,skˈʌŋk,,,2,Animals
+swan,thiên nga,swˈɑːn,,,2,Animals
+vulture,kền kền,vˈʌlt‍ʃɚ,,,2,Animals
+woodpecker,chim gõ kiến,wˈʊdpɛkɚ,,,2,Animals
+apron,tạp dề,ˈe‍ɪpɹən,,,2,Clothes
+belt,thắt lưng,bˈɛlt,,,2,Clothes
+blouse,áo kiểu,blˈa‍ʊz,,,2,Clothes
+boots,ủng,bˈuːts,,,2,Clothes
+bow tie,nơ cổ,bˈo‍ʊ tˈa‍ɪ,,,2,Clothes
+bracelet,vòng tay,bɹˈe‍ɪslət,,,2,Clothes
+cap,mũ lưỡi trai,kˈæp,,,2,Clothes
+cardigan,áo len cài nút,kˈɑː‍ɹdɪɡən,,,2,Clothes
+coat,áo khoác,kˈo‍ʊt,,,2,Clothes
+dress,đầm,dɹˈɛs,,,2,Clothes
+gloves,găng tay,ɡlˈʌvz,,,2,Clothes
+hat,mũ,hˈæt,,,2,Clothes
+hoodie,áo hoodie,hˈʊdi,,,2,Clothes
+jacket,áo vét/áo khoác,d‍ʒˈækɪt,,,2,Clothes
+jeans,quần bò,d‍ʒˈiːnz,,,2,Clothes
+leggings,quần legging,lˈɛɡɪŋz,,,2,Clothes
+necklace,dây chuyền,nˈɛkləs,,,2,Clothes
+overalls,quần yếm,ˌo‍ʊvɚɹˈɔːlz,,,2,Clothes
+pajamas,đồ ngủ,pɐd‍ʒˈɑːməz,,,2,Clothes
+pants,quần dài,pˈænts,,,2,Clothes
+raincoat,áo mưa,ɹˈe‍ɪnko‍ʊt,,,2,Clothes
+ring,nhẫn,ɹˈɪŋ,,,2,Clothes
+sandals,xăng đan,sˈændə‍lz,,,2,Clothes
+scarf,khăn quàng,skˈɑː‍ɹf,,,2,Clothes
+shirt,áo sơ mi,ʃˈɜːt,,,2,Clothes
+shoes,giày,ʃˈuːz,,,2,Clothes
+shorts,quần đùi,ʃˈɔː‍ɹts,,,2,Clothes
+skirt,váy,skˈɜːt,,,2,Clothes
+slippers,dép,slˈɪpɚz,,,2,Clothes
+socks,tất,sˈɑːks,,,2,Clothes
+sweater,áo len,swˈɛɾɚ,,,2,Clothes
+swimsuit,đồ bơi,swˈɪmsuːt,,,2,Clothes
+T-shirt,áo thun,tˈiːʃˈɜːt,,,2,Clothes
+tie,cà vạt,tˈa‍ɪ,,,2,Clothes
+trousers,quần dài,tɹˈa‍ʊsɚz,,,2,Clothes
+underwear,đồ lót,ˌʌndɚwˈɛ‍ɹ,,,2,Clothes
+uniform shirt,áo đồng phục,jˈuːnɪfˌɔː‍ɹm ʃˈɜːt,,,2,Clothes
+vest,áo ghi lê,vˈɛst,,,2,Clothes
+wristwatch,đồng hồ đeo tay,ɹˈɪstwɑːt‍ʃ,,,2,Clothes
+arrive,đến nơi,ɚɹˈa‍ɪv,,,2,Everyday verbs
+borrow,mượn,bˈɔːɹo‍ʊ,,,2,Everyday verbs
+carry,mang,kˈæɹi,,,2,Everyday verbs
+choose,chọn,t‍ʃˈuːz,,,2,Everyday verbs
+climb,leo,klˈa‍ɪm,,,2,Everyday verbs
+collect,sưu tầm,kəlˈɛkt,,,2,Everyday verbs
+compare,so sánh,kəmpˈɛ‍ɹ,,,2,Everyday verbs
+continue,tiếp tục,kəntˈɪnjuː,,,2,Everyday verbs
+decide,quyết định,dᵻsˈa‍ɪd,,,2,Everyday verbs
+deliver,giao hàng,dɪlˈɪvɚ,,,2,Everyday verbs
+describe,miêu tả,dɪskɹˈa‍ɪb,,,2,Everyday verbs
+discover,khám phá,dɪskˈʌvɚ,,,2,Everyday verbs
+enjoy,thưởng thức,ɛnd‍ʒˈɔ‍ɪ,,,2,Everyday verbs
+explain,giải thích,ɛksplˈe‍ɪn,,,2,Everyday verbs
+finish,hoàn thành,fˈɪnɪʃ,,,2,Everyday verbs
+follow,đi theo,fˈɑːlo‍ʊ,,,2,Everyday verbs
+forget,quên,fɚɡˈɛt,,,2,Everyday verbs
+guess,đoán,ɡˈɛs,,,2,Everyday verbs
+happen,xảy ra,hˈæpən,,,2,Everyday verbs
+invite,mời,ɪnvˈa‍ɪt,,,2,Everyday verbs
+join,tham gia,d‍ʒˈɔ‍ɪn,,,2,Everyday verbs
+active,năng động,ˈæktɪv,,,2,Feelings
+afraid,sợ,ɐfɹˈe‍ɪd,,,2,Feelings
+angry,tức giận,ˈæŋɡɹi,,,2,Feelings
+bored,chán,bˈoː‍ɹd,,,2,Feelings
+brave,dũng cảm,bɹˈe‍ɪv,,,2,Feelings
+calm,bình tĩnh,kˈɑːm,,,2,Feelings
+careful,cẩn thận,kˈɛ‍ɹfə‍l,,,2,Feelings
+cheerful,vui tươi,t‍ʃˈɪ‍ɹfə‍l,,,2,Feelings
+clever,thông minh,klˈɛvɚ,,,2,Feelings
+confused,bối rối,kənfjˈuːzd,,,2,Feelings
+curious,tò mò,kjˈʊɹɪəs,,,2,Feelings
+disappointed,thất vọng,dˌɪsɐpˈɔ‍ɪntᵻd,,,2,Feelings
+excited,hào hứng,ɛksˈa‍ɪɾᵻd,,,2,Feelings
+friendly,thân thiện,fɹˈɛndli,,,2,Feelings
+funny,hài hước,fˈʌni,,,2,Feelings
+gentle,dịu dàng,d‍ʒˈɛntə‍l,,,2,Feelings
+happy,vui vẻ,hˈæpi,,,2,Feelings
+helpful,hay giúp đỡ,hˈɛlpfə‍l,,,2,Feelings
+honest,trung thực,ˈɑːnɪst,,,2,Feelings
+hungry,đói,hˈʌŋɡɹi,,,2,Feelings
+jealous,ghen tị,d‍ʒˈɛləs,,,2,Feelings
+kind,tốt bụng,kˈa‍ɪnd,,,2,Feelings
+lazy,lười biếng,lˈe‍ɪzi,,,2,Feelings
+lonely,cô đơn,lˈo‍ʊnli,,,2,Feelings
+m sleepy,buồn ngủ,ˈɛm slˈiːpi,,,2,Feelings
+nervous,hồi hộp,nˈɜːvəs,,,2,Feelings
+noisy,ồn ào,nˈɔ‍ɪzi,,,2,Feelings
+patient,kiên nhẫn,pˈe‍ɪʃənt,,,2,Feelings
+polite,lịch sự,pəlˈa‍ɪt,,,2,Feelings
+proud,tự hào,pɹˈa‍ʊd,,,2,Feelings
+quiet,yên lặng,kwˈa‍ɪ‍ət,,,2,Feelings
+relaxed,thư giãn,ɹɪlˈækst,,,2,Feelings
+sad,buồn,sˈæd,,,2,Feelings
+scared,sợ hãi,skˈɛ‍ɹd,,,2,Feelings
+serious,nghiêm túc,sˈi‍əɹɪəs,,,2,Feelings
+shy,nhút nhát,ʃˈa‍ɪ,,,2,Feelings
+surprised,ngạc nhiên,sɚpɹˈa‍ɪzd,,,2,Feelings
+thirsty,khát,θˈɜːsti,,,2,Feelings
+tired,mệt,tˈa‍ɪ‍ɚd,,,2,Feelings
+worried,lo lắng,wˈʌɹid,,,2,Feelings
+asparagus,măng tây,ɐspˈæɹəɡəs,,,2,Food
+basil,húng quế,bˈe‍ɪzə‍l,,,2,Food
+bean,đậu,bˈiːn,,,2,Food
+beetroot,củ dền,bˈiːtɹuːt,,,2,Food
+broccoli,bông cải xanh,bɹˈɑːkəli,,,2,Food
+cabbage,bắp cải,kˈæbɪd‍ʒ,,,2,Food
+carrot,cà rốt,kˈæɹət,,,2,Food
+cauliflower,súp lơ trắng,kˈɑːlɪflˌa‍ʊɚ,,,2,Food
+celery,cần tây,sˈɛlɚɹi,,,2,Food
+chili,ớt,t‍ʃˈɪli,,,2,Food
+clam,nghêu,klˈæm,,,2,Food
+corn,ngô,kˈɔː‍ɹn,,,2,Food
+crab meat,thịt cua,kɹˈæb mˈiːt,,,2,Food
+cucumber,dưa chuột,kjˈuːkʌmbɚ,,,2,Food
+dill,thì là,dˈɪl,,,2,Food
+eggplant,cà tím,ˈɛɡplənt,,,2,Food
+garlic,tỏi,ɡˈɑː‍ɹlɪk,,,2,Food
+ginger,gừng,d‍ʒˈɪnd‍ʒɚ,,,2,Food
+lettuce,xà lách,lˈɛɾɪs,,,2,Food
+lobster,tôm hùm,lˈɑːbstɚ,,,2,Food
+mint,bạc hà,mˈɪnt,,,2,Food
+mushroom,nấm,mˈʌʃɹuːm,,,2,Food
+mussel,vẹm,mˈʌsə‍l,,,2,Food
+octopus,bạch tuộc,ˈɑːktəpəs,,,2,Food
+onion,hành tây,ˈʌni‍ən,,,2,Food
+oyster,hàu,ˈɔ‍ɪstɚ,,,2,Food
+parsley,rau mùi tây,pˈɑː‍ɹsli,,,2,Food
+pea,đậu Hà Lan,pˈiː,,,2,Food
+potato,khoai tây,pətˈe‍ɪɾo‍ʊ,,,2,Food
+prawn,tôm,pɹˈɔːn,,,2,Food
+pumpkin,bí ngô,pˈʌmpkɪn,,,2,Food
+radish,củ cải,ɹˈædɪʃ,,,2,Food
+shrimp,tôm,ʃɹˈɪmp,,,2,Food
+spinach,rau chân vịt,spˈɪnɪt‍ʃ,,,2,Food
+squid,mực,skwˈɪd,,,2,Food
+sweet potato,khoai lang,swˈiːt pətˈe‍ɪɾo‍ʊ,,,2,Food
+tofu,đậu phụ,tˈo‍ʊfuː,,,2,Food
+tomato,cà chua,təmˈe‍ɪɾo‍ʊ,,,2,Food
+yam,khoai từ,jˈæm,,,2,Food
+zucchini,bí ngòi,zʌkˈiːni,,,2,Food
+actor,diễn viên,ˈæktɚ,,,2,Jobs
+actress,nữ diễn viên,ˈæktɹəs,,,2,Jobs
+artist,nghệ sĩ,ˈɑː‍ɹɾɪst,,,2,Jobs
+author,tác giả,ˈɔːθɚ,,,2,Jobs
+barber,thợ cắt tóc,bˈɑː‍ɹbɚ,,,2,Jobs
+builder,thợ xây,bˈɪldɚ,,,2,Jobs
+cashier,thu ngân,kæʃˈɪ‍ɹ,,,2,Jobs
+chef,đầu bếp,ʃˈɛf,,,2,Jobs
+cleaner,nhân viên vệ sinh,klˈiːnɚ,,,2,Jobs
+coach,huấn luyện viên,kˈo‍ʊt‍ʃ,,,2,Jobs
+cook,đầu bếp,kˈʊk,,,2,Jobs
+dancer,vũ công,dˈænsɚ,,,2,Jobs
+dentist,nha sĩ,dˈɛntɪst,,,2,Jobs
+doctor,bác sĩ,dˈɑːktɚ,,,2,Jobs
+driver,tài xế,dɹˈa‍ɪvɚ,,,2,Jobs
+electrician,thợ điện,ᵻlɛktɹˈɪʃən,,,2,Jobs
+engineer,kỹ sư,ˌɛnd‍ʒɪnˈɪ‍ɹ,,,2,Jobs
+farmer,nông dân,fˈɑː‍ɹmɚ,,,2,Jobs
+firefighter,lính cứu hỏa,fˈa‍ɪ‍ɚfa‍ɪɾɚ,,,2,Jobs
+gardener,người làm vườn,ɡˈɑː‍ɹdənɚ,,,2,Jobs
+hairdresser,thợ làm tóc,hˈɛ‍ɹdɹɛsɚ,,,2,Jobs
+lifeguard,nhân viên cứu hộ,lˈa‍ɪfɡɑː‍ɹd,,,2,Jobs
+mechanic,thợ máy,mɪkˈænɪk,,,2,Jobs
+nurse,y tá,nˈɜːs,,,2,Jobs
+photographer,nhiếp ảnh gia,fətˈɑːɡɹəfɚ,,,2,Jobs
+pilot,phi công,pˈa‍ɪlət,,,2,Jobs
+plumber,thợ sửa ống nước,plˈʌmɚ,,,2,Jobs
+police officer,cảnh sát,pəlˈiːs ˈɑːfɪsɚ,,,2,Jobs
+postman,người đưa thư,pˈo‍ʊstmən,,,2,Jobs
+reporter,phóng viên,ɹɪpˈoː‍ɹɾɚ,,,2,Jobs
+sailor,thủy thủ,sˈe‍ɪlɚ,,,2,Jobs
+scientist,nhà khoa học,sˈa‍ɪ‍əntɪst,,,2,Jobs
+shop assistant,nhân viên bán hàng,ʃˈɑːp ɐsˈɪstənt,,,2,Jobs
+singer,ca sĩ,sˈɪŋɚ,,,2,Jobs
+vet,bác sĩ thú y,vˈɛt,,,2,Jobs
+waiter,nam phục vụ,wˈe‍ɪɾɚ,,,2,Jobs
+waitress,nữ phục vụ,wˈe‍ɪtɹəs,,,2,Jobs
+writer,nhà văn,ɹˈa‍ɪɾɚ,,,2,Jobs
+autumn,mùa thu,ˈɔːɾʌm,,,2,Nature
+beach,bãi biển,bˈiːt‍ʃ,,,2,Nature
+cave,hang động,kˈe‍ɪv,,,2,Nature
+cloud,mây,klˈa‍ʊd,,,2,Nature
+desert,sa mạc,dˈɛsɚt,,,2,Nature
+earthquake,động đất,ˈɜːθkwe‍ɪk,,,2,Nature
+forest,rừng,fˈɔːɹɪst,,,2,Nature
+hill,đồi,hˈɪl,,,2,Nature
+island,hòn đảo,ˈa‍ɪlənd,,,2,Nature
+jungle,rừng rậm,d‍ʒˈʌŋɡə‍l,,,2,Nature
+lake,hồ,lˈe‍ɪk,,,2,Nature
+lightning,tia chớp,lˈa‍ɪtnɪŋ,,,2,Nature
+mountain,núi,mˈa‍ʊntɪn,,,2,Nature
+mud,bùn,mˈʌd,,,2,Nature
+ocean,đại dương,ˈo‍ʊʃən,,,2,Nature
+rain,mưa,ɹˈe‍ɪn,,,2,Nature
+river,sông,ɹˈɪvɚ,,,2,Nature
+rock,đá,ɹˈɑːk,,,2,Nature
+sand,cát,sˈænd,,,2,Nature
+sea,biển,sˈiː,,,2,Nature
+season,mùa,sˈiːzən,,,2,Nature
+shadow,bóng,ʃˈædo‍ʊ,,,2,Nature
+sky,bầu trời,skˈa‍ɪ,,,2,Nature
+snow,tuyết,snˈo‍ʊ,,,2,Nature
+soil,đất,sˈɔ‍ɪl,,,2,Nature
+spring,mùa xuân,spɹˈɪŋ,,,2,Nature
+stone,đá,stˈo‍ʊn,,,2,Nature
+storm,bão,stˈoː‍ɹm,,,2,Nature
+summer,mùa hè,sˈʌmɚ,,,2,Nature
+sunrise,bình minh,sˈʌnɹa‍ɪz,,,2,Nature
+sunset,hoàng hôn,sˈʌnsɛt,,,2,Nature
+sunshine,ánh nắng,sˈʌnʃa‍ɪn,,,2,Nature
+thunder,sấm,θˈʌndɚ,,,2,Nature
+valley,thung lũng,vˈæli,,,2,Nature
+volcano,núi lửa,vɑːlkˈe‍ɪno‍ʊ,,,2,Nature
+waterfall,thác nước,wˈɔːɾɚfˌɔːl,,,2,Nature
+weather,thời tiết,wˈɛðɚ,,,2,Nature
+wind,gió,wˈɪnd,,,2,Nature
+winter,mùa đông,wˈɪntɚ,,,2,Nature
+airport,sân bay,ˈɛ‍ɹpoː‍ɹt,,,2,Places
+amusement park,công viên giải trí,ɐmjˈuːsmənt pˈɑː‍ɹk,,,2,Places
+aquarium,thủy cung,ɐkwˈɛɹi‍əm,,,2,Places
+bakery,tiệm bánh,bˈe‍ɪkɚɹi,,,2,Places
+bank,ngân hàng,bˈæŋk,,,2,Places
+bookshop,hiệu sách,bˈʊkʃɑːp,,,2,Places
+bookstore,hiệu sách,bˈʊkstoː‍ɹ,,,2,Places
+bridge,cây cầu,bɹˈɪd‍ʒ,,,2,Places
+bus stop,trạm xe buýt,bˈʌs stˈɑːp,,,2,Places
+cafe,quán cà phê,kˈæfe‍ɪ,,,2,Places
+church,nhà thờ,t‍ʃˈɜːt‍ʃ,,,2,Places
+cinema,rạp chiếu phim,sˈɪnəmə,,,2,Places
+clinic,phòng khám,klˈɪnɪk,,,2,Places
+factory,nhà máy,fˈæktɚɹi,,,2,Places
+farm,nông trại,fˈɑː‍ɹm,,,2,Places
+fire station,trạm cứu hỏa,fˈa‍ɪ‍ɚ stˈe‍ɪʃən,,,2,Places
+hospital,bệnh viện,hˈɑːspɪɾə‍l,,,2,Places
+hotel,khách sạn,ho‍ʊtˈɛl,,,2,Places
+market,chợ,mˈɑː‍ɹkɪt,,,2,Places
+mosque,nhà thờ Hồi giáo,mˈɑːsk,,,2,Places
+mountain resort,khu nghỉ dưỡng núi,mˈa‍ʊntɪn ɹɪzˈɔː‍ɹt,,,2,Places
+museum,bảo tàng,mjuːzˈi‍əm,,,2,Places
+office,văn phòng,ˈɑːfɪs,,,2,Places
+park,công viên,pˈɑː‍ɹk,,,2,Places
+pharmacy,nhà thuốc,fˈɑː‍ɹməsi,,,2,Places
+police station,đồn cảnh sát,pəlˈiːs stˈe‍ɪʃən,,,2,Places
+pool,hồ bơi,pˈuːl,,,2,Places
+post office,bưu điện,pˈo‍ʊst ˈɑːfɪs,,,2,Places
+restaurant,nhà hàng,ɹˈɛstɹɑːnt,,,2,Places
+shopping mall,trung tâm thương mại,ʃˈɑːpɪŋ mˈɔːl,,,2,Places
+station,nhà ga,stˈe‍ɪʃən,,,2,Places
+supermarket,siêu thị,sˈuːpɚmˌɑː‍ɹkɪt,,,2,Places
+temple,đền/chùa,tˈɛmpə‍l,,,2,Places
+theater,nhà hát,θˈi‍əɾɚ,,,2,Places
+theatre,nhà hát,θˈi‍əɾɚ,,,2,Places
+town hall,tòa thị chính,tˈa‍ʊn hˈɔːl,,,2,Places
+zoo,sở thú,zˈuː,,,2,Places
+archery,bắn cung,ˈɑː‍ɹt‍ʃɚɹi,,,2,Sports
+badminton,cầu lông,bˈædmɪntən,,,2,Sports
+baseball,bóng chày,bˈe‍ɪsbɔːl,,,2,Sports
+basketball,bóng rổ,bˈæskɪtbˌɔːl,,,2,Sports
+boxing,quyền anh,bˈɑːksɪŋ,,,2,Sports
+climbing,leo núi,klˈa‍ɪmɪŋ,,,2,Sports
+competition,cuộc thi,kˌɑːmpətˈɪʃən,,,2,Sports
+cricket,cricket,kɹˈɪkɪt,,,2,Sports
+cycling,đạp xe,sˈa‍ɪklɪŋ,,,2,Sports
+diving,lặn,dˈa‍ɪvɪŋ,,,2,Sports
+exercise,bài tập,ˈɛksɚsˌa‍ɪz,,,2,Sports
+fencing,đấu kiếm,fˈɛnsɪŋ,,,2,Sports
+football,bóng đá,fˈʊtbɔːl,,,2,Sports
+goal,bàn thắng,ɡˈo‍ʊl,,,2,Sports
+golf,gôn,ɡˈɑːlf,,,2,Sports
+gymnastics,thể dục dụng cụ,d‍ʒɪmnˈæstɪks,,,2,Sports
+hockey,khúc côn cầu,hˈɑːki,,,2,Sports
+judo,võ judo,d‍ʒˈuːdo‍ʊ,,,2,Sports
+karate,võ karate,kɚɹˈɑːɾi,,,2,Sports
+marathon,chạy ma-ra-tông,mˈæɹəθˌɑːn,,,2,Sports
+match,trận đấu,mˈæt‍ʃ,,,2,Sports
+medal,huy chương,mˈɛdə‍l,,,2,Sports
+player,người chơi,plˈe‍ɪɚ,,,2,Sports
+race,cuộc đua,ɹˈe‍ɪs,,,2,Sports
+referee,trọng tài,ɹˌɛfɚɹˈiː,,,2,Sports
+rowing,chèo thuyền,ɹˈo‍ʊɪŋ,,,2,Sports
+running,chạy bộ,ɹˈʌnɪŋ,,,2,Sports
+skating,trượt băng,skˈe‍ɪɾɪŋ,,,2,Sports
+skiing,trượt tuyết,skˈiːɪŋ,,,2,Sports
+soccer,bóng đá,sˈɑːkɚ,,,2,Sports
+stadium,sân vận động,stˈe‍ɪdi‍əm,,,2,Sports
+surfing,lướt sóng,sˈɜːfɪŋ,,,2,Sports
+swimming,bơi lội,swˈɪmɪŋ,,,2,Sports
+table tennis,bóng bàn,tˈe‍ɪbə‍l tˈɛnᵻs,,,2,Sports
+team,đội,tˈiːm,,,2,Sports
+tennis,quần vợt,tˈɛnᵻs,,,2,Sports
+trophy,cúp,tɹˈo‍ʊfi,,,2,Sports
+volleyball,bóng chuyền,vˈɑːlɪbˌɔːl,,,2,Sports
+wrestling,đấu vật,ɹˈɛslɪŋ,,,2,Sports
+analyze,phân tích,ˈænɐlˌa‍ɪz,,,3,Academic words
+approach,cách tiếp cận,ɐpɹˈo‍ʊt‍ʃ,,,3,Academic words
+calculate,tính toán,kˈælkjʊlˌe‍ɪt,,,3,Academic words
+classify,phân loại,klˈæsᵻfˌa‍ɪ,,,3,Academic words
+concept,khái niệm,kˈɑːnsɛpt,,,3,Academic words
+conclude,kết luận,kənklˈuːd,,,3,Academic words
+conclusion,kết luận,kənklˈuːʒən,,,3,Academic words
+consequence,hậu quả,kˈɑːnsɪkwəns,,,3,Academic words
+data,dữ liệu,dˈe‍ɪɾə,,,3,Academic words
+define,định nghĩa,dɪfˈa‍ɪn,,,3,Academic words
+demonstrate,chứng minh/minh họa,dˈɛmənstɹˌe‍ɪt,,,3,Academic words
+difference,sự khác biệt,dˈɪfɹəns,,,3,Academic words
+distinguish,phân biệt,dɪstˈɪŋɡwɪʃ,,,3,Academic words
+establish,thiết lập,ɪstˈæblɪʃ,,,3,Academic words
+estimate,ước tính,ˈɛstᵻmət,,,3,Academic words
+evaluate,đánh giá,ɪvˈæljuːˌe‍ɪt,,,3,Academic words
+evidence,bằng chứng,ˈɛvɪdəns,,,3,Academic words
+factor,yếu tố,fˈæktɚ,,,3,Academic words
+formulate,hình thành,fˈɔː‍ɹmjʊlˌe‍ɪt,,,3,Academic words
+identify,xác định,a‍ɪdˈɛntᵻfˌa‍ɪ,,,3,Academic words
+indicate,chỉ ra,ˈɪndᵻkˌe‍ɪt,,,3,Academic words
+infer,suy luận,ɪnfˈɜː,,,3,Academic words
+interpret,diễn giải,ɪntˈɜːpɹɪt,,,3,Academic words
+investigate,điều tra/nghiên cứu,ɪnvˈɛstᵻɡˌe‍ɪt,,,3,Academic words
+justify,biện minh,d‍ʒˈʌstᵻfˌa‍ɪ,,,3,Academic words
+method,phương pháp,mˈɛθəd,,,3,Academic words
+occur,xảy ra,əkˈɜː,,,3,Academic words
+predict,dự đoán,pɹɪdˈɪkt,,,3,Academic words
+process,quá trình,pɹˈɑːsɛs,,,3,Academic words
+represent,biểu diễn,ɹˌɛpɹɪzˈɛnt,,,3,Academic words
+require,đòi hỏi,ɹɪkwˈa‍ɪ‍ɚ,,,3,Academic words
+research,nghiên cứu,ɹɪsˈɜːt‍ʃ,,,3,Academic words
+respond,phản hồi,ɹɪspˈɑːnd,,,3,Academic words
+result,kết quả,ɹɪzˈʌlt,,,3,Academic words
+significant,đáng kể,sɪɡnˈɪfɪkənt,,,3,Academic words
+similarity,điểm tương đồng,sˌɪmɪlˈæɹɪɾi,,,3,Academic words
+structure,cấu trúc,stɹˈʌkt‍ʃɚ,,,3,Academic words
+summarize,tóm tắt,sˈʌmɚɹˌa‍ɪz,,,3,Academic words
+theory,lý thuyết,θˈi‍əɹi,,,3,Academic words
+variable,biến số,vˈɛɹɪəbə‍l,,,3,Academic words
+accurate,chính xác,ˈækjʊɹət,,,3,Advanced adjectives
+ancient,cổ xưa,ˈe‍ɪnʃənt,,,3,Advanced adjectives
+anxious,lo âu,ˈæŋʃəs,,,3,Advanced adjectives
+astonishing,đáng kinh ngạc,ɐstˈɑːnɪʃɪŋ,,,3,Advanced adjectives
+beneficial,có lợi,bˌɛnɪfˈɪʃə‍l,,,3,Advanced adjectives
+complicated,phức tạp,kˈɑːmplᵻkˌe‍ɪɾᵻd,,,3,Advanced adjectives
+confident,tự tin,kˈɑːnfɪdənt,,,3,Advanced adjectives
+convenient,thuận tiện,kənvˈiːnɪənt,,,3,Advanced adjectives
+creative,sáng tạo,kɹiːˈe‍ɪɾɪv,,,3,Advanced adjectives
+delicate,tinh tế,dˈɛlᵻkət,,,3,Advanced adjectives
+determined,quyết tâm,dɪtˈɜːmɪnd,,,3,Advanced adjectives
+efficient,hiệu quả,ɪfˈɪʃənt,,,3,Advanced adjectives
+enormous,khổng lồ,ɪnˈoː‍ɹməs,,,3,Advanced adjectives
+essential,thiết yếu,ɪsˈɛnʃə‍l,,,3,Advanced adjectives
+extraordinary,phi thường,ɛkstɹˈoː‍ɹdɪnˌɛɹi,,,3,Advanced adjectives
+fascinating,hấp dẫn,fˈæsᵻnˌe‍ɪɾɪŋ,,,3,Advanced adjectives
+flexible,linh hoạt,flˈɛksɪbə‍l,,,3,Advanced adjectives
+fragile,mong manh,fɹˈæd‍ʒə‍l,,,3,Advanced adjectives
+generous,hào phóng,d‍ʒˈɛnɚɹəs,,,3,Advanced adjectives
+grateful,biết ơn,ɡɹˈe‍ɪtfə‍l,,,3,Advanced adjectives
+harmful,có hại,hˈɑː‍ɹmfə‍l,,,3,Advanced adjectives
+imaginative,giàu trí tưởng tượng,ɪmˈæd‍ʒɪnətˌɪv,,,3,Advanced adjectives
+independent,độc lập,ˌɪndɪpˈɛndənt,,,3,Advanced adjectives
+magnificent,tráng lệ,mæɡnˈɪfɪsənt,,,3,Advanced adjectives
+miniature,rất nhỏ,mˈɪnɪt‍ʃɚ,,,3,Advanced adjectives
+modern,hiện đại,mˈɑːdɚn,,,3,Advanced adjectives
+mysterious,bí ẩn,mɪstˈi‍əɹɪəs,,,3,Advanced adjectives
+opaque,không trong suốt,o‍ʊpˈe‍ɪk,,,3,Advanced adjectives
+optimistic,lạc quan,ˌɑːptɪmˈɪstɪk,,,3,Advanced adjectives
+ordinary,bình thường,ˈɔː‍ɹdɪnˌɛɹi,,,3,Advanced adjectives
+peaceful,yên bình,pˈiːsfə‍l,,,3,Advanced adjectives
+pessimistic,bi quan,pˌɛsɪmˈɪstɪk,,,3,Advanced adjectives
+precious,quý giá,pɹˈɛʃəs,,,3,Advanced adjectives
+rare,hiếm,ɹˈɛ‍ɹ,,,3,Advanced adjectives
+reliable,đáng tin cậy,ɹɪlˈa‍ɪəbə‍l,,,3,Advanced adjectives
+remarkable,đáng chú ý,ɹɪmˈɑː‍ɹkəbə‍l,,,3,Advanced adjectives
+responsible,có trách nhiệm,ɹɪspˈɑːnsəbə‍l,,,3,Advanced adjectives
+rigid,cứng nhắc,ɹˈɪd‍ʒɪd,,,3,Advanced adjectives
+sturdy,chắc chắn,stˈɜːdi,,,3,Advanced adjectives
+transparent,trong suốt,tɹænspˈæɹənt,,,3,Advanced adjectives
+anemone,hải quỳ,ɐnˈɛməni,,,3,Animals
+anteater,thú ăn kiến,ˈæntiːɾɚ,,,3,Animals
+armadillo,con tatu,ˌɑː‍ɹmɐdˈɪlo‍ʊ,,,3,Animals
+canary,chim hoàng yến,kənˈɛɹi,,,3,Animals
+caracal,linh miêu tai đen,kˈæɹækə‍l,,,3,Animals
+cockatoo,vẹt mào,kˈɑːkɐtˌuː,,,3,Animals
+dugong,cá cúi,dˈuːɡɔŋ,,,3,Animals
+hermit crab,ốc mượn hồn,hˈɜːmɪt kɹˈæb,,,3,Animals
+horseshoe crab,sam biển,hˈɔː‍ɹsʃuː kɹˈæb,,,3,Animals
+jellyfish,sứa,d‍ʒˈɛlɪfɪʃ,,,3,Animals
+kingfisher,chim bói cá,kˈɪŋfɪʃɚ,,,3,Animals
+lynx,linh miêu,lˈɪŋks,,,3,Animals
+macaw,vẹt đuôi dài,mˈækɔː,,,3,Animals
+manatee,lợn biển,mˈænɐtˌiː,,,3,Animals
+manta ray,cá đuối manta,mˈæntɚ ɹˈe‍ɪ,,,3,Animals
+mongoose,cầy mangut,mˈɑːnɡuːs,,,3,Animals
+narwhal,kỳ lân biển,nˈɑː‍ɹwə‍l,,,3,Animals
+nightingale,chim họa mi,nˈa‍ɪɾɪŋɡˌe‍ɪl,,,3,Animals
+ocelot,mèo rừng ocelot,ˈɑːsəlˌɑːt,,,3,Animals
+orca,cá voi sát thủ,ˈɔː‍ɹkə,,,3,Animals
+parakeet,vẹt đuôi dài nhỏ,pˈæɹəkˌiːt,,,3,Animals
+partridge,gà gô,pˈɑː‍ɹtɹɪd‍ʒ,,,3,Animals
+pheasant,chim trĩ,fˈɛzənt,,,3,Animals
+platypus,thú mỏ vịt,plˈæɾɪpəs,,,3,Animals
+porpoise,cá heo chuột,pˈoː‍ɹpəs,,,3,Animals
+quail,chim cút,kwˈe‍ɪl,,,3,Animals
+robin,chim cổ đỏ,ɹˈɑːbɪn,,,3,Animals
+sawfish,cá cưa,sˈɔːfɪʃ,,,3,Animals
+sea cucumber,hải sâm,sˈiː kjˈuːkʌmbɚ,,,3,Animals
+sea urchin,nhím biển,sˈiː ˈɜːt‍ʃɪn,,,3,Animals
+seahorse,cá ngựa,sˈiːhɔː‍ɹs,,,3,Animals
+sloth,con lười,slˈɑːθ,,,3,Animals
+starfish,sao biển,stˈɑː‍ɹfɪʃ,,,3,Animals
+stingray,cá đuối gai độc,stˈɪŋɡɹe‍ɪ,,,3,Animals
+swordfish,cá kiếm,sˈoː‍ɹdfɪʃ,,,3,Animals
+Tasmanian devil,quỷ Tasmania,tæzmˈe‍ɪni‍ən dˈɛvə‍l,,,3,Animals
+toucan,chim toucan,tˈuːkən,,,3,Animals
+wolverine,chồn sói,wˈʊlvɚɹˌiːn,,,3,Animals
+wombat,gấu túi mũi trần,wˈɑːmbæt,,,3,Animals
+celebration,sự kỷ niệm,sˌɛləbɹˈe‍ɪʃən,,,3,Culture and society
+ceremony,nghi lễ,sˈɛɹɪməni,,,3,Culture and society
+citizen,công dân,sˈɪɾɪzən,,,3,Culture and society
+community,cộng đồng,kəmjˈuːnɪɾi,,,3,Culture and society
+costume,trang phục,kˈɔstuːm,,,3,Culture and society
+craft,đồ thủ công,kɹˈæft,,,3,Culture and society
+culture,văn hóa,kˈʌlt‍ʃɚ,,,3,Culture and society
+custom,phong tục,kˈʌstəm,,,3,Culture and society
+exhibition,triển lãm,ɛksɪbˈɪʃən,,,3,Culture and society
+festival,lễ hội,fˈɛstɪvə‍l,,,3,Culture and society
+heritage,di sản,hˈɛɹɪɾɪd‍ʒ,,,3,Culture and society
+painting,bức tranh,pˈe‍ɪntɪŋ,,,3,Culture and society
+parade,diễu hành,pɚɹˈe‍ɪd,,,3,Culture and society
+pottery,đồ gốm,pˈɑːɾɚɹi,,,3,Culture and society
+sculpture,tác phẩm điêu khắc,skˈʌlpt‍ʃɚ,,,3,Culture and society
+tradition,truyền thống,tɹɐdˈɪʃən,,,3,Culture and society
+biodegradable,có thể phân hủy sinh học,bˌa‍ɪo‍ʊdɪɡɹˈe‍ɪdəbə‍l,,,3,Environment
+biodiversity,đa dạng sinh học,bˌa‍ɪo‍ʊda‍ɪvˈɜːsɪɾi,,,3,Environment
+carbon footprint,dấu chân carbon,kˈɑː‍ɹbən fˈʊtpɹɪnt,,,3,Environment
+climate change,biến đổi khí hậu,klˈa‍ɪmət t‍ʃˈe‍ɪnd‍ʒ,,,3,Environment
+compost,phân ủ hữu cơ,kˈɑːmpo‍ʊst,,,3,Environment
+conservation,sự bảo tồn,kˌɑːnsɚvˈe‍ɪʃən,,,3,Environment
+contamination,sự ô nhiễm,kəntˌæmᵻnˈe‍ɪʃən,,,3,Environment
+deforestation,nạn phá rừng,diːfˌɔːɹɪstˈe‍ɪʃən,,,3,Environment
+drought,hạn hán,dɹˈa‍ʊt,,,3,Environment
+emission,khí thải,ɪmˈɪʃən,,,3,Environment
+endangered,có nguy cơ tuyệt chủng,ɛndˈe‍ɪnd‍ʒɚd,,,3,Environment
+erosion,xói mòn,ɪɹˈo‍ʊʒən,,,3,Environment
+extinct,tuyệt chủng,ɛkstˈɪŋkt,,,3,Environment
+flood,lũ lụt,flˈʌd,,,3,Environment
+food chain,chuỗi thức ăn,fˈuːd t‍ʃˈe‍ɪn,,,3,Environment
+food web,lưới thức ăn,fˈuːd wˈɛb,,,3,Environment
+fossil fuel,nhiên liệu hóa thạch,fˈɑːsə‍l fjˈuːəl,,,3,Environment
+garbage,rác thải,ɡˈɑː‍ɹbɪd‍ʒ,,,3,Environment
+global warming,sự nóng lên toàn cầu,ɡlˈo‍ʊbə‍l wˈɔː‍ɹmɪŋ,,,3,Environment
+greenhouse effect,hiệu ứng nhà kính,ɡɹˈiːnha‍ʊs ɪfˈɛkt,,,3,Environment
+hydropower,thủy điện,hˈa‍ɪdɹəpˌa‍ʊɚ,,,3,Environment
+landfill,bãi chôn lấp,lˈændfɪl,,,3,Environment
+marine reserve,khu bảo tồn biển,mɚɹˈiːn ɹɪzˈɜːv,,,3,Environment
+national park,vườn quốc gia,nˈæʃənə‍l pˈɑː‍ɹk,,,3,Environment
+natural resource,tài nguyên thiên nhiên,nˈæt‍ʃɚɹə‍l ɹɪsˈoː‍ɹs,,,3,Environment
+ozone layer,tầng ôzôn,ˈo‍ʊzo‍ʊn lˈe‍ɪɚ,,,3,Environment
+poaching,săn bắt trái phép,pˈo‍ʊt‍ʃɪŋ,,,3,Environment
+predator,động vật săn mồi,pɹˈɛdəɾɚ,,,3,Environment
+prey,con mồi,pɹˈe‍ɪ,,,3,Environment
+purification,sự thanh lọc,pjˌʊɹɪfɪkˈe‍ɪʃən,,,3,Environment
+reforestation,trồng lại rừng,ɹɪfˌɔːɹɪstˈe‍ɪʃən,,,3,Environment
+renewable,có thể tái tạo,ɹɪnˈuːəbə‍l,,,3,Environment
+rubbish,rác,ɹˈʌbɪʃ,,,3,Environment
+sanctuary,khu bảo tồn,sˈænktjuːˌɛɹi,,,3,Environment
+solar power,năng lượng mặt trời,sˈo‍ʊlɚ pˈa‍ʊɚ,,,3,Environment
+sustainable,bền vững,səstˈe‍ɪnəbə‍l,,,3,Environment
+toxic,độc hại,tˈɑːksɪk,,,3,Environment
+waste,chất thải,wˈe‍ɪst,,,3,Environment
+wildlife,động vật hoang dã,wˈa‍ɪldla‍ɪf,,,3,Environment
+wind power,năng lượng gió,wˈɪnd pˈa‍ʊɚ,,,3,Environment
+archipelago,quần đảo,ˌɑː‍ɹkɪpɪlˈe‍ɪɡo‍ʊ,,,3,Geography
+basin,lưu vực,bˈe‍ɪsən,,,3,Geography
+canal,kênh đào,kənˈæl,,,3,Geography
+canyon,hẻm núi,kˈænɪən,,,3,Geography
+cliff,vách đá,klˈɪf,,,3,Geography
+coastline,đường bờ biển,kˈo‍ʊstla‍ɪn,,,3,Geography
+continent,châu lục,kˈɑːntɪnənt,,,3,Geography
+crater,miệng núi lửa,kɹˈe‍ɪɾɚ,,,3,Geography
+dam,đập nước,dˈæm,,,3,Geography
+delta,đồng bằng châu thổ,dˈɛltə,,,3,Geography
+dune,đụn cát,dˈuːn,,,3,Geography
+equator,đường xích đạo,ɪkwˈe‍ɪɾɚ,,,3,Geography
+geyser,mạch nước phun,ɡˈa‍ɪzɚ,,,3,Geography
+glacier,sông băng,ɡlˈe‍ɪʃɚ,,,3,Geography
+glacier lake,hồ băng,ɡlˈe‍ɪʃɚ lˈe‍ɪk,,,3,Geography
+harbor,bến cảng,hˈɑː‍ɹbɚ,,,3,Geography
+harbour,bến cảng,hˈɑː‍ɹbɚ,,,3,Geography
+hemisphere,bán cầu,hˈɛmɪsfˌɪ‍ɹ,,,3,Geography
+iceberg,tảng băng trôi,ˈa‍ɪsbɜːɡ,,,3,Geography
+lagoon,đầm phá,lɐɡˈuːn,,,3,Geography
+latitude,vĩ độ,lˈæɾɪtˌuːd,,,3,Geography
+longitude,kinh độ,lˈɑːnd‍ʒɪtˌuːd,,,3,Geography
+marsh,đầm lầy,mˈɑː‍ɹʃ,,,3,Geography
+meadow,đồng cỏ,mˈɛdo‍ʊ,,,3,Geography
+peninsula,bán đảo,pənˈɪnsjʊlə,,,3,Geography
+plain,đồng bằng,plˈe‍ɪn,,,3,Geography
+plateau,cao nguyên,plætˈo‍ʊ,,,3,Geography
+prairie,thảo nguyên,pɹˈɛɹi,,,3,Geography
+rainforest,rừng mưa nhiệt đới,ɹˈe‍ɪnfˌɔːɹɪst,,,3,Geography
+reef,rạn san hô,ɹˈiːf,,,3,Geography
+reservoir,hồ chứa,ɹˈɛzɚvwˌɑː‍ɹ,,,3,Geography
+ridge,sống núi,ɹˈɪd‍ʒ,,,3,Geography
+savanna,xa van,sævˈænə,,,3,Geography
+strait,eo biển,stɹˈe‍ɪt,,,3,Geography
+summit,đỉnh núi,sˈʌmɪt,,,3,Geography
+swamp,đầm lầy,swˈɑːmp,,,3,Geography
+tributary,phụ lưu,tɹˈɪbjuːtˌɛɹi,,,3,Geography
+tundra,đài nguyên,tˈʌndɹə,,,3,Geography
+wetland,vùng đất ngập nước,wˈɛtlənd,,,3,Geography
+accountant,kế toán,ɐkˈa‍ʊntənt,,,3,Jobs
+archaeologist,nhà khảo cổ học,ˌɑː‍ɹkiːˈɑːləd‍ʒˌɪst,,,3,Jobs
+architect,kiến trúc sư,ˈɑː‍ɹkɪtˌɛkt,,,3,Jobs
+astronomer,nhà thiên văn học,ɐstɹˈɑːnəmɚ,,,3,Jobs
+biologist,nhà sinh học,ba‍ɪˈɑːləd‍ʒˌɪst,,,3,Jobs
+chemist,nhà hóa học,kˈɛmɪst,,,3,Jobs
+choreographer,biên đạo múa,kˌoːɹɪˈɑːɡɹəfɚ,,,3,Jobs
+composer,nhà soạn nhạc,kəmpˈo‍ʊzɚ,,,3,Jobs
+conductor,người soát vé/nhạc trưởng,kəndˈʌktɚ,,,3,Jobs
+designer,nhà thiết kế,dɪzˈa‍ɪnɚ,,,3,Jobs
+detective,thám tử,dɪtˈɛktɪv,,,3,Jobs
+developer,nhà phát triển phần mềm,dɪvˈɛləpɚ,,,3,Jobs
+director,đạo diễn,dɚɹˈɛktɚ,,,3,Jobs
+entrepreneur,doanh nhân,ˌɑːntɹɪpɹənˈʊ‍ɹ,,,3,Jobs
+filmmaker,nhà làm phim,fˈɪlme‍ɪkɚ,,,3,Jobs
+flight attendant,tiếp viên hàng không,flˈa‍ɪt ɐtˈɛndənt,,,3,Jobs
+geologist,nhà địa chất học,d‍ʒɪˈɑːləd‍ʒˌɪst,,,3,Jobs
+historian,nhà sử học,hɪstˈoːɹi‍ən,,,3,Jobs
+illustrator,họa sĩ minh họa,ˈɪləstɹˌe‍ɪɾɚ,,,3,Jobs
+interpreter,phiên dịch viên,ɪntˈɜːpɹɪɾɚ,,,3,Jobs
+journalist,nhà báo,d‍ʒˈɜːnəlˌɪst,,,3,Jobs
+judge,thẩm phán,d‍ʒˈʌd‍ʒ,,,3,Jobs
+lawyer,luật sư,lˈɔ‍ɪɚ,,,3,Jobs
+manager,quản lý,mˈænɪd‍ʒɚ,,,3,Jobs
+midwife,nữ hộ sinh,mˈɪdwa‍ɪf,,,3,Jobs
+nutritionist,chuyên gia dinh dưỡng,njuːtɹˈɪʃənˌɪst,,,3,Jobs
+paramedic,nhân viên cấp cứu,pˌæɹəmˈɛdɪk,,,3,Jobs
+pharmacist,dược sĩ,fˈɑː‍ɹmɐsˌɪst,,,3,Jobs
+physicist,nhà vật lý học,fˈɪzɪsˌɪst,,,3,Jobs
+producer,nhà sản xuất,pɹədˈuːsɚ,,,3,Jobs
+programmer,lập trình viên,pɹˈo‍ʊɡɹæmɚ,,,3,Jobs
+psychologist,nhà tâm lý học,sa‍ɪkˈɑːləd‍ʒˌɪst,,,3,Jobs
+receptionist,lễ tân,ɹɪsˈɛpʃənˌɪst,,,3,Jobs
+researcher,nhà nghiên cứu,ɹɪsˈɜːt‍ʃɚ,,,3,Jobs
+sculptor,nhà điêu khắc,skˈʌlptɚ,,,3,Jobs
+security guard,nhân viên bảo vệ,sɪkjˈʊ‍ɹɹɪɾi ɡˈɑː‍ɹd,,,3,Jobs
+social worker,nhân viên công tác xã hội,sˈo‍ʊʃə‍l wˈɜːkɚ,,,3,Jobs
+surgeon,bác sĩ phẫu thuật,sˈɜːd‍ʒən,,,3,Jobs
+translator,biên dịch viên,tɹænslˈe‍ɪɾɚ,,,3,Jobs
+veterinarian,bác sĩ thú y,vˌɛɾɚɹɪnˈɛɹi‍ən,,,3,Jobs
+asteroid,tiểu hành tinh,ˈæstɚɹˌɔ‍ɪd,,,3,Science
+astronaut,phi hành gia,ˈæstɹənˌɔːt,,,3,Science
+atom,nguyên tử,ˈæɾəm,,,3,Science
+carbon,cacbon,kˈɑː‍ɹbən,,,3,Science
+cell,tế bào,sˈɛl,,,3,Science
+climate,khí hậu,klˈa‍ɪmət,,,3,Science
+comet,sao chổi,kˈɑːmɪt,,,3,Science
+ecosystem,hệ sinh thái,ˈiːko‍ʊsˌɪstəm,,,3,Science
+energy,năng lượng,ˈɛnɚd‍ʒi,,,3,Science
+environment,môi trường,ɛnvˈa‍ɪɹənmənt,,,3,Science
+experiment,thí nghiệm,ɛkspˈɛɹɪmənt,,,3,Science
+force,lực,fˈoː‍ɹs,,,3,Science
+galaxy,thiên hà,ɡˈælɐksi,,,3,Science
+gas,chất khí,ɡˈæs,,,3,Science
+gravity,trọng lực,ɡɹˈævɪɾi,,,3,Science
+habitat,môi trường sống,hˈæbɪtˌæt,,,3,Science
+hydrogen,hiđrô,hˈa‍ɪdɹəd‍ʒən,,,3,Science
+hypothesis,giả thuyết,ha‍ɪpˈɑːθəsˌɪs,,,3,Science
+laboratory,phòng thí nghiệm,lˈæbɹətˌɔːɹi,,,3,Science
+liquid,chất lỏng,lˈɪkwɪd,,,3,Science
+magnet,nam châm,mˈæɡnɪt,,,3,Science
+matter,vật chất,mˈæɾɚ,,,3,Science
+meteor,sao băng,mˈiːɾɪɚ,,,3,Science
+microscope,kính hiển vi,mˈa‍ɪkɹəskˌo‍ʊp,,,3,Science
+molecule,phân tử,mˈɑːlɪkjˌuːl,,,3,Science
+motion,chuyển động,mˈo‍ʊʃən,,,3,Science
+observation,sự quan sát,ɑːbzɚvˈe‍ɪʃən,,,3,Science
+orbit,quỹ đạo,ˈɔː‍ɹbɪt,,,3,Science
+organism,sinh vật,ˈɔː‍ɹɡənˌɪzəm,,,3,Science
+oxygen,ô-xi,ˈɑːksɪd‍ʒən,,,3,Science
+planet,hành tinh,plˈænɪt,,,3,Science
+pollution,ô nhiễm,pəlˈuːʃən,,,3,Science
+recycle,tái chế,ɹɪsˈa‍ɪkə‍l,,,3,Science
+satellite,vệ tinh,sˈæɾəlˌa‍ɪt,,,3,Science
+solar system,hệ Mặt Trời,sˈo‍ʊlɚ sˈɪstəm,,,3,Science
+solid,chất rắn,sˈɑːlɪd,,,3,Science
+telescope,kính thiên văn,tˈɛlɪskˌo‍ʊp,,,3,Science
+temperature,nhiệt độ,tˈɛmpɹɪt‍ʃɚ,,,3,Science
+thermometer,nhiệt kế,θɜːmˈɑːmɪɾɚ,,,3,Science
+universe,vũ trụ,jˈuːnɪvˌɜːs,,,3,Science
+algorithm,thuật toán,ˈælɡɚɹˌɪθəm,,,3,Technology
+application,ứng dụng,ˌæplɪkˈe‍ɪʃən,,,3,Technology
+artificial intelligence,trí tuệ nhân tạo,ˌɑː‍ɹɾɪfˈɪʃə‍l ɪntˈɛlɪd‍ʒəns,,,3,Technology
+battery,pin,bˈæɾɚɹi,,,3,Technology
+Bluetooth,Bluetooth,blˈuːtuːθ,,,3,Technology
+browser,trình duyệt,bɹˈa‍ʊzɚ,,,3,Technology
+camera,máy ảnh,kˈæmɹə,,,3,Technology
+charger,bộ sạc,t‍ʃˈɑː‍ɹd‍ʒɚ,,,3,Technology
+coding,viết mã,kˈo‍ʊdɪŋ,,,3,Technology
+cybersecurity,an ninh mạng,sˌa‍ɪbɚsɪkjˈʊ‍ɹɹɪɾi,,,3,Technology
+database,cơ sở dữ liệu,dˈe‍ɪɾəbˌe‍ɪs,,,3,Technology
+download,tải xuống,dˈa‍ʊnlo‍ʊd,,,3,Technology
+hardware,phần cứng,hˈɑː‍ɹdwɛ‍ɹ,,,3,Technology
+headphones,tai nghe,hˈɛdfo‍ʊnz,,,3,Technology
+internet,mạng Internet,ˈɪntɚnˌɛt,,,3,Technology
+keyboard,bàn phím,kˈiːboː‍ɹd,,,3,Technology
+keyboard shortcut,phím tắt,kˈiːboː‍ɹd ʃˈɔː‍ɹtkʌt,,,3,Technology
+laptop,máy tính xách tay,lˈæptɑːp,,,3,Technology
+memory,bộ nhớ,mˈɛmɚɹi,,,3,Technology
+microphone,micrô,mˈa‍ɪkɹəfˌo‍ʊn,,,3,Technology
+monitor,màn hình,mˈɑːnɪɾɚ,,,3,Technology
+password,mật khẩu,pˈæswɜːd,,,3,Technology
+printer,máy in,pɹˈɪntɚ,,,3,Technology
+processor,bộ xử lý,pɹˈɑːsɛsɚ,,,3,Technology
+programming,lập trình,pɹˈo‍ʊɡɹæmɪŋ,,,3,Technology
+robot,rô-bốt,ɹˈo‍ʊbɑːt,,,3,Technology
+scanner,máy quét,skˈænɚ,,,3,Technology
+screen,màn hình,skɹˈiːn,,,3,Technology
+smartphone,điện thoại thông minh,smˈɑː‍ɹtfo‍ʊn,,,3,Technology
+software,phần mềm,sˈɔftwɛ‍ɹ,,,3,Technology
+speaker,loa,spˈiːkɚ,,,3,Technology
+storage,bộ lưu trữ,stˈoːɹɪd‍ʒ,,,3,Technology
+tablet,máy tính bảng,tˈæblət,,,3,Technology
+touchscreen,màn hình cảm ứng,tˈʌt‍ʃskɹiːn,,,3,Technology
+upload,tải lên,ˈʌplo‍ʊd,,,3,Technology
+username,tên người dùng,jˈuːzɚnˌe‍ɪm,,,3,Technology
+virtual reality,thực tế ảo,vˈɜːt‍ʃuːə‍l ɹɪˈælɪɾi,,,3,Technology
+website,trang web,wˈɛbsa‍ɪt,,,3,Technology
+wireless,không dây,wˈa‍ɪ‍ɚləs,,,3,Technology
