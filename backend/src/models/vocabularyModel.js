@@ -45,15 +45,33 @@ export async function listVocabularyCategories(client, level) {
   return result.rows;
 }
 
-export async function searchVocabulary(client, { level, category, zone, limit }) {
-  const result = await queryWith(client,
-    `SELECT id, difficulty_level AS level, category, word_en, meaning_vi,
-            phonetic, audio_url, image_url
-     FROM vocabulary_words
-     WHERE difficulty_level = $1
-       AND ($2::text IS NULL OR category ILIKE $2)
-     ORDER BY random() LIMIT $3`,
-    [level, category ?? null, limit]
-  );
+export async function searchVocabulary(client, { level, category, limit, offset = 0, order = 'random' }) {
+  const result = order === 'difficulty'
+    ? await queryWith(client,
+      `SELECT id, difficulty_level AS level, category, word_en, meaning_vi,
+              phonetic, audio_url, image_url
+       FROM (
+         SELECT DISTINCT ON (lower(word_en))
+                id, difficulty_level, category, word_en, meaning_vi,
+                phonetic, audio_url, image_url
+         FROM vocabulary_words
+         WHERE difficulty_level = $1
+           AND ($2::text IS NULL OR category ILIKE $2)
+           AND word_en ~ '^[A-Za-z]{2,12}$'
+         ORDER BY lower(word_en), created_at, id
+       ) AS unique_words
+       ORDER BY char_length(word_en), lower(word_en), id
+       LIMIT $3 OFFSET $4`,
+      [level, category ?? null, limit, offset]
+    )
+    : await queryWith(client,
+      `SELECT id, difficulty_level AS level, category, word_en, meaning_vi,
+              phonetic, audio_url, image_url
+       FROM vocabulary_words
+       WHERE difficulty_level = $1
+         AND ($2::text IS NULL OR category ILIKE $2)
+       ORDER BY random() LIMIT $3 OFFSET $4`,
+      [level, category ?? null, limit, offset]
+    );
   return result.rows;
 }

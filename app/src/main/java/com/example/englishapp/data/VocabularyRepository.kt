@@ -26,6 +26,16 @@ object VocabularyRepository {
         }
     }
 
+    fun loadMatchStage(
+        dictionaryLevel: Int,
+        offset: Int,
+        callback: (Result<List<VocabularyWord>>) -> Unit
+    ) {
+        executor.execute {
+            callback(runCatching { fetchMatchWords(dictionaryLevel, offset) })
+        }
+    }
+
     private fun fetchLevels(): List<Int> {
         val response = request("/api/v1/vocabulary/levels")
         val rows = response.getJSONArray("data")
@@ -59,6 +69,31 @@ object VocabularyRepository {
             .distinctBy { it.wordEn.lowercase() }
         if (words.size < 4) {
             throw IOException("Cấp độ $level cần ít nhất 4 từ ngắn để tạo lựa chọn trong trò chơi.")
+        }
+        return words
+    }
+
+    private fun fetchMatchWords(level: Int, offset: Int): List<VocabularyWord> {
+        val response = request(
+            "/api/v1/vocabulary?level=$level&limit=8&order=difficulty&offset=$offset"
+        )
+        val rows = response.getJSONArray("data")
+        val words = (0 until rows.length())
+            .map { index ->
+                val row = rows.getJSONObject(index)
+                VocabularyWord(
+                    wordEn = row.getString("word_en").trim(),
+                    meaningVi = row.getString("meaning_vi").trim(),
+                    level = row.getInt("level"),
+                    category = row.getString("category"),
+                    phonetic = row.optionalString("phonetic"),
+                    audioUrl = row.optionalString("audio_url"),
+                    imageUrl = row.optionalString("image_url")
+                )
+            }
+            .distinctBy { it.wordEn.lowercase() }
+        if (words.size != 8) {
+            throw IOException("Backend cần đúng 8 từ cho màn Match này; hiện có ${words.size}.")
         }
         return words
     }

@@ -5,7 +5,9 @@ import { HttpError } from '../utils/httpError.js';
 const querySchema = z.object({
   level: z.coerce.number().int().min(1).max(100),
   category: z.string().trim().min(1).max(50).optional(),
-  limit: z.coerce.number().int().min(1).max(50).default(10)
+  limit: z.coerce.number().int().min(1).max(50).default(10),
+  offset: z.coerce.number().int().min(0).max(5000).default(0),
+  order: z.enum(['random', 'difficulty']).default('random')
 });
 
 const levelFilterSchema = z.object({
@@ -24,8 +26,8 @@ export async function categories(request, response) {
 }
 
 export async function list(request, response) {
-  const { level, category, limit } = querySchema.parse(request.query);
-  const data = await vocabularyModel.searchVocabulary(null, { level, category, limit });
+  const { level, category, limit, offset, order } = querySchema.parse(request.query);
+  const data = await vocabularyModel.searchVocabulary(null, { level, category, limit, offset, order });
   if (!data.length) {
     throw new HttpError(404, 'No vocabulary is available for these filters.', 'vocabulary_not_found');
   }

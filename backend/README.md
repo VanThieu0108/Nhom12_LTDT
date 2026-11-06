@@ -32,6 +32,7 @@ For production, use TLS for PostgreSQL/Redis, a managed secret store, a restrict
 - `GET /api/v1/vocabulary/levels`
 - `GET /api/v1/vocabulary/categories?level=2`
 - `GET /api/v1/vocabulary?level=2&category=Animals&limit=10`
+- `GET /api/v1/vocabulary?level=1&limit=8&order=difficulty&offset=0`
 
 Vocabulary endpoints are read-only and public so the mobile app can preload
 learning content before a learner signs in. A CSV bulk import uses

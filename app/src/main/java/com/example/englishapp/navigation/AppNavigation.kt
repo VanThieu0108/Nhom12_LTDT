@@ -38,6 +38,7 @@ class AppNavigation(private val activity: AppCompatActivity) {
         navController = navHost.navController
         navController.graph = createGraph()
         NavigationUI.setupWithNavController(bottomNavigation, navController)
+        mainViewModel.initializeMatchProgress(activity)
         mainViewModel.loadVocabulary()
         navController.addOnDestinationChangedListener { _, destination, _ ->
             updateBottomNavigation(destination.id)
