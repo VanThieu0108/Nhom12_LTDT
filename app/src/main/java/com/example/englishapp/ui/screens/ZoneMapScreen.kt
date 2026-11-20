@@ -22,7 +22,8 @@ fun ZoneMapScreen(
     val isListening = zone.equals("listening", ignoreCase = true)
     val isSpeaking = zone.equals("speaking", ignoreCase = true)
     val isReading = zone.equals("reading", ignoreCase = true)
-    val hasLevelPath = isListening || isSpeaking || isReading
+    val isWriting = zone.equals("writing", ignoreCase = true)
+    val hasLevelPath = isListening || isSpeaking || isReading || isWriting
     val icon = when (zone.lowercase()) {
         "speaking" -> "🎙️"
         "reading" -> "📖"
@@ -43,6 +44,7 @@ fun ZoneMapScreen(
         if (isListening) "50 listening adventures · Complete 8/10 to unlock the next level."
         else if (isSpeaking) "50 speaking adventures · Complete 8/10 to unlock the next level."
         else if (isReading) "50 reading adventures · Complete 8/10 to unlock the next level."
+        else if (isWriting) "50 writing adventures · Spell 8/10 correctly to unlock the next level."
         else "Choose a level · ${viewModel.vocabularyMessage}",
         14,
         UiKit.MUTED
@@ -51,17 +53,20 @@ fun ZoneMapScreen(
         val completedCount = when {
             isListening -> viewModel.completedListeningLevels.size
             isSpeaking -> viewModel.completedSpeakingLevels.size
-            else -> viewModel.completedReadingLevels.size
+            isReading -> viewModel.completedReadingLevels.size
+            else -> viewModel.completedWritingLevels.size
         }
         val unlockedLevel = when {
             isListening -> viewModel.unlockedListeningLevel
             isSpeaking -> viewModel.unlockedSpeakingLevel
-            else -> viewModel.unlockedReadingLevel
+            isReading -> viewModel.unlockedReadingLevel
+            else -> viewModel.unlockedWritingLevel
         }
         val selected = when {
             isListening -> viewModel.selectedListeningLevel
             isSpeaking -> viewModel.selectedSpeakingLevel
-            else -> viewModel.selectedReadingLevel
+            isReading -> viewModel.selectedReadingLevel
+            else -> viewModel.selectedWritingLevel
         }
         page.addView(UiKit.row(context, 7).apply {
             addView(UiKit.pill(context, "⭐ $completedCount / 50 complete", 0xFFE1F5E9.toInt(), UiKit.GREEN))
@@ -72,7 +77,8 @@ fun ZoneMapScreen(
             "Start ${when {
                 isListening -> "Listening"
                 isSpeaking -> "Speaking"
-                else -> "Reading"
+                isReading -> "Reading"
+                else -> "Writing"
             }} Level $selected  ✨",
             when {
                 isReading -> UiKit.ORANGE
@@ -82,13 +88,14 @@ fun ZoneMapScreen(
             val started = when {
                 isListening -> viewModel.startListeningLesson(selected)
                 isSpeaking -> viewModel.startSpeakingLesson(selected)
-                else -> viewModel.startReadingLesson(selected)
+                isReading -> viewModel.startReadingLesson(selected)
+                else -> viewModel.startWritingLesson(selected)
             }
             if (started) navigate(route)
         })
     }
     val levels: List<Int> = if (hasLevelPath) {
-        (1..MainViewModel.SPEAKING_LEVEL_COUNT).toList()
+        (1..MainViewModel.WRITING_LEVEL_COUNT).toList()
     } else {
         viewModel.availableVocabularyLevels
     }
@@ -107,6 +114,8 @@ fun ZoneMapScreen(
                 level == viewModel.selectedSpeakingLevel
             } else if (isReading) {
                 level == viewModel.selectedReadingLevel
+            } else if (isWriting) {
+                level == viewModel.selectedWritingLevel
             } else {
                 level == viewModel.selectedVocabularyLevel
             }
@@ -114,12 +123,14 @@ fun ZoneMapScreen(
                 isListening -> viewModel.isListeningLevelCompleted(level)
                 isSpeaking -> viewModel.isSpeakingLevelCompleted(level)
                 isReading -> viewModel.isReadingLevelCompleted(level)
+                isWriting -> viewModel.isWritingLevelCompleted(level)
                 else -> false
             }
             val isUnlocked = when {
                 isListening -> viewModel.isListeningLevelUnlocked(level)
                 isSpeaking -> viewModel.isSpeakingLevelUnlocked(level)
                 isReading -> viewModel.isReadingLevelUnlocked(level)
+                isWriting -> viewModel.isWritingLevelUnlocked(level)
                 else -> true
             }
             val nodeText = when {
@@ -145,6 +156,8 @@ fun ZoneMapScreen(
                     viewModel.selectSpeakingLevel(level)
                 } else if (isReading) {
                     viewModel.selectReadingLevel(level)
+                } else if (isWriting) {
+                    viewModel.selectWritingLevel(level)
                 } else {
                     viewModel.loadVocabulary(level)
                     navigate(route)
@@ -164,12 +177,14 @@ fun ZoneMapScreen(
         val selected = when {
             isListening -> viewModel.selectedListeningLevel
             isSpeaking -> viewModel.selectedSpeakingLevel
-            else -> viewModel.selectedReadingLevel
+            isReading -> viewModel.selectedReadingLevel
+            else -> viewModel.selectedWritingLevel
         }
         val isCompleted = when {
             isListening -> viewModel.isListeningLevelCompleted(selected)
             isSpeaking -> viewModel.isSpeakingLevelCompleted(selected)
-            else -> viewModel.isReadingLevelCompleted(selected)
+            isReading -> viewModel.isReadingLevelCompleted(selected)
+            else -> viewModel.isWritingLevelCompleted(selected)
         }
         if (isCompleted) {
             page.addView(UiKit.text(context, "Completed levels stay unlocked for replay.", 12, UiKit.GREEN, true, Gravity.CENTER))

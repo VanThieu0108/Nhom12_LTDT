@@ -78,6 +78,26 @@ class MainViewModel : ViewModel() {
         private set
     var completedReadingLevels: Set<Int> = emptySet()
         private set
+    var selectedWritingLevel = 1
+        private set
+    var writingAttemptLevel = 1
+        private set
+    var unlockedWritingLevel = 1
+        private set
+    var completedWritingLevels: Set<Int> = emptySet()
+        private set
+    var writingQuestionCount = 0
+        private set
+    var writingCorrectCount = 0
+        private set
+    var isWritingLessonReady = false
+        private set
+    var isWritingLessonComplete = false
+        private set
+    var wasWritingAttemptPassed = false
+        private set
+    var isWritingQuestionAnswered = false
+        private set
     var readingQuestionCount = 0
         private set
     var readingCorrectCount = 0
@@ -123,6 +143,7 @@ class MainViewModel : ViewModel() {
     private var listeningPreferences: SharedPreferences? = null
     private var speakingPreferences: SharedPreferences? = null
     private var readingPreferences: SharedPreferences? = null
+    private var writingPreferences: SharedPreferences? = null
     var matchGameLevel = 1
         private set
     var unlockedMatchLevel = 1
@@ -430,6 +451,132 @@ class MainViewModel : ViewModel() {
     private fun nextSequentialReadingLevel(completed: Set<Int>): Int {
         var next = 1
         while (next < READING_LEVEL_COUNT && next in completed) next += 1
+        return next
+    }
+
+    fun initializeWritingProgress(context: Context) {
+        writingPreferences = context.applicationContext.getSharedPreferences(
+            WRITING_PREFERENCES,
+            Context.MODE_PRIVATE
+        )
+        val saved = writingPreferences ?: return
+        completedWritingLevels = saved.getString(KEY_WRITING_COMPLETED, "")
+            .orEmpty()
+            .split(',')
+            .mapNotNull(String::toIntOrNull)
+            .filter { it in 1..WRITING_LEVEL_COUNT }
+            .toSet()
+        unlockedWritingLevel = nextSequentialWritingLevel(completedWritingLevels)
+        selectedWritingLevel = unlockedWritingLevel
+    }
+
+    fun isWritingLevelUnlocked(level: Int): Boolean = level in 1..unlockedWritingLevel
+
+    fun isWritingLevelCompleted(level: Int): Boolean = level in completedWritingLevels
+
+    fun selectWritingLevel(level: Int): Boolean {
+        if (!isWritingLevelUnlocked(level)) return false
+        selectedWritingLevel = level
+        writingAttemptLevel = level
+        notifyVocabularyChanged()
+        return true
+    }
+
+    fun startWritingLesson(level: Int = selectedWritingLevel): Boolean {
+        if (!isWritingLevelUnlocked(level)) return false
+        selectedWritingLevel = level
+        writingAttemptLevel = level
+        val requestId = ++vocabularyRequestId
+        isVocabularyLoading = true
+        isWritingLessonReady = false
+        isWritingLessonComplete = false
+        wasWritingAttemptPassed = false
+        isWritingQuestionAnswered = false
+        writingQuestionCount = 0
+        writingCorrectCount = 0
+        activeWordIndex = 0
+        selectedAnswer = null
+        selectedLetters = ""
+        selectedLetterIndices = emptyList()
+        spellingCorrect = false
+        feedback = ""
+        vocabularyMessage = "Loading Writing level $level..."
+        notifyVocabularyChanged()
+
+        VocabularyRepository.loadWritingLesson(level) { result ->
+            Handler(Looper.getMainLooper()).post {
+                if (requestId != vocabularyRequestId) return@post
+                isVocabularyLoading = false
+                result.onSuccess { vocabulary ->
+                    words = vocabulary.mapIndexed { index, item ->
+                        val baseWord = item.wordEn.substringAfterLast(' ').substringAfterLast('-')
+                        val target = if (level >= 41) "I can read $baseWord" else item.wordEn
+                        val hint = if (level >= 41) {
+                            "Tôi có thể đọc ${item.meaningVi}"
+                        } else {
+                            item.meaningVi
+                        }
+                        Word(
+                            english = target,
+                            vietnamese = hint,
+                            distractors = emptyList(),
+                            scrambledLetters = target.filter(Char::isLetter)
+                                .toList()
+                                .shuffled(Random(index + level)),
+                            phonetic = item.phonetic?.trim()?.takeIf(String::isNotEmpty),
+                            pronunciationText = target
+                        )
+                    }
+                    isWritingLessonReady = words.size == WRITING_QUESTIONS_PER_LEVEL
+                    vocabularyMessage = if (isWritingLessonReady) {
+                        "Writing level $level · ${words.size} spelling challenges"
+                    } else {
+                        "Writing level $level needs 10 unique words or phrases."
+                    }
+                }.onFailure { error ->
+                    Log.w(TAG, "Failed to load Writing level $level", error)
+                    isWritingLessonReady = false
+                    vocabularyMessage = "Couldn't load Writing level $level. Check the backend and retry."
+                }
+                notifyVocabularyChanged()
+            }
+        }
+        return true
+    }
+
+    fun continueWritingLesson() {
+        if (!isWritingLessonReady || !isWritingQuestionAnswered || isWritingLessonComplete) return
+        if (activeWordIndex < words.lastIndex) {
+            activeWordIndex += 1
+            selectedLetters = ""
+            selectedLetterIndices = emptyList()
+            spellingCorrect = false
+            isWritingQuestionAnswered = false
+            feedback = ""
+            notifyVocabularyChanged()
+            return
+        }
+
+        isWritingLessonComplete = true
+        val passed = writingCorrectCount >= WRITING_REQUIRED_CORRECT
+        wasWritingAttemptPassed = passed
+        if (passed) {
+            completedWritingLevels = completedWritingLevels + selectedWritingLevel
+            unlockedWritingLevel = nextSequentialWritingLevel(completedWritingLevels)
+            selectedWritingLevel = unlockedWritingLevel
+            writingPreferences?.edit()
+                ?.putString(KEY_WRITING_COMPLETED, completedWritingLevels.sorted().joinToString(","))
+                ?.apply()
+            feedback = "Level complete! $writingCorrectCount/$WRITING_QUESTIONS_PER_LEVEL correct ⭐"
+        } else {
+            feedback = "You got $writingCorrectCount/$WRITING_QUESTIONS_PER_LEVEL. Try this level again!"
+        }
+        notifyVocabularyChanged()
+    }
+
+    private fun nextSequentialWritingLevel(completed: Set<Int>): Int {
+        var next = 1
+        while (next < WRITING_LEVEL_COUNT && next in completed) next += 1
         return next
     }
 
@@ -819,7 +966,8 @@ class MainViewModel : ViewModel() {
     fun selectLetterAt(index: Int) {
         if (index !in currentWord.scrambledLetters.indices ||
             index in selectedLetterIndices ||
-            selectedLetters.length >= currentWord.english.length
+            (isWritingLessonReady && (isWritingQuestionAnswered || isWritingLessonComplete)) ||
+            selectedLetters.length >= currentWord.english.count(Char::isLetter)
         ) return
         selectedLetterIndices = selectedLetterIndices + index
         selectedLetters = selectedLetterIndices.map { currentWord.scrambledLetters[it] }.joinToString("")
@@ -828,7 +976,9 @@ class MainViewModel : ViewModel() {
     }
 
     fun removeLastLetter() {
-        if (selectedLetterIndices.isNotEmpty()) {
+        if (selectedLetterIndices.isNotEmpty() &&
+            (!isWritingLessonReady || (!isWritingQuestionAnswered && !isWritingLessonComplete))
+        ) {
             selectedLetterIndices = selectedLetterIndices.dropLast(1)
             selectedLetters = selectedLetterIndices.map { currentWord.scrambledLetters[it] }.joinToString("")
             spellingCorrect = false
@@ -836,6 +986,28 @@ class MainViewModel : ViewModel() {
     }
 
     fun checkSpelling(): Boolean {
+        if (isWritingLessonReady) {
+            if (isWritingQuestionAnswered || isWritingLessonComplete ||
+                selectedLetters.length != currentWord.english.count(Char::isLetter)
+            ) return false
+            val correct = selectedLetters.equals(
+                currentWord.english.filter(Char::isLetter),
+                ignoreCase = true
+            )
+            spellingCorrect = correct
+            isWritingQuestionAnswered = true
+            writingQuestionCount += 1
+            if (correct) {
+                writingCorrectCount += 1
+                score += 15
+                user = user.copy(coins = user.coins + 5, wordsLearned = user.wordsLearned + 1)
+                feedback = "Amazing spelling! +5 coins"
+            } else {
+                feedback = "Not quite. Keep practicing!"
+            }
+            return correct
+        }
+
         val correct = selectedLetters.equals(currentWord.english, ignoreCase = true)
         spellingCorrect = correct
         if (correct) {
@@ -849,6 +1021,7 @@ class MainViewModel : ViewModel() {
     }
 
     fun clearSpelling() {
+        if (isWritingLessonReady && (isWritingQuestionAnswered || isWritingLessonComplete)) return
         selectedLetters = ""
         selectedLetterIndices = emptyList()
         feedback = ""
@@ -957,6 +1130,11 @@ class MainViewModel : ViewModel() {
         private const val READING_MAX_DISTRACTORS = 7
         private const val READING_PREFERENCES = "kids_english_reading_progress"
         private const val KEY_READING_COMPLETED = "completed_levels"
+        const val WRITING_LEVEL_COUNT = 50
+        const val WRITING_QUESTIONS_PER_LEVEL = 10
+        const val WRITING_REQUIRED_CORRECT = 8
+        private const val WRITING_PREFERENCES = "kids_english_writing_progress"
+        private const val KEY_WRITING_COMPLETED = "completed_levels"
         const val SPEAKING_LEVEL_COUNT = 50
         const val SPEAKING_QUESTIONS_PER_LEVEL = 10
         const val SPEAKING_REQUIRED_CORRECT = 8

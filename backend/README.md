@@ -36,6 +36,7 @@ For production, use TLS for PostgreSQL/Redis, a managed secret store, a restrict
 - `GET /api/v1/vocabulary?limit=10&order=listening&offset=0`
 - `GET /api/v1/vocabulary?limit=10&order=speaking&offset=0`
 - `GET /api/v1/vocabulary?limit=10&order=reading&offset=0`
+- `GET /api/v1/vocabulary?limit=10&order=writing&offset=0`
 
 Vocabulary endpoints are read-only and public so the mobile app can preload
 learning content before a learner signs in. A CSV bulk import uses
@@ -76,6 +77,11 @@ at levels 1–15 to phrases at 16–30, sentence context at 31–40, and short
 paragraph context at 41–50. Reading completion is tracked independently on the
 device; learners need at least 8 correct answers out of 10 to unlock the next
 level.
+Writing uses the same 20-row stride and ten unique spelling prompts per lesson.
+The ordered vocabulary progresses from shorter words toward longer and more
+complex entries; levels 41–50 practice a short sentence assembled from each
+entry. Writing progress is stored separately on the device, and 8 correct
+answers out of 10 unlock the next level.
 
 ### Word Match 50-level trail
 

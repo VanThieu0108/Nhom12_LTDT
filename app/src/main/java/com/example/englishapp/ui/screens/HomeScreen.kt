@@ -63,6 +63,7 @@ fun HomeScreen(context: Context, viewModel: MainViewModel, navigate: (String) ->
                         "Listening" -> "${viewModel.completedListeningLevels.size} / ${MainViewModel.LISTENING_LEVEL_COUNT} levels"
                         "Speaking" -> "${viewModel.completedSpeakingLevels.size} / ${MainViewModel.SPEAKING_LEVEL_COUNT} levels"
                         "Reading" -> "${viewModel.completedReadingLevels.size} / ${MainViewModel.READING_LEVEL_COUNT} levels"
+                        "Writing" -> "${viewModel.completedWritingLevels.size} / ${MainViewModel.WRITING_LEVEL_COUNT} levels"
                         else -> "0 / 5 lessons"
                     }
                     addView(UiKit.text(context, progress, 11, 0xFFEAF7FF.toInt()))

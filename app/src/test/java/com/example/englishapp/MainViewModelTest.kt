@@ -144,4 +144,27 @@ class MainViewModelTest {
         assertEquals(0, viewModel.readingQuestionCount)
         assertEquals(0, viewModel.readingCorrectCount)
     }
+
+    @Test
+    fun writingProgressStartsAtLevelOneAndRejectsLockedLevels() {
+        val viewModel = MainViewModel()
+
+        assertEquals(1, viewModel.unlockedWritingLevel)
+        assertTrue(viewModel.isWritingLevelUnlocked(1))
+        assertFalse(viewModel.isWritingLevelUnlocked(2))
+        assertFalse(viewModel.selectWritingLevel(2))
+        assertFalse(viewModel.startWritingLesson(2))
+        assertEquals(1, viewModel.selectedWritingLevel)
+    }
+
+    @Test
+    fun writingLessonCannotBeAdvancedBeforeAWritingQuestionIsChecked() {
+        val viewModel = MainViewModel()
+
+        viewModel.continueWritingLesson()
+
+        assertEquals(0, viewModel.writingQuestionCount)
+        assertEquals(0, viewModel.writingCorrectCount)
+        assertFalse(viewModel.isWritingLessonComplete)
+    }
 }
