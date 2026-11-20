@@ -70,6 +70,32 @@ class MainViewModel : ViewModel() {
         private set
     var wasListeningAttemptPassed = false
         private set
+    var selectedSpeakingLevel = 1
+        private set
+    var unlockedSpeakingLevel = 1
+        private set
+    var completedSpeakingLevels: Set<Int> = emptySet()
+        private set
+    var speakingQuestionCount = 0
+        private set
+    var speakingCorrectCount = 0
+        private set
+    var isSpeakingLessonReady = false
+        private set
+    var isSpeakingLessonComplete = false
+        private set
+    var wasSpeakingAttemptPassed = false
+        private set
+    var isSpeakingQuestionAnswered = false
+        private set
+    val speakingDifficultyDescription: String
+        get() = when (selectedSpeakingLevel) {
+            in 1..10 -> "Short, familiar words and clear sounds"
+            in 11..20 -> "Longer words and careful syllable practice"
+            in 21..30 -> "More challenging sounds and word stress"
+            in 31..40 -> "Short phrases spoken smoothly"
+            else -> "Longer sentence prompts and clear pronunciation"
+        }
     var isVocabularyLoading = false
         private set
     var vocabularyMessage = "Using sample vocabulary until the backend connects."
@@ -79,6 +105,7 @@ class MainViewModel : ViewModel() {
     var onVocabularyChanged: (() -> Unit)? = null
     private var vocabularyRequestId = 0
     private var listeningPreferences: SharedPreferences? = null
+    private var speakingPreferences: SharedPreferences? = null
     var matchGameLevel = 1
         private set
     var unlockedMatchLevel = 1
@@ -146,6 +173,124 @@ class MainViewModel : ViewModel() {
             .toSet()
         unlockedListeningLevel = nextSequentialListeningLevel(completedListeningLevels)
         selectedListeningLevel = unlockedListeningLevel
+    }
+
+    fun initializeSpeakingProgress(context: Context) {
+        speakingPreferences = context.applicationContext.getSharedPreferences(
+            SPEAKING_PREFERENCES,
+            Context.MODE_PRIVATE
+        )
+        val saved = speakingPreferences ?: return
+        completedSpeakingLevels = saved.getString(KEY_SPEAKING_COMPLETED, "")
+            .orEmpty()
+            .split(',')
+            .mapNotNull(String::toIntOrNull)
+            .filter { it in 1..SPEAKING_LEVEL_COUNT }
+            .toSet()
+        unlockedSpeakingLevel = nextSequentialSpeakingLevel(completedSpeakingLevels)
+        selectedSpeakingLevel = unlockedSpeakingLevel
+    }
+
+    fun isSpeakingLevelUnlocked(level: Int): Boolean = level in 1..unlockedSpeakingLevel
+
+    fun isSpeakingLevelCompleted(level: Int): Boolean = level in completedSpeakingLevels
+
+    fun selectSpeakingLevel(level: Int): Boolean {
+        if (!isSpeakingLevelUnlocked(level)) return false
+        selectedSpeakingLevel = level
+        notifyVocabularyChanged()
+        return true
+    }
+
+    fun startSpeakingLesson(level: Int = selectedSpeakingLevel): Boolean {
+        if (!isSpeakingLevelUnlocked(level)) return false
+        selectedSpeakingLevel = level
+        val requestId = ++vocabularyRequestId
+        isVocabularyLoading = true
+        isSpeakingLessonReady = false
+        isSpeakingLessonComplete = false
+        wasSpeakingAttemptPassed = false
+        isSpeakingQuestionAnswered = false
+        speakingQuestionCount = 0
+        speakingCorrectCount = 0
+        activeWordIndex = 0
+        feedback = ""
+        vocabularyMessage = "Loading Speaking level $level..."
+        notifyVocabularyChanged()
+
+        VocabularyRepository.loadSpeakingLesson(level) { result ->
+            Handler(Looper.getMainLooper()).post {
+                if (requestId != vocabularyRequestId) return@post
+                isVocabularyLoading = false
+                result.onSuccess { vocabulary ->
+                    words = vocabulary.mapIndexed { index, item ->
+                        val prompt = speakingPrompt(level, item.wordEn)
+                        Word(
+                            english = prompt.first,
+                            vietnamese = prompt.second(item.meaningVi),
+                            distractors = emptyList(),
+                            scrambledLetters = item.wordEn.toList().shuffled(Random(index + level)),
+                            phonetic = item.phonetic?.trim()?.takeIf(String::isNotEmpty),
+                            pronunciationText = item.wordEn
+                        )
+                    }
+                    isSpeakingLessonReady = words.size == SPEAKING_QUESTIONS_PER_LEVEL
+                    vocabularyMessage = if (isSpeakingLessonReady) {
+                        "Speaking level $level · ${words.size} prompts"
+                    } else {
+                        "Level $level needs 10 unique speaking prompts."
+                    }
+                    activeWordIndex = 0
+                }.onFailure { error ->
+                    Log.w(TAG, "Failed to load Speaking level $level", error)
+                    isSpeakingLessonReady = false
+                    vocabularyMessage = "Couldn't load Speaking level $level. Check the backend and retry."
+                }
+                notifyVocabularyChanged()
+            }
+        }
+        return true
+    }
+
+    private fun speakingPrompt(level: Int, vocabulary: String): Pair<String, (String) -> String> =
+        when (level) {
+            in 1..30 -> vocabulary to { meaning -> meaning }
+            in 31..40 -> "Could you say $vocabulary slowly and clearly?" to
+                { meaning -> "Bạn có thể nói “$meaning” chậm và rõ ràng không?" }
+            else -> "Today, I am practicing how to pronounce $vocabulary clearly." to
+                { meaning -> "Hôm nay, tôi đang luyện cách phát âm “$meaning” thật rõ ràng." }
+        }
+
+    fun continueSpeakingLesson() {
+        if (!isSpeakingLessonReady || !isSpeakingQuestionAnswered || isSpeakingLessonComplete) return
+        if (activeWordIndex < words.lastIndex) {
+            activeWordIndex += 1
+            isSpeakingQuestionAnswered = false
+            feedback = ""
+            notifyVocabularyChanged()
+            return
+        }
+
+        isSpeakingLessonComplete = true
+        val passed = speakingCorrectCount >= SPEAKING_REQUIRED_CORRECT
+        wasSpeakingAttemptPassed = passed
+        if (passed) {
+            completedSpeakingLevels = completedSpeakingLevels + selectedSpeakingLevel
+            unlockedSpeakingLevel = nextSequentialSpeakingLevel(completedSpeakingLevels)
+            speakingPreferences?.edit()
+                ?.putString(KEY_SPEAKING_COMPLETED, completedSpeakingLevels.sorted().joinToString(","))
+                ?.apply()
+            feedback = "Level complete! $speakingCorrectCount/$SPEAKING_QUESTIONS_PER_LEVEL pronounced ⭐"
+        } else {
+            feedback = "$speakingCorrectCount/$SPEAKING_QUESTIONS_PER_LEVEL completed. Try this level again!"
+        }
+        notifyVocabularyChanged()
+    }
+
+    private fun nextSequentialSpeakingLevel(completed: Set<Int>): Int {
+        var next = 1
+        while (next < SPEAKING_LEVEL_COUNT && next in completed) next += 1
+        return next
     }
 
     fun isListeningLevelUnlocked(level: Int): Boolean = level in 1..unlockedListeningLevel
@@ -500,10 +645,14 @@ class MainViewModel : ViewModel() {
     }
 
     fun markSpeakingSuccess() {
+        if (!isSpeakingLessonReady || isSpeakingLessonComplete || isSpeakingQuestionAnswered) return
+        isSpeakingQuestionAnswered = true
+        speakingQuestionCount += 1
+        speakingCorrectCount += 1
         selectedAnswer = null
         score += 10
         user = user.copy(coins = user.coins + 5)
-        feedback = "Perfect pronunciation!"
+        feedback = "Speaking practice recorded!"
     }
 
     fun selectLetter(letter: Char) {
@@ -647,6 +796,11 @@ class MainViewModel : ViewModel() {
 
     companion object {
         private const val TAG = "MainViewModel"
+        const val SPEAKING_LEVEL_COUNT = 50
+        const val SPEAKING_QUESTIONS_PER_LEVEL = 10
+        const val SPEAKING_REQUIRED_CORRECT = 8
+        private const val SPEAKING_PREFERENCES = "kids_english_speaking_progress"
+        private const val KEY_SPEAKING_COMPLETED = "completed_levels"
         const val LISTENING_LEVEL_COUNT = 50
         const val LISTENING_QUESTIONS_PER_LEVEL = 10
         const val LISTENING_REQUIRED_CORRECT = 8

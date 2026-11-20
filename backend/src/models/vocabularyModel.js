@@ -46,7 +46,7 @@ export async function listVocabularyCategories(client, level) {
 }
 
 export async function searchVocabulary(client, { level, category, limit, offset = 0, order = 'random' }) {
-  const result = order === 'difficulty' || order === 'listening'
+  const result = order === 'difficulty' || order === 'listening' || order === 'speaking'
     ? await queryWith(client,
       `SELECT id, difficulty_level AS level, category, word_en, meaning_vi,
               phonetic, audio_url, image_url
@@ -68,8 +68,10 @@ export async function searchVocabulary(client, { level, category, limit, offset 
         category ?? null,
         limit,
         offset,
-        order === 'listening' ? '^[A-Za-z]+([ -][A-Za-z]+)*$' : '^[A-Za-z]{2,12}$',
-        order === 'listening' ? 60 : 12
+        order === 'listening' || order === 'speaking'
+          ? "^[A-Za-z]+(['’][A-Za-z]+)*([ -][A-Za-z]+(['’][A-Za-z]+)*)*$"
+          : '^[A-Za-z]{2,12}$',
+        order === 'listening' || order === 'speaking' ? 60 : 12
       ]
     )
     : await queryWith(client,

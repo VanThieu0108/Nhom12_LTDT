@@ -11,6 +11,7 @@ import java.util.concurrent.Executors
 
 object VocabularyRepository {
     private const val LISTENING_DIFFICULTY_STRIDE = 20
+    private const val SPEAKING_DIFFICULTY_STRIDE = 20
     private val executor = Executors.newSingleThreadExecutor()
     private val baseUrl = BuildConfig.VOCABULARY_API_BASE_URL.trimEnd('/')
 
@@ -39,6 +40,12 @@ object VocabularyRepository {
     fun loadListeningLesson(level: Int, callback: (Result<List<VocabularyWord>>) -> Unit) {
         executor.execute {
             callback(runCatching { fetchListeningWords(level) })
+        }
+    }
+
+    fun loadSpeakingLesson(level: Int, callback: (Result<List<VocabularyWord>>) -> Unit) {
+        executor.execute {
+            callback(runCatching { fetchSpeakingWords(level) })
         }
     }
 
@@ -75,6 +82,34 @@ object VocabularyRepository {
             .distinctBy { it.wordEn.lowercase() }
         if (words.size < 4) {
             throw IOException("Cấp độ $level cần ít nhất 4 từ ngắn để tạo lựa chọn trong trò chơi.")
+        }
+        return words
+    }
+
+    private fun fetchSpeakingWords(level: Int): List<VocabularyWord> {
+        if (level !in 1..50) throw IOException("Speaking level must be between 1 and 50.")
+        val offset = (level - 1) * SPEAKING_DIFFICULTY_STRIDE
+        val response = request(
+            "/api/v1/vocabulary?limit=10&order=speaking&offset=$offset"
+        )
+        val rows = response.getJSONArray("data")
+        val words = (0 until rows.length())
+            .map { index ->
+                val row = rows.getJSONObject(index)
+                VocabularyWord(
+                    wordEn = row.getString("word_en").trim(),
+                    meaningVi = row.getString("meaning_vi").trim(),
+                    level = row.getInt("level"),
+                    category = row.getString("category"),
+                    phonetic = row.optionalString("phonetic"),
+                    audioUrl = row.optionalString("audio_url"),
+                    imageUrl = row.optionalString("image_url")
+                )
+            }
+            .filter { it.wordEn.isNotBlank() && it.meaningVi.isNotBlank() }
+            .distinctBy { it.wordEn.lowercase() }
+        if (words.size != 10) {
+            throw IOException("Speaking level $level needs 10 unique words or phrases; received ${words.size}.")
         }
         return words
     }

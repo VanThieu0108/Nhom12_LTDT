@@ -20,6 +20,8 @@ fun ZoneMapScreen(
         else -> "reading"
     }
     val isListening = zone.equals("listening", ignoreCase = true)
+    val isSpeaking = zone.equals("speaking", ignoreCase = true)
+    val hasLevelPath = isListening || isSpeaking
     val icon = when (zone.lowercase()) {
         "speaking" -> "🎙️"
         "reading" -> "📖"
@@ -38,22 +40,42 @@ fun ZoneMapScreen(
     page.addView(UiKit.text(
         context,
         if (isListening) "50 listening adventures · Complete 8/10 to unlock the next level."
+        else if (isSpeaking) "50 speaking adventures · Complete 8/10 to unlock the next level."
         else "Choose a level · ${viewModel.vocabularyMessage}",
         14,
         UiKit.MUTED
     ))
-    if (isListening) {
+    if (hasLevelPath) {
+        val completedCount = if (isListening) {
+            viewModel.completedListeningLevels.size
+        } else {
+            viewModel.completedSpeakingLevels.size
+        }
+        val unlockedLevel = if (isListening) {
+            viewModel.unlockedListeningLevel
+        } else {
+            viewModel.unlockedSpeakingLevel
+        }
+        val selected = if (isListening) viewModel.selectedListeningLevel else viewModel.selectedSpeakingLevel
         page.addView(UiKit.row(context, 7).apply {
-            addView(UiKit.pill(context, "⭐ ${viewModel.completedListeningLevels.size} / 50 complete", 0xFFE1F5E9.toInt(), UiKit.GREEN))
-            addView(UiKit.pill(context, "🔓 Level ${viewModel.unlockedListeningLevel}", 0xFFFFF1CE.toInt(), 0xFF9A6900.toInt()))
+            addView(UiKit.pill(context, "⭐ $completedCount / 50 complete", 0xFFE1F5E9.toInt(), UiKit.GREEN))
+            addView(UiKit.pill(context, "🔓 Level $unlockedLevel", 0xFFFFF1CE.toInt(), 0xFF9A6900.toInt()))
         })
-        val selected = viewModel.selectedListeningLevel
-        page.addView(UiKit.button(context, "Start Listening Level $selected  ✨", UiKit.GOLD) {
-            if (viewModel.startListeningLesson(selected)) navigate(route)
+        page.addView(UiKit.button(
+            context,
+            "Start ${if (isListening) "Listening" else "Speaking"} Level $selected  ✨",
+            UiKit.GOLD
+        ) {
+            val started = if (isListening) {
+                viewModel.startListeningLesson(selected)
+            } else {
+                viewModel.startSpeakingLesson(selected)
+            }
+            if (started) navigate(route)
         })
     }
-    val levels: List<Int> = if (isListening) {
-        (1..MainViewModel.LISTENING_LEVEL_COUNT).toList()
+    val levels: List<Int> = if (hasLevelPath) {
+        (1..MainViewModel.SPEAKING_LEVEL_COUNT).toList()
     } else {
         viewModel.availableVocabularyLevels
     }
@@ -68,11 +90,21 @@ fun ZoneMapScreen(
             )
             val isSelected = if (isListening) {
                 level == viewModel.selectedListeningLevel
+            } else if (isSpeaking) {
+                level == viewModel.selectedSpeakingLevel
             } else {
                 level == viewModel.selectedVocabularyLevel
             }
-            val isCompleted = isListening && viewModel.isListeningLevelCompleted(level)
-            val isUnlocked = !isListening || viewModel.isListeningLevelUnlocked(level)
+            val isCompleted = when {
+                isListening -> viewModel.isListeningLevelCompleted(level)
+                isSpeaking -> viewModel.isSpeakingLevelCompleted(level)
+                else -> false
+            }
+            val isUnlocked = when {
+                isListening -> viewModel.isListeningLevelUnlocked(level)
+                isSpeaking -> viewModel.isSpeakingLevelUnlocked(level)
+                else -> true
+            }
             val nodeText = when {
                 isCompleted -> "⭐\n$level"
                 isSelected && isUnlocked -> "▶\n$level"
@@ -92,6 +124,8 @@ fun ZoneMapScreen(
             ) {
                 if (isListening) {
                     viewModel.selectListeningLevel(level)
+                } else if (isSpeaking) {
+                    viewModel.selectSpeakingLevel(level)
                 } else {
                     viewModel.loadVocabulary(level)
                     navigate(route)
@@ -99,16 +133,22 @@ fun ZoneMapScreen(
             }.apply {
                 isEnabled = isUnlocked || isCompleted
                 alpha = if (isUnlocked || isCompleted) 1f else 0.75f
-                textSize = if (isListening) 13f else 15f
-            }, LinearLayout.LayoutParams(UiKit.dp(context, if (isListening) 76 else 70), UiKit.dp(context, if (isListening) 68 else 64)))
+                textSize = if (hasLevelPath) 13f else 15f
+            }, LinearLayout.LayoutParams(UiKit.dp(context, if (hasLevelPath) 76 else 70), UiKit.dp(context, if (hasLevelPath) 68 else 64)))
         })
         if (index < levels.lastIndex) {
             val connector = if (index % 2 == 0) "·   ·   ·   ·   ·" else "·   ·   ·   ·   ·"
             page.addView(UiKit.text(context, connector, 17, 0xFF8BB9D6.toInt(), gravity = Gravity.CENTER))
         }
     }
-    if (isListening) {
-        if (viewModel.isListeningLevelCompleted(viewModel.selectedListeningLevel)) {
+    if (hasLevelPath) {
+        val selected = if (isListening) viewModel.selectedListeningLevel else viewModel.selectedSpeakingLevel
+        val isCompleted = if (isListening) {
+            viewModel.isListeningLevelCompleted(selected)
+        } else {
+            viewModel.isSpeakingLevelCompleted(selected)
+        }
+        if (isCompleted) {
             page.addView(UiKit.text(context, "Completed levels stay unlocked for replay.", 12, UiKit.GREEN, true, Gravity.CENTER))
         }
     } else {

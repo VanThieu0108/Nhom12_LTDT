@@ -100,4 +100,26 @@ class MainViewModelTest {
 
         assertEquals(3, viewModel.listeningOptionDistractorCount)
     }
+
+    @Test
+    fun speakingProgressStartsAtLevelOneAndRejectsLockedLevels() {
+        val viewModel = MainViewModel()
+
+        assertEquals(1, viewModel.unlockedSpeakingLevel)
+        assertTrue(viewModel.isSpeakingLevelUnlocked(1))
+        assertFalse(viewModel.isSpeakingLevelUnlocked(2))
+        assertFalse(viewModel.selectSpeakingLevel(2))
+        assertEquals(1, viewModel.selectedSpeakingLevel)
+    }
+
+    @Test
+    fun speakingPromptCannotBeMarkedCompleteBeforeLessonContentLoads() {
+        val viewModel = MainViewModel()
+
+        viewModel.markSpeakingSuccess()
+
+        assertFalse(viewModel.isSpeakingQuestionAnswered)
+        assertEquals(0, viewModel.speakingCorrectCount)
+        assertEquals(0, viewModel.score)
+    }
 }
