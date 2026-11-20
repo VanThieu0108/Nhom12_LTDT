@@ -122,4 +122,26 @@ class MainViewModelTest {
         assertEquals(0, viewModel.speakingCorrectCount)
         assertEquals(0, viewModel.score)
     }
+
+    @Test
+    fun readingProgressStartsAtLevelOneAndRejectsLockedLevels() {
+        val viewModel = MainViewModel()
+
+        assertEquals(1, viewModel.unlockedReadingLevel)
+        assertTrue(viewModel.isReadingLevelUnlocked(1))
+        assertFalse(viewModel.isReadingLevelUnlocked(2))
+        assertFalse(viewModel.selectReadingLevel(2))
+        assertFalse(viewModel.startReadingLesson(2))
+        assertEquals(1, viewModel.selectedReadingLevel)
+    }
+
+    @Test
+    fun readingAnswersAreNotCountedOutsideAnActiveReadingLesson() {
+        val viewModel = MainViewModel()
+
+        assertFalse(viewModel.selectReadingAnswer("Quả táo"))
+
+        assertEquals(0, viewModel.readingQuestionCount)
+        assertEquals(0, viewModel.readingCorrectCount)
+    }
 }

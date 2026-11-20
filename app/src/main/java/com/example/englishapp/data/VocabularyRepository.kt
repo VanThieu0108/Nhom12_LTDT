@@ -12,6 +12,7 @@ import java.util.concurrent.Executors
 object VocabularyRepository {
     private const val LISTENING_DIFFICULTY_STRIDE = 20
     private const val SPEAKING_DIFFICULTY_STRIDE = 20
+    private const val READING_DIFFICULTY_STRIDE = 20
     private val executor = Executors.newSingleThreadExecutor()
     private val baseUrl = BuildConfig.VOCABULARY_API_BASE_URL.trimEnd('/')
 
@@ -46,6 +47,12 @@ object VocabularyRepository {
     fun loadSpeakingLesson(level: Int, callback: (Result<List<VocabularyWord>>) -> Unit) {
         executor.execute {
             callback(runCatching { fetchSpeakingWords(level) })
+        }
+    }
+
+    fun loadReadingLesson(level: Int, callback: (Result<List<VocabularyWord>>) -> Unit) {
+        executor.execute {
+            callback(runCatching { fetchReadingWords(level) })
         }
     }
 
@@ -110,6 +117,34 @@ object VocabularyRepository {
             .distinctBy { it.wordEn.lowercase() }
         if (words.size != 10) {
             throw IOException("Speaking level $level needs 10 unique words or phrases; received ${words.size}.")
+        }
+        return words
+    }
+
+    private fun fetchReadingWords(level: Int): List<VocabularyWord> {
+        if (level !in 1..50) throw IOException("Reading level must be between 1 and 50.")
+        val offset = (level - 1) * READING_DIFFICULTY_STRIDE
+        val response = request(
+            "/api/v1/vocabulary?limit=10&order=reading&offset=$offset"
+        )
+        val rows = response.getJSONArray("data")
+        val words = (0 until rows.length())
+            .map { index ->
+                val row = rows.getJSONObject(index)
+                VocabularyWord(
+                    wordEn = row.getString("word_en").trim(),
+                    meaningVi = row.getString("meaning_vi").trim(),
+                    level = row.getInt("level"),
+                    category = row.getString("category"),
+                    phonetic = row.optionalString("phonetic"),
+                    audioUrl = row.optionalString("audio_url"),
+                    imageUrl = row.optionalString("image_url")
+                )
+            }
+            .filter { it.wordEn.isNotBlank() && it.meaningVi.isNotBlank() }
+            .distinctBy { it.wordEn.lowercase() }
+        if (words.size != 10) {
+            throw IOException("Reading level $level needs 10 unique words or phrases; received ${words.size}.")
         }
         return words
     }

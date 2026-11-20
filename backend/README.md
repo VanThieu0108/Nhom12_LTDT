@@ -35,6 +35,7 @@ For production, use TLS for PostgreSQL/Redis, a managed secret store, a restrict
 - `GET /api/v1/vocabulary?limit=8&order=difficulty&offset=0`
 - `GET /api/v1/vocabulary?limit=10&order=listening&offset=0`
 - `GET /api/v1/vocabulary?limit=10&order=speaking&offset=0`
+- `GET /api/v1/vocabulary?limit=10&order=reading&offset=0`
 
 Vocabulary endpoints are read-only and public so the mobile app can preload
 learning content before a learner signs in. A CSV bulk import uses
@@ -69,6 +70,12 @@ and space/hyphen-separated phrases up to 60 characters.
 Speaking uses the same 20-row difficulty stride and requests ten unique prompts
 per lesson. Levels 1–30 practice the vocabulary directly, levels 31–40 wrap
 items in short spoken phrases, and levels 41–50 use longer sentence prompts.
+Reading uses the same 20-row stride and ten unique words or phrases per lesson.
+The Android lesson adds progressively longer context from single-word reading
+at levels 1–15 to phrases at 16–30, sentence context at 31–40, and short
+paragraph context at 41–50. Reading completion is tracked independently on the
+device; learners need at least 8 correct answers out of 10 to unlock the next
+level.
 
 ### Word Match 50-level trail
 

@@ -41,6 +41,7 @@ class AppNavigation(private val activity: AppCompatActivity) {
         mainViewModel.initializeMatchProgress(activity)
         mainViewModel.initializeListeningProgress(activity)
         mainViewModel.initializeSpeakingProgress(activity)
+        mainViewModel.initializeReadingProgress(activity)
         mainViewModel.loadVocabulary()
         navController.addOnDestinationChangedListener { _, destination, _ ->
             updateBottomNavigation(destination.id)

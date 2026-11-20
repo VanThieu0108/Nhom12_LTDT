@@ -6,5 +6,6 @@ data class Word(
     val distractors: List<String>,
     val scrambledLetters: List<Char>,
     val phonetic: String? = null,
-    val pronunciationText: String? = null
+    val pronunciationText: String? = null,
+    val readingPassage: String? = null
 )

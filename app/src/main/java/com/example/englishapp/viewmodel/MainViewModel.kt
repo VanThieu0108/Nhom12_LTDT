@@ -72,6 +72,22 @@ class MainViewModel : ViewModel() {
         private set
     var selectedSpeakingLevel = 1
         private set
+    var selectedReadingLevel = 1
+        private set
+    var unlockedReadingLevel = 1
+        private set
+    var completedReadingLevels: Set<Int> = emptySet()
+        private set
+    var readingQuestionCount = 0
+        private set
+    var readingCorrectCount = 0
+        private set
+    var isReadingLessonReady = false
+        private set
+    var isReadingLessonComplete = false
+        private set
+    var wasReadingAttemptPassed = false
+        private set
     var unlockedSpeakingLevel = 1
         private set
     var completedSpeakingLevels: Set<Int> = emptySet()
@@ -106,6 +122,7 @@ class MainViewModel : ViewModel() {
     private var vocabularyRequestId = 0
     private var listeningPreferences: SharedPreferences? = null
     private var speakingPreferences: SharedPreferences? = null
+    private var readingPreferences: SharedPreferences? = null
     var matchGameLevel = 1
         private set
     var unlockedMatchLevel = 1
@@ -290,6 +307,129 @@ class MainViewModel : ViewModel() {
     private fun nextSequentialSpeakingLevel(completed: Set<Int>): Int {
         var next = 1
         while (next < SPEAKING_LEVEL_COUNT && next in completed) next += 1
+        return next
+    }
+
+    fun initializeReadingProgress(context: Context) {
+        readingPreferences = context.applicationContext.getSharedPreferences(
+            READING_PREFERENCES,
+            Context.MODE_PRIVATE
+        )
+        val saved = readingPreferences ?: return
+        completedReadingLevels = saved.getString(KEY_READING_COMPLETED, "")
+            .orEmpty()
+            .split(',')
+            .mapNotNull(String::toIntOrNull)
+            .filter { it in 1..READING_LEVEL_COUNT }
+            .toSet()
+        unlockedReadingLevel = nextSequentialReadingLevel(completedReadingLevels)
+        selectedReadingLevel = unlockedReadingLevel
+    }
+
+    fun isReadingLevelUnlocked(level: Int): Boolean = level in 1..unlockedReadingLevel
+
+    fun isReadingLevelCompleted(level: Int): Boolean = level in completedReadingLevels
+
+    fun selectReadingLevel(level: Int): Boolean {
+        if (!isReadingLevelUnlocked(level)) return false
+        selectedReadingLevel = level
+        notifyVocabularyChanged()
+        return true
+    }
+
+    fun startReadingLesson(level: Int = selectedReadingLevel): Boolean {
+        if (!isReadingLevelUnlocked(level)) return false
+        selectedReadingLevel = level
+        val requestId = ++vocabularyRequestId
+        isVocabularyLoading = true
+        isReadingLessonReady = false
+        isReadingLessonComplete = false
+        wasReadingAttemptPassed = false
+        readingQuestionCount = 0
+        readingCorrectCount = 0
+        activeWordIndex = 0
+        selectedAnswer = null
+        feedback = ""
+        vocabularyMessage = "Loading Reading level $level..."
+        notifyVocabularyChanged()
+
+        VocabularyRepository.loadReadingLesson(level) { result ->
+            Handler(Looper.getMainLooper()).post {
+                if (requestId != vocabularyRequestId) return@post
+                isVocabularyLoading = false
+                result.onSuccess { vocabulary ->
+                    words = vocabulary.mapIndexed { index, item ->
+                        val distractors = vocabulary.asSequence()
+                            .filter { it.wordEn != item.wordEn && it.meaningVi != item.meaningVi }
+                            .map { it.meaningVi }
+                            .distinct()
+                            .take(READING_MAX_DISTRACTORS)
+                            .toList()
+                        val passage = readingPassage(level, item.wordEn)
+                        Word(
+                            english = item.wordEn,
+                            vietnamese = item.meaningVi,
+                            distractors = distractors,
+                            scrambledLetters = item.wordEn.toList().shuffled(Random(index + level)),
+                            phonetic = item.phonetic?.trim()?.takeIf(String::isNotEmpty),
+                            pronunciationText = item.wordEn,
+                            readingPassage = passage
+                        )
+                    }
+                    isReadingLessonReady = words.size == READING_QUESTIONS_PER_LEVEL &&
+                        words.all { it.distractors.size >= READING_MIN_DISTRACTORS }
+                    vocabularyMessage = if (isReadingLessonReady) {
+                        "Reading level $level · ${words.size} questions"
+                    } else {
+                        "Reading level $level needs 10 words and enough unique meanings for answer choices."
+                    }
+                }.onFailure { error ->
+                    Log.w(TAG, "Failed to load Reading level $level", error)
+                    isReadingLessonReady = false
+                    vocabularyMessage = "Couldn't load Reading level $level. Check the backend and retry."
+                }
+                notifyVocabularyChanged()
+            }
+        }
+        return true
+    }
+
+    private fun readingPassage(level: Int, vocabulary: String): String? = when (level) {
+        in 1..15 -> null
+        in 16..30 -> "Read the phrase carefully: “$vocabulary”."
+        in 31..40 -> "Mia found the word “$vocabulary” in her book. She read the whole line slowly and looked for clues in the sentence."
+        else -> "During the island's reading challenge, Mia came across the word “$vocabulary”. She reread the paragraph, noticed how the word was used, and then chose the meaning that best matched it."
+    }
+
+    fun continueReadingLesson() {
+        if (!isReadingLessonReady || selectedAnswer == null || isReadingLessonComplete) return
+        if (activeWordIndex < words.lastIndex) {
+            activeWordIndex += 1
+            selectedAnswer = null
+            feedback = ""
+            notifyVocabularyChanged()
+            return
+        }
+
+        isReadingLessonComplete = true
+        val passed = readingCorrectCount >= READING_REQUIRED_CORRECT
+        wasReadingAttemptPassed = passed
+        if (passed) {
+            completedReadingLevels = completedReadingLevels + selectedReadingLevel
+            unlockedReadingLevel = nextSequentialReadingLevel(completedReadingLevels)
+            readingPreferences?.edit()
+                ?.putString(KEY_READING_COMPLETED, completedReadingLevels.sorted().joinToString(","))
+                ?.apply()
+            feedback = "Level complete! $readingCorrectCount/$READING_QUESTIONS_PER_LEVEL correct ⭐"
+        } else {
+            feedback = "You got $readingCorrectCount/$READING_QUESTIONS_PER_LEVEL. Try this level again!"
+        }
+        notifyVocabularyChanged()
+    }
+
+    private fun nextSequentialReadingLevel(completed: Set<Int>): Int {
+        var next = 1
+        while (next < READING_LEVEL_COUNT && next in completed) next += 1
         return next
     }
 
@@ -612,13 +752,23 @@ class MainViewModel : ViewModel() {
         return recordAnswer(answer == currentWord.vietnamese)
     }
 
+    fun selectReadingAnswer(answer: String): Boolean {
+        if (!isReadingLessonReady || isReadingLessonComplete || selectedAnswer != null) return false
+        selectedAnswer = answer
+        return recordAnswer(answer == currentWord.vietnamese, countReadingQuestion = true)
+    }
+
     fun selectListeningAnswer(answer: String): Boolean {
         if (selectedAnswer != null) return selectedAnswer == answer
         selectedAnswer = answer
         return recordAnswer(answer == currentWord.english, countListeningQuestion = true)
     }
 
-    private fun recordAnswer(correct: Boolean, countListeningQuestion: Boolean = false): Boolean {
+    private fun recordAnswer(
+        correct: Boolean,
+        countListeningQuestion: Boolean = false,
+        countReadingQuestion: Boolean = false
+    ): Boolean {
         if (correct) {
             score += 10
             user = user.copy(coins = user.coins + 5, wordsLearned = user.wordsLearned + 1)
@@ -630,6 +780,10 @@ class MainViewModel : ViewModel() {
         if (countListeningQuestion && isListeningLessonReady && !isListeningLessonComplete) {
             listeningQuestionCount += 1
             if (correct) listeningCorrectCount += 1
+        }
+        if (countReadingQuestion && isReadingLessonReady && !isReadingLessonComplete) {
+            readingQuestionCount += 1
+            if (correct) readingCorrectCount += 1
         }
         return correct
     }
@@ -796,6 +950,13 @@ class MainViewModel : ViewModel() {
 
     companion object {
         private const val TAG = "MainViewModel"
+        const val READING_LEVEL_COUNT = 50
+        const val READING_QUESTIONS_PER_LEVEL = 10
+        const val READING_REQUIRED_CORRECT = 8
+        private const val READING_MIN_DISTRACTORS = 3
+        private const val READING_MAX_DISTRACTORS = 7
+        private const val READING_PREFERENCES = "kids_english_reading_progress"
+        private const val KEY_READING_COMPLETED = "completed_levels"
         const val SPEAKING_LEVEL_COUNT = 50
         const val SPEAKING_QUESTIONS_PER_LEVEL = 10
         const val SPEAKING_REQUIRED_CORRECT = 8
