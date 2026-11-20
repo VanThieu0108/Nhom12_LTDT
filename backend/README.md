@@ -33,6 +33,7 @@ For production, use TLS for PostgreSQL/Redis, a managed secret store, a restrict
 - `GET /api/v1/vocabulary/categories?level=2`
 - `GET /api/v1/vocabulary?level=2&category=Animals&limit=10`
 - `GET /api/v1/vocabulary?limit=8&order=difficulty&offset=0`
+- `GET /api/v1/vocabulary?limit=10&order=listening&offset=0`
 
 Vocabulary endpoints are read-only and public so the mobile app can preload
 learning content before a learner signs in. A CSV bulk import uses
@@ -59,6 +60,11 @@ phonetic, and image metadata, so existing lesson routes keep working.
 The Word Match trail requests eight unique words per stage using the global
 difficulty order (dictionary tier, then word length), with an offset of
 `(stage - 1) * 8`.
+Listening uses the same global tier/length difficulty order and requests ten
+unique words or phrases per lesson with `offset=(level - 1) * 20`. The 20-row
+stride spreads 50 lessons across the dictionary's three difficulty tiers while
+keeping each lesson's ten answers unique. Its ordering accepts English words
+and space/hyphen-separated phrases up to 60 characters.
 
 ### Word Match 50-level trail
 

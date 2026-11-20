@@ -82,4 +82,22 @@ class MainViewModelTest {
         assertEquals("cat", pet?.id)
         assertTrue(viewModel.pets.first { it.id == "cat" }.unlocked)
     }
+
+    @Test
+    fun listeningProgressStartsAtLevelOneAndRejectsLockedLevels() {
+        val viewModel = MainViewModel()
+
+        assertEquals(1, viewModel.unlockedListeningLevel)
+        assertTrue(viewModel.isListeningLevelUnlocked(1))
+        assertFalse(viewModel.isListeningLevelUnlocked(2))
+        assertFalse(viewModel.selectListeningLevel(2))
+        assertEquals(1, viewModel.selectedListeningLevel)
+    }
+
+    @Test
+    fun listeningLevelOneStartsWithThreeDistractors() {
+        val viewModel = MainViewModel()
+
+        assertEquals(3, viewModel.listeningOptionDistractorCount)
+    }
 }

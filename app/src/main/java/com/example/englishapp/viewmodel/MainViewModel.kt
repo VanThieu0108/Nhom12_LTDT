@@ -52,6 +52,24 @@ class MainViewModel : ViewModel() {
         private set
     var selectedVocabularyLevel = 1
         private set
+    var selectedListeningLevel = 1
+        private set
+    var unlockedListeningLevel = 1
+        private set
+    var completedListeningLevels: Set<Int> = emptySet()
+        private set
+    var listeningQuestionCount = 0
+        private set
+    var listeningCorrectCount = 0
+        private set
+    val listeningOptionDistractorCount: Int
+        get() = listeningDistractorCount(selectedListeningLevel)
+    var isListeningLessonReady = false
+        private set
+    var isListeningLessonComplete = false
+        private set
+    var wasListeningAttemptPassed = false
+        private set
     var isVocabularyLoading = false
         private set
     var vocabularyMessage = "Using sample vocabulary until the backend connects."
@@ -60,6 +78,7 @@ class MainViewModel : ViewModel() {
         private set
     var onVocabularyChanged: (() -> Unit)? = null
     private var vocabularyRequestId = 0
+    private var listeningPreferences: SharedPreferences? = null
     var matchGameLevel = 1
         private set
     var unlockedMatchLevel = 1
@@ -112,6 +131,121 @@ class MainViewModel : ViewModel() {
     fun updateExplorerName(name: String) {
         if (name.isNotBlank()) user = user.copy(explorerName = name)
     }
+
+    fun initializeListeningProgress(context: Context) {
+        listeningPreferences = context.applicationContext.getSharedPreferences(
+            LISTENING_PREFERENCES,
+            Context.MODE_PRIVATE
+        )
+        val saved = listeningPreferences ?: return
+        completedListeningLevels = saved.getString(KEY_LISTENING_COMPLETED, "")
+            .orEmpty()
+            .split(',')
+            .mapNotNull(String::toIntOrNull)
+            .filter { it in 1..LISTENING_LEVEL_COUNT }
+            .toSet()
+        unlockedListeningLevel = nextSequentialListeningLevel(completedListeningLevels)
+        selectedListeningLevel = unlockedListeningLevel
+    }
+
+    fun isListeningLevelUnlocked(level: Int): Boolean = level in 1..unlockedListeningLevel
+
+    fun isListeningLevelCompleted(level: Int): Boolean = level in completedListeningLevels
+
+    fun selectListeningLevel(level: Int): Boolean {
+        if (!isListeningLevelUnlocked(level)) return false
+        selectedListeningLevel = level
+        notifyVocabularyChanged()
+        return true
+    }
+
+    fun startListeningLesson(level: Int = selectedListeningLevel): Boolean {
+        if (!isListeningLevelUnlocked(level)) return false
+        selectedListeningLevel = level
+        val requestId = ++vocabularyRequestId
+        isVocabularyLoading = true
+        isListeningLessonReady = false
+        isListeningLessonComplete = false
+        wasListeningAttemptPassed = false
+        listeningQuestionCount = 0
+        listeningCorrectCount = 0
+        activeWordIndex = 0
+        selectedAnswer = null
+        feedback = ""
+        vocabularyMessage = "Loading Listening level $level..."
+        notifyVocabularyChanged()
+
+        VocabularyRepository.loadListeningLesson(level) { result ->
+            Handler(Looper.getMainLooper()).post {
+                if (requestId != vocabularyRequestId) return@post
+                isVocabularyLoading = false
+                result.onSuccess { vocabulary ->
+                    words = vocabulary.mapIndexed { index, item ->
+                        Word(
+                            english = item.wordEn,
+                            vietnamese = item.meaningVi,
+                            distractors = vocabulary.asSequence()
+                                .filter { it.wordEn != item.wordEn }
+                                .map { it.wordEn }
+                                .distinct()
+                                .take(listeningDistractorCount(level))
+                                .toList(),
+                            scrambledLetters = item.wordEn.toList().shuffled(Random(index + level))
+                        )
+                    }
+                    isListeningLessonReady = words.size == LISTENING_QUESTIONS_PER_LEVEL
+                    vocabularyMessage = if (isListeningLessonReady) {
+                        "Listening level $level · ${words.size} questions"
+                    } else {
+                        "Level $level needs 10 unique listening questions."
+                    }
+                    selectedAnswer = null
+                    activeWordIndex = 0
+                }.onFailure { error ->
+                    Log.w(TAG, "Failed to load Listening level $level", error)
+                    isListeningLessonReady = false
+                    vocabularyMessage = "Couldn't load Listening level $level. Check the backend and retry."
+                }
+                notifyVocabularyChanged()
+            }
+        }
+        return true
+    }
+
+    fun continueListeningLesson() {
+        if (!isListeningLessonReady || selectedAnswer == null || isListeningLessonComplete) return
+        if (activeWordIndex < words.lastIndex) {
+            activeWordIndex += 1
+            selectedAnswer = null
+            feedback = ""
+            notifyVocabularyChanged()
+            return
+        }
+
+        isListeningLessonComplete = true
+        val passed = listeningCorrectCount >= LISTENING_REQUIRED_CORRECT
+        wasListeningAttemptPassed = passed
+        if (passed) {
+            completedListeningLevels = completedListeningLevels + selectedListeningLevel
+            unlockedListeningLevel = nextSequentialListeningLevel(completedListeningLevels)
+            listeningPreferences?.edit()
+                ?.putString(KEY_LISTENING_COMPLETED, completedListeningLevels.sorted().joinToString(","))
+                ?.apply()
+            feedback = "Level complete! ${listeningCorrectCount}/${LISTENING_QUESTIONS_PER_LEVEL} correct ⭐"
+        } else {
+            feedback = "You got ${listeningCorrectCount}/${LISTENING_QUESTIONS_PER_LEVEL}. Try this level again!"
+        }
+        notifyVocabularyChanged()
+    }
+
+    private fun nextSequentialListeningLevel(completed: Set<Int>): Int {
+        var next = 1
+        while (next < LISTENING_LEVEL_COUNT && next in completed) next += 1
+        return next
+    }
+
+    private fun listeningDistractorCount(level: Int): Int =
+        (3 + (level - 1) / 10).coerceIn(3, LISTENING_MAX_DISTRACTORS)
 
     fun loadVocabulary(level: Int = selectedVocabularyLevel) {
         selectedVocabularyLevel = level
@@ -336,10 +470,10 @@ class MainViewModel : ViewModel() {
     fun selectListeningAnswer(answer: String): Boolean {
         if (selectedAnswer != null) return selectedAnswer == answer
         selectedAnswer = answer
-        return recordAnswer(answer == currentWord.english)
+        return recordAnswer(answer == currentWord.english, countListeningQuestion = true)
     }
 
-    private fun recordAnswer(correct: Boolean): Boolean {
+    private fun recordAnswer(correct: Boolean, countListeningQuestion: Boolean = false): Boolean {
         if (correct) {
             score += 10
             user = user.copy(coins = user.coins + 5, wordsLearned = user.wordsLearned + 1)
@@ -347,6 +481,10 @@ class MainViewModel : ViewModel() {
         } else {
             hearts = (hearts - 1).coerceAtLeast(0)
             feedback = "Almost! Try the next word."
+        }
+        if (countListeningQuestion && isListeningLessonReady && !isListeningLessonComplete) {
+            listeningQuestionCount += 1
+            if (correct) listeningCorrectCount += 1
         }
         return correct
     }
@@ -509,6 +647,12 @@ class MainViewModel : ViewModel() {
 
     companion object {
         private const val TAG = "MainViewModel"
+        const val LISTENING_LEVEL_COUNT = 50
+        const val LISTENING_QUESTIONS_PER_LEVEL = 10
+        const val LISTENING_REQUIRED_CORRECT = 8
+        private const val LISTENING_MAX_DISTRACTORS = 7
+        private const val LISTENING_PREFERENCES = "kids_english_listening_progress"
+        private const val KEY_LISTENING_COMPLETED = "completed_levels"
         const val MATCH_LEVEL_COUNT = 50
         const val MATCH_PAIR_COUNT = 8
         const val MATCH_WRONG_FLASH_MILLIS = 650L

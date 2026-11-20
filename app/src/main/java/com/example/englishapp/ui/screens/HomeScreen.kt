@@ -59,7 +59,12 @@ fun HomeScreen(context: Context, viewModel: MainViewModel, navigate: (String) ->
                     elevation = UiKit.dp(context, 4).toFloat()
                     addView(UiKit.text(context, icon, 31))
                     addView(UiKit.text(context, name, 16, UiKit.WHITE, true))
-                    addView(UiKit.text(context, "0 / 5 lessons", 11, 0xFFEAF7FF.toInt()))
+                    val progress = if (name == "Listening") {
+                        "${viewModel.completedListeningLevels.size} / ${MainViewModel.LISTENING_LEVEL_COUNT} levels"
+                    } else {
+                        "0 / 5 lessons"
+                    }
+                    addView(UiKit.text(context, progress, 11, 0xFFEAF7FF.toInt()))
                     isClickable = true
                     setOnClickListener { navigate("map:$name") }
                 }

@@ -10,6 +10,7 @@ import java.net.URLEncoder
 import java.util.concurrent.Executors
 
 object VocabularyRepository {
+    private const val LISTENING_DIFFICULTY_STRIDE = 20
     private val executor = Executors.newSingleThreadExecutor()
     private val baseUrl = BuildConfig.VOCABULARY_API_BASE_URL.trimEnd('/')
 
@@ -32,6 +33,12 @@ object VocabularyRepository {
     ) {
         executor.execute {
             callback(runCatching { fetchMatchWords(offset) })
+        }
+    }
+
+    fun loadListeningLesson(level: Int, callback: (Result<List<VocabularyWord>>) -> Unit) {
+        executor.execute {
+            callback(runCatching { fetchListeningWords(level) })
         }
     }
 
@@ -93,6 +100,34 @@ object VocabularyRepository {
             .distinctBy { it.wordEn.lowercase() }
         if (words.size != 8) {
             throw IOException("Backend cần đúng 8 từ cho màn Match này; hiện có ${words.size}.")
+        }
+        return words
+    }
+
+    private fun fetchListeningWords(level: Int): List<VocabularyWord> {
+        if (level !in 1..50) throw IOException("Listening level phải nằm trong khoảng 1–50.")
+        val offset = (level - 1) * LISTENING_DIFFICULTY_STRIDE
+        val response = request(
+            "/api/v1/vocabulary?limit=10&order=listening&offset=$offset"
+        )
+        val rows = response.getJSONArray("data")
+        val words = (0 until rows.length())
+            .map { index ->
+                val row = rows.getJSONObject(index)
+                VocabularyWord(
+                    wordEn = row.getString("word_en").trim(),
+                    meaningVi = row.getString("meaning_vi").trim(),
+                    level = row.getInt("level"),
+                    category = row.getString("category"),
+                    phonetic = row.optionalString("phonetic"),
+                    audioUrl = row.optionalString("audio_url"),
+                    imageUrl = row.optionalString("image_url")
+                )
+            }
+            .filter { it.wordEn.isNotBlank() && it.meaningVi.isNotBlank() }
+            .distinctBy { it.wordEn.lowercase() }
+        if (words.size != 10) {
+            throw IOException("Level $level cần đúng 10 từ/cụm từ nghe; backend hiện trả ${words.size}.")
         }
         return words
     }
