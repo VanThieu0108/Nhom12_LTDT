@@ -18,13 +18,12 @@ fun MinigameMatchScreen(context: Context, viewModel: MainViewModel, navigate: (S
 
     page.addView(UiKit.row(context, 10).apply {
         gravity = Gravity.CENTER_VERTICAL
-        addView(UiKit.button(context, "Quit", UiKit.WHITE, UiKit.MUTED) { navigate("arcade") })
+        addView(UiKit.button(context, "Levels", UiKit.WHITE, UiKit.PURPLE) { navigate("match-levels") })
         addView(
             UiKit.text(context, "⭐ ${viewModel.score}", 15, UiKit.GOLD, true, Gravity.END or Gravity.CENTER_VERTICAL),
             LinearLayout.LayoutParams(0, -2, 1f)
         )
     })
-
     page.addView(UiKit.row(context, 8).apply {
         gravity = Gravity.CENTER_VERTICAL
         addView(UiKit.column(context, 2).apply {
@@ -38,24 +37,17 @@ fun MinigameMatchScreen(context: Context, viewModel: MainViewModel, navigate: (S
             UiKit.PURPLE
         ))
     })
-
     page.addView(LinearLayout(context).apply {
         orientation = LinearLayout.HORIZONTAL
         UiKit.background(this, 0xFFE1EAF1.toInt(), 10)
-        addView(View(context).apply {
-            UiKit.background(
-                this,
-                UiKit.GREEN,
-                10
-            )
-            layoutParams = LinearLayout.LayoutParams(
-                0,
-                UiKit.dp(context, 8),
-                viewModel.matchGameLevel / MainViewModel.MATCH_LEVEL_COUNT.toFloat()
-            )
-        })
+        addView(View(context).apply { UiKit.background(this, UiKit.GREEN, 10) },
+            LinearLayout.LayoutParams(0, UiKit.dp(context, 8), viewModel.matchGameLevel.toFloat()))
+        addView(View(context), LinearLayout.LayoutParams(
+            0,
+            UiKit.dp(context, 8),
+            (MainViewModel.MATCH_LEVEL_COUNT - viewModel.matchGameLevel).toFloat().coerceAtLeast(0.01f)
+        ))
     }, LinearLayout.LayoutParams(-1, UiKit.dp(context, 8)))
-
     page.addView(UiKit.text(
         context,
         "${viewModel.matchedWords.size} / ${MainViewModel.MATCH_PAIR_COUNT} pairs matched",
@@ -74,87 +66,18 @@ fun MinigameMatchScreen(context: Context, viewModel: MainViewModel, navigate: (S
             }, LinearLayout.LayoutParams(-1, UiKit.dp(context, 230)))
         }
 
-        viewModel.matchPairs.size == MainViewModel.MATCH_PAIR_COUNT -> {
-            page.addView(UiKit.row(context, 6).apply {
-                addView(UiKit.pill(context, "🇬🇧 ENGLISH", 0xFFDDF2FF.toInt(), UiKit.BLUE), LinearLayout.LayoutParams(0, -2, 1f))
-                addView(View(context), LinearLayout.LayoutParams(UiKit.dp(context, MatchConnectorView.CENTER_GAP_DP), 1))
-                addView(UiKit.pill(context, "🇻🇳 MEANING", 0xFFFFEBD8.toInt(), UiKit.ORANGE), LinearLayout.LayoutParams(0, -2, 1f))
-            })
+        viewModel.matchPairs.size == MainViewModel.MATCH_PAIR_COUNT -> addMatchBoard(context, page, viewModel, navigate)
 
-            val boardHeight = UiKit.dp(
-                context,
-                MainViewModel.MATCH_PAIR_COUNT *
-                    (MatchConnectorView.ROW_HEIGHT_DP + MatchConnectorView.ROW_GAP_DP)
-            )
-            val board = FrameLayout(context)
-            board.addView(
-                MatchConnectorView(
-                    context = context,
-                    rightOrder = viewModel.matchRightOrder,
-                    matchedIndices = viewModel.matchMatchedIndices(),
-                    selectedKey = viewModel.matchSelection,
-                    wrongKeys = viewModel.matchWrongSelections
-                ),
-                FrameLayout.LayoutParams(-1, -1)
-            )
-            val columns = UiKit.row(context, MatchConnectorView.CENTER_GAP_DP).apply {
-                gravity = Gravity.TOP
-                val left = UiKit.column(context, MatchConnectorView.ROW_GAP_DP)
-                val right = UiKit.column(context, MatchConnectorView.ROW_GAP_DP)
-
-                viewModel.matchPairs.forEachIndexed { index, pair ->
-                    val englishKey = viewModel.matchCardKeyForUi(index, true)
-                    val isMatched = pair.english in viewModel.matchedWords
-                    val isSelected = viewModel.matchSelection == englishKey
-                    val isWrong = englishKey in viewModel.matchWrongSelections
-                    left.addView(
-                        matchCard(
-                            context = context,
-                            label = pair.english,
-                            baseColor = 0xFFDDF2FF.toInt(),
-                            selected = isSelected,
-                            matched = isMatched,
-                            wrong = isWrong,
-                            onClick = {
-                                viewModel.selectMatchCard(index, true)
-                                navigate("match")
-                            }
-                        ),
-                        LinearLayout.LayoutParams(-1, UiKit.dp(context, MatchConnectorView.ROW_HEIGHT_DP))
-                    )
-                }
-
-                viewModel.matchRightOrder.forEach { pairIndex ->
-                    val pair = viewModel.matchPairs[pairIndex]
-                    val vietnameseKey = viewModel.matchCardKeyForUi(pairIndex, false)
-                    val isMatched = pair.english in viewModel.matchedWords
-                    val isSelected = viewModel.matchSelection == vietnameseKey
-                    val isWrong = vietnameseKey in viewModel.matchWrongSelections
-                    right.addView(
-                        matchCard(
-                            context = context,
-                            label = pair.vietnamese,
-                            baseColor = 0xFFFFEBD8.toInt(),
-                            selected = isSelected,
-                            matched = isMatched,
-                            wrong = isWrong,
-                            onClick = {
-                                viewModel.selectMatchCard(pairIndex, false)
-                                navigate("match")
-                            }
-                        ),
-                        LinearLayout.LayoutParams(-1, UiKit.dp(context, MatchConnectorView.ROW_HEIGHT_DP))
-                    )
-                }
-
-                addView(left, LinearLayout.LayoutParams(0, -2, 1f))
-                addView(right, LinearLayout.LayoutParams(0, -2, 1f))
-            }
-            board.addView(
-                columns,
-                FrameLayout.LayoutParams(-1, -1)
-            )
-            page.addView(board, LinearLayout.LayoutParams(-1, boardHeight))
+        else -> {
+            page.addView(UiKit.card(context, UiKit.WHITE, 20).apply {
+                gravity = Gravity.CENTER
+                addView(UiKit.text(context, "We couldn't load this level.", 16, UiKit.INK, true, Gravity.CENTER))
+                addView(UiKit.text(context, viewModel.vocabularyMessage, 12, UiKit.MUTED, gravity = Gravity.CENTER))
+                addView(UiKit.button(context, "Try again", UiKit.GOLD) {
+                    viewModel.loadMatchStage()
+                    navigate("match")
+                })
+            }, LinearLayout.LayoutParams(-1, -2))
         }
     }
 
@@ -177,23 +100,86 @@ fun MinigameMatchScreen(context: Context, viewModel: MainViewModel, navigate: (S
             addView(UiKit.text(context, "Amazing! All 8 pairs matched!", 17, UiKit.GREEN, true, Gravity.CENTER))
             addView(UiKit.text(context, "You earned 80 stars!", 13, UiKit.MUTED, gravity = Gravity.CENTER))
         })
-        if (viewModel.matchGameLevel < MainViewModel.MATCH_LEVEL_COUNT) {
-            page.addView(UiKit.button(context, "Next Level  →", UiKit.GOLD) {
-                viewModel.advanceMatchLevel(context)
-                navigate("match")
-            })
-        } else {
-            page.addView(UiKit.button(context, "🎊  All 50 levels complete!", UiKit.GOLD) {
-                viewModel.replayMatchStage()
-                navigate("match")
-            })
-        }
+        page.addView(UiKit.button(
+            context,
+            if (viewModel.matchGameLevel < MainViewModel.MATCH_LEVEL_COUNT) "Choose next level  →" else "🎊  All 50 levels complete!",
+            UiKit.GOLD
+        ) { navigate("match-levels") })
         page.addView(UiKit.button(context, "Replay this level", UiKit.WHITE, UiKit.PURPLE) {
             viewModel.replayMatchStage()
             navigate("match")
         })
     }
     return UiKit.scrollContent(context, page)
+}
+
+private fun addMatchBoard(
+    context: Context,
+    page: LinearLayout,
+    viewModel: MainViewModel,
+    navigate: (String) -> Unit
+) {
+    page.addView(UiKit.row(context, 6).apply {
+        addView(UiKit.pill(context, "🇬🇧 ENGLISH", 0xFFDDF2FF.toInt(), UiKit.BLUE), LinearLayout.LayoutParams(0, -2, 1f))
+        addView(View(context), LinearLayout.LayoutParams(UiKit.dp(context, MatchConnectorView.CENTER_GAP_DP), 1))
+        addView(UiKit.pill(context, "🇻🇳 MEANING", 0xFFFFEBD8.toInt(), UiKit.ORANGE), LinearLayout.LayoutParams(0, -2, 1f))
+    })
+
+    val boardHeight = UiKit.dp(
+        context,
+        MainViewModel.MATCH_PAIR_COUNT * (MatchConnectorView.ROW_HEIGHT_DP + MatchConnectorView.ROW_GAP_DP)
+    )
+    val board = FrameLayout(context)
+    board.addView(
+        MatchConnectorView(
+            context = context,
+            rightOrder = viewModel.matchRightOrder,
+            matchedIndices = viewModel.matchMatchedIndices(),
+            wrongKeys = viewModel.matchWrongSelections
+        ),
+        FrameLayout.LayoutParams(-1, -1)
+    )
+    val columns = UiKit.row(context, MatchConnectorView.CENTER_GAP_DP).apply {
+        gravity = Gravity.TOP
+        val left = UiKit.column(context, MatchConnectorView.ROW_GAP_DP)
+        val right = UiKit.column(context, MatchConnectorView.ROW_GAP_DP)
+
+        viewModel.matchPairs.forEachIndexed { index, pair ->
+            val englishKey = viewModel.matchCardKeyForUi(index, true)
+            left.addView(
+                matchCard(
+                    context, pair.english, 0xFFDDF2FF.toInt(),
+                    englishKey == viewModel.matchSelection,
+                    pair.english in viewModel.matchedWords,
+                    englishKey in viewModel.matchWrongSelections
+                ) {
+                    viewModel.selectMatchCard(index, true)
+                    navigate("match")
+                },
+                LinearLayout.LayoutParams(-1, UiKit.dp(context, MatchConnectorView.ROW_HEIGHT_DP))
+            )
+        }
+        viewModel.matchRightOrder.forEach { pairIndex ->
+            val pair = viewModel.matchPairs[pairIndex]
+            val vietnameseKey = viewModel.matchCardKeyForUi(pairIndex, false)
+            right.addView(
+                matchCard(
+                    context, pair.vietnamese, 0xFFFFEBD8.toInt(),
+                    vietnameseKey == viewModel.matchSelection,
+                    pair.english in viewModel.matchedWords,
+                    vietnameseKey in viewModel.matchWrongSelections
+                ) {
+                    viewModel.selectMatchCard(pairIndex, false)
+                    navigate("match")
+                },
+                LinearLayout.LayoutParams(-1, UiKit.dp(context, MatchConnectorView.ROW_HEIGHT_DP))
+            )
+        }
+        addView(left, LinearLayout.LayoutParams(0, -2, 1f))
+        addView(right, LinearLayout.LayoutParams(0, -2, 1f))
+    }
+    board.addView(columns, FrameLayout.LayoutParams(-1, -1))
+    page.addView(board, LinearLayout.LayoutParams(-1, boardHeight))
 }
 
 private fun matchCard(
@@ -218,7 +204,7 @@ private fun matchCard(
 ).apply {
     textSize = 13f
     setPadding(UiKit.dp(context, 5), UiKit.dp(context, 4), UiKit.dp(context, 5), UiKit.dp(context, 4))
-    isEnabled = !matched
+    isEnabled = !matched && !wrong
     alpha = if (matched) 1f else 0.9f
     if (wrong) {
         ObjectAnimator.ofFloat(this, View.ALPHA, 1f, 0.35f, 1f).apply {

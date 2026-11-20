@@ -3,11 +3,14 @@ import * as vocabularyModel from '../models/vocabularyModel.js';
 import { HttpError } from '../utils/httpError.js';
 
 const querySchema = z.object({
-  level: z.coerce.number().int().min(1).max(100),
+  level: z.coerce.number().int().min(1).max(100).optional(),
   category: z.string().trim().min(1).max(50).optional(),
   limit: z.coerce.number().int().min(1).max(50).default(10),
   offset: z.coerce.number().int().min(0).max(5000).default(0),
   order: z.enum(['random', 'difficulty']).default('random')
+}).refine(({ level, order }) => order === 'difficulty' || level !== undefined, {
+  message: 'A vocabulary level is required for random ordering.',
+  path: ['level']
 });
 
 const levelFilterSchema = z.object({

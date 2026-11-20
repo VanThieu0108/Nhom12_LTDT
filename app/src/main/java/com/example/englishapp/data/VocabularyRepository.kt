@@ -27,12 +27,11 @@ object VocabularyRepository {
     }
 
     fun loadMatchStage(
-        dictionaryLevel: Int,
         offset: Int,
         callback: (Result<List<VocabularyWord>>) -> Unit
     ) {
         executor.execute {
-            callback(runCatching { fetchMatchWords(dictionaryLevel, offset) })
+            callback(runCatching { fetchMatchWords(offset) })
         }
     }
 
@@ -73,9 +72,9 @@ object VocabularyRepository {
         return words
     }
 
-    private fun fetchMatchWords(level: Int, offset: Int): List<VocabularyWord> {
+    private fun fetchMatchWords(offset: Int): List<VocabularyWord> {
         val response = request(
-            "/api/v1/vocabulary?level=$level&limit=8&order=difficulty&offset=$offset"
+            "/api/v1/vocabulary?limit=8&order=difficulty&offset=$offset"
         )
         val rows = response.getJSONArray("data")
         val words = (0 until rows.length())

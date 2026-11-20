@@ -8,6 +8,7 @@
     <item name="destination_writing" type="id" />
     <item name="destination_arcade" type="id" />
     <item name="destination_match" type="id" />
+    <item name="destination_match_game" type="id" />
     <item name="destination_runner" type="id" />
     <item name="destination_meteor" type="id" />
     <item name="destination_battle" type="id" />

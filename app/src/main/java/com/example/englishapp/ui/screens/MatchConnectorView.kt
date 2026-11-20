@@ -12,7 +12,6 @@ class MatchConnectorView(
     context: Context,
     private val rightOrder: List<Int>,
     private val matchedIndices: Set<Int>,
-    private val selectedKey: String?,
     private val wrongKeys: Set<String>
 ) : View(context) {
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -33,20 +32,6 @@ class MatchConnectorView(
                 MATCHED_LINE,
                 UiKit.dp(context, 4).toFloat()
             )
-        }
-
-        val selected = selectedKey?.let(::parseKey)
-        if (selected != null) {
-            val rightRow = rightOrder.indexOf(selected.first)
-            if (rightRow >= 0) {
-                drawConnection(
-                    canvas,
-                    if (selected.second) selected.first else selected.first,
-                    rightRow,
-                    SELECTED_LINE,
-                    UiKit.dp(context, 3).toFloat()
-                )
-            }
         }
 
         val wrongCards = wrongKeys.mapNotNull(::parseKey)
@@ -99,7 +84,6 @@ class MatchConnectorView(
         const val ROW_GAP_DP = 8
         const val CENTER_GAP_DP = 34
         private const val MATCHED_LINE = 0xFF31A66A.toInt()
-        private const val SELECTED_LINE = 0xFFFFB52E.toInt()
         private const val WRONG_LINE = 0xFFE44855.toInt()
     }
 }

@@ -32,7 +32,7 @@ For production, use TLS for PostgreSQL/Redis, a managed secret store, a restrict
 - `GET /api/v1/vocabulary/levels`
 - `GET /api/v1/vocabulary/categories?level=2`
 - `GET /api/v1/vocabulary?level=2&category=Animals&limit=10`
-- `GET /api/v1/vocabulary?level=1&limit=8&order=difficulty&offset=0`
+- `GET /api/v1/vocabulary?limit=8&order=difficulty&offset=0`
 
 Vocabulary endpoints are read-only and public so the mobile app can preload
 learning content before a learner signs in. A CSV bulk import uses
@@ -56,6 +56,23 @@ on the same trusted network. Release builds should use an HTTPS API URL.
 `word_en` and `meaning_vi` are stored as vocabulary dictionary entries, separate
 from quiz questions in `vocabulary`. Quiz-question levels also include category,
 phonetic, and image metadata, so existing lesson routes keep working.
+The Word Match trail requests eight unique words per stage using the global
+difficulty order (dictionary tier, then word length), with an offset of
+`(stage - 1) * 8`.
+
+### Word Match 50-level trail
+
+The Android Match level map is opened from the arcade or the home-screen Match
+shortcut. Level 1 is initially available; completing its eight pairs unlocks
+Level 2, continuing sequentially through Level 50. Completion state is stored
+on the device with Android `SharedPreferences`, so it survives app restarts but
+is not synchronized between devices or accounts. No database migration is
+needed for this local progression.
+
+Restart the backend after updating its source, then verify the first and last
+stage with `GET /api/v1/vocabulary?limit=8&order=difficulty&offset=0` and
+`GET /api/v1/vocabulary?limit=8&order=difficulty&offset=392`. Build and install
+the updated Android app; every stage uses an offset of `(level - 1) * 8`.
 
 Study levels unlock in order within each learning zone. Level 1 is open by
 default; the learner must answer at least 80% correctly to pass and unlock the

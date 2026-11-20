@@ -55,14 +55,14 @@ export async function searchVocabulary(client, { level, category, limit, offset 
                 id, difficulty_level, category, word_en, meaning_vi,
                 phonetic, audio_url, image_url
          FROM vocabulary_words
-         WHERE difficulty_level = $1
+         WHERE ($1::int IS NULL OR difficulty_level = $1)
            AND ($2::text IS NULL OR category ILIKE $2)
            AND word_en ~ '^[A-Za-z]{2,12}$'
-         ORDER BY lower(word_en), created_at, id
+         ORDER BY lower(word_en), difficulty_level, created_at, id
        ) AS unique_words
-       ORDER BY char_length(word_en), lower(word_en), id
+       ORDER BY difficulty_level, char_length(word_en), lower(word_en), id
        LIMIT $3 OFFSET $4`,
-      [level, category ?? null, limit, offset]
+      [level ?? null, category ?? null, limit, offset]
     )
     : await queryWith(client,
       `SELECT id, difficulty_level AS level, category, word_en, meaning_vi,

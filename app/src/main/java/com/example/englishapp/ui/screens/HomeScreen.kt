@@ -85,7 +85,7 @@ fun HomeScreen(context: Context, viewModel: MainViewModel, navigate: (String) ->
         addView(UiKit.row(context, 6).apply {
             listOf("🧩 Match", "🏃 Run", "☄️ Meteor").forEachIndexed { index, label ->
                 addView(UiKit.button(context, label, 0x55FFFFFF, UiKit.WHITE) {
-                    navigate(listOf("match", "runner", "meteor")[index])
+                    navigate(listOf("match-levels", "runner", "meteor")[index])
                 }, LinearLayout.LayoutParams(0, UiKit.dp(context, 37), 1f))
             }
         })

@@ -61,7 +61,8 @@ class AppNavigation(private val activity: AppCompatActivity) {
             route == ROUTE_SPEAKING -> R.id.destination_speaking
             route == ROUTE_WRITING -> R.id.destination_writing
             route == ROUTE_ARCADE -> R.id.destination_arcade
-            route == ROUTE_MATCH -> R.id.destination_match
+            route == ROUTE_MATCH_LEVELS -> R.id.destination_match
+            route == ROUTE_MATCH -> R.id.destination_match_game
             route == ROUTE_RUNNER -> R.id.destination_runner
             route == ROUTE_METEOR -> R.id.destination_meteor
             route == ROUTE_BATTLE -> R.id.destination_battle
@@ -120,7 +121,8 @@ class AppNavigation(private val activity: AppCompatActivity) {
             R.id.destination_speaking to ROUTE_SPEAKING,
             R.id.destination_writing to ROUTE_WRITING,
             R.id.destination_arcade to ROUTE_ARCADE,
-            R.id.destination_match to ROUTE_MATCH,
+            R.id.destination_match to ROUTE_MATCH_LEVELS,
+            R.id.destination_match_game to ROUTE_MATCH,
             R.id.destination_runner to ROUTE_RUNNER,
             R.id.destination_meteor to ROUTE_METEOR,
             R.id.nav_pets to ROUTE_PETS,
@@ -175,6 +177,7 @@ class AppNavigation(private val activity: AppCompatActivity) {
             ROUTE_SPEAKING -> com.example.englishapp.ui.screens.SpeakingGameScreen(activity, mainViewModel, navigate)
             ROUTE_WRITING -> com.example.englishapp.ui.screens.WritingGameScreen(activity, mainViewModel, navigate)
             ROUTE_ARCADE -> com.example.englishapp.ui.screens.ArcadeScreen(activity, navigate)
+            ROUTE_MATCH_LEVELS -> com.example.englishapp.ui.screens.MatchLevelMapScreen(activity, mainViewModel, navigate)
             ROUTE_MATCH -> com.example.englishapp.ui.screens.MinigameMatchScreen(activity, mainViewModel, navigate)
             ROUTE_RUNNER -> com.example.englishapp.ui.screens.MinigameRunnerScreen(activity, mainViewModel, navigate)
             ROUTE_METEOR -> com.example.englishapp.ui.screens.MinigameMeteorScreen(activity, mainViewModel, navigate)
@@ -196,6 +199,7 @@ class AppNavigation(private val activity: AppCompatActivity) {
         const val ROUTE_WRITING = "writing"
         const val ROUTE_ARCADE = "arcade"
         const val ROUTE_MATCH = "match"
+        const val ROUTE_MATCH_LEVELS = "match-levels"
         const val ROUTE_RUNNER = "runner"
         const val ROUTE_METEOR = "meteor"
         const val ROUTE_PETS = "pets"

@@ -1,8 +1,10 @@
 package com.example.englishapp.viewmodel
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.englishapp.data.VocabularyRepository
 import com.example.englishapp.model.GameScore
@@ -60,6 +62,10 @@ class MainViewModel : ViewModel() {
     private var vocabularyRequestId = 0
     var matchGameLevel = 1
         private set
+    var unlockedMatchLevel = 1
+        private set
+    var completedMatchLevels: Set<Int> = emptySet()
+        private set
     var matchPairs: List<Word> = emptyList()
         private set
     var matchRightOrder: List<Int> = emptyList()
@@ -72,6 +78,7 @@ class MainViewModel : ViewModel() {
         private set
     private var matchStageLoadedFor: Int? = null
     private var matchStageRequestId = 0
+    private var matchPreferences: SharedPreferences? = null
 
     private val offlineMatchWords = listOf(
         Word("Apple", "Quả táo", emptyList(), emptyList()),
@@ -141,7 +148,8 @@ class MainViewModel : ViewModel() {
                     matchedWords = mutableSetOf()
                     vocabularyMessage = "Connected · ${words.size} words · Level $level"
                 }.onFailure { error ->
-                    vocabularyMessage = "Offline sample words · ${error.message ?: "API unavailable"}"
+                    Log.w(TAG, "Failed to load vocabulary for level $level", error)
+                    vocabularyMessage = "Offline sample words · backend unavailable"
                 }
                 notifyVocabularyChanged()
             }
@@ -154,9 +162,34 @@ class MainViewModel : ViewModel() {
     }
 
     fun initializeMatchProgress(context: Context) {
-        matchGameLevel = context.getSharedPreferences(MATCH_PREFERENCES, Context.MODE_PRIVATE)
-            .getInt(KEY_MATCH_LEVEL, 1)
+        matchPreferences = context.applicationContext.getSharedPreferences(MATCH_PREFERENCES, Context.MODE_PRIVATE)
+        val saved = matchPreferences ?: return
+        val legacyLevel = saved.getInt(KEY_MATCH_LEVEL, 1).coerceIn(1, MATCH_LEVEL_COUNT)
+        completedMatchLevels = saved.getString(KEY_COMPLETED_MATCH_LEVELS, "")
+            .orEmpty()
+            .split(',')
+            .mapNotNull(String::toIntOrNull)
+            .filter { it in 1..MATCH_LEVEL_COUNT }
+            .toSet()
+            .ifEmpty {
+                if (legacyLevel > 1) (1 until legacyLevel).toSet() else emptySet()
+            }
+        unlockedMatchLevel = (completedMatchLevels.maxOrNull()?.plus(1) ?: 1)
             .coerceIn(1, MATCH_LEVEL_COUNT)
+        matchGameLevel = unlockedMatchLevel
+    }
+
+    fun isMatchLevelUnlocked(level: Int): Boolean = level in 1..unlockedMatchLevel
+
+    fun isMatchLevelCompleted(level: Int): Boolean = level in completedMatchLevels
+
+    fun selectMatchLevel(context: Context, level: Int): Boolean {
+        if (!isMatchLevelUnlocked(level)) return false
+        matchGameLevel = level
+        matchPairs = emptyList()
+        matchStageLoadedFor = null
+        loadMatchStage()
+        return true
     }
 
     fun ensureMatchStageLoaded() {
@@ -174,10 +207,10 @@ class MainViewModel : ViewModel() {
         matchSelection = null
         matchWrongSelections = emptySet()
         matchedWords = mutableSetOf()
+        matchPairs = emptyList()
 
-        val dictionaryLevel = matchDictionaryLevel(gameLevel)
-        val levelOffset = matchLevelOffset(gameLevel)
-        VocabularyRepository.loadMatchStage(dictionaryLevel, levelOffset) { result ->
+        val levelOffset = (gameLevel - 1) * MATCH_PAIR_COUNT
+        VocabularyRepository.loadMatchStage(levelOffset) { result ->
             Handler(Looper.getMainLooper()).post {
                 if (requestId != matchStageRequestId) return@post
                 isMatchLoading = false
@@ -188,19 +221,22 @@ class MainViewModel : ViewModel() {
                         }
                     },
                     onFailure = {
-                        if (gameLevel == 1) offlineMatchWords else matchPairs.ifEmpty { offlineMatchWords }
+                        Log.w(TAG, "Failed to load Match level $gameLevel", it)
+                        if (gameLevel == 1) offlineMatchWords else emptyList()
                     }
                 )
-                matchPairs = stageWords.take(MATCH_PAIR_COUNT).let { selected ->
-                    if (selected.size == MATCH_PAIR_COUNT) selected else offlineMatchWords
-                }
+                matchPairs = stageWords.take(MATCH_PAIR_COUNT)
                 matchRightOrder = (0 until MATCH_PAIR_COUNT)
-                    .shuffled(Random(gameLevel * 97 + matchPairs.first().english.hashCode()))
+                    .shuffled(Random(gameLevel * 97 + 31))
                 matchStageLoadedFor = gameLevel
                 vocabularyMessage = if (result.isSuccess) {
-                    "8 pairs · difficulty $dictionaryLevel"
+                    "8 pairs · level $gameLevel"
                 } else {
-                    "Offline sample · ${result.exceptionOrNull()?.message ?: "API unavailable"}"
+                    if (gameLevel == 1) {
+                        "Offline sample · backend unavailable"
+                    } else {
+                        "Vocabulary unavailable · check your connection"
+                    }
                 }
                 notifyVocabularyChanged()
             }
@@ -237,6 +273,12 @@ class MainViewModel : ViewModel() {
             user = user.copy(coins = user.coins + 3, wordsLearned = user.wordsLearned + 1)
             feedback = "Perfect match! +3 coins ⭐"
             matchStagePassed = matchedWords.size == MATCH_PAIR_COUNT
+            if (matchStagePassed) {
+                completedMatchLevels = completedMatchLevels + matchGameLevel
+                unlockedMatchLevel = (completedMatchLevels.maxOrNull()?.plus(1) ?: 1)
+                    .coerceAtMost(MATCH_LEVEL_COUNT)
+                persistMatchProgress()
+            }
             notifyVocabularyChanged()
             return true
         }
@@ -256,14 +298,11 @@ class MainViewModel : ViewModel() {
         return false
     }
 
-    fun advanceMatchLevel(context: Context) {
-        if (!matchStagePassed || matchGameLevel >= MATCH_LEVEL_COUNT) return
-        matchGameLevel += 1
-        context.getSharedPreferences(MATCH_PREFERENCES, Context.MODE_PRIVATE)
-            .edit()
-            .putInt(KEY_MATCH_LEVEL, matchGameLevel)
-            .apply()
-        loadMatchStage()
+    private fun persistMatchProgress() {
+        matchPreferences?.edit()
+            ?.putString(KEY_COMPLETED_MATCH_LEVELS, completedMatchLevels.sorted().joinToString(","))
+            ?.putInt(KEY_MATCH_LEVEL, unlockedMatchLevel)
+            ?.apply()
     }
 
     fun replayMatchStage() {
@@ -286,21 +325,6 @@ class MainViewModel : ViewModel() {
         val language = parts.getOrNull(1) ?: return null
         if (language != "en" && language != "vi") return null
         return index to (language == "en")
-    }
-
-    private fun matchDictionaryLevel(level: Int): Int = when (level) {
-        in 1..17 -> 1
-        in 18..34 -> 2
-        else -> 3
-    }
-
-    private fun matchLevelOffset(level: Int): Int {
-        val levelInTier = when (level) {
-            in 1..17 -> level - 1
-            in 18..34 -> level - 18
-            else -> level - 35
-        }
-        return levelInTier * MATCH_PAIR_COUNT
     }
 
     fun selectAnswer(answer: String): Boolean {
@@ -484,10 +508,12 @@ class MainViewModel : ViewModel() {
     }
 
     companion object {
+        private const val TAG = "MainViewModel"
         const val MATCH_LEVEL_COUNT = 50
         const val MATCH_PAIR_COUNT = 8
         const val MATCH_WRONG_FLASH_MILLIS = 650L
         private const val MATCH_PREFERENCES = "kids_english_match_progress"
         private const val KEY_MATCH_LEVEL = "match_game_level"
+        private const val KEY_COMPLETED_MATCH_LEVELS = "completed_match_levels"
     }
 }

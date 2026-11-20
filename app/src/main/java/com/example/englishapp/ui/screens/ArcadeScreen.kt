@@ -28,7 +28,7 @@ fun ArcadeScreen(context: Context, navigate: (String) -> Unit): View {
             }, LinearLayout.LayoutParams(0, -2, 1f))
             addView(UiKit.text(context, "›", 27, UiKit.WHITE, true))
             isClickable = true
-            setOnClickListener { navigate(listOf("match", "runner", "meteor")[index]) }
+            setOnClickListener { navigate(listOf("match-levels", "runner", "meteor")[index]) }
         })
     }
     return UiKit.scrollContent(context, page)
