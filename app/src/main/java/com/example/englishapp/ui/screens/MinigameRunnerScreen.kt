@@ -1,6 +1,7 @@
 package com.example.englishapp.ui.screens
 
 import android.content.Context
+import android.animation.ObjectAnimator
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
@@ -86,6 +87,12 @@ fun MinigameRunnerScreen(context: Context, viewModel: MainViewModel, navigate: (
     page.addView(UiKit.row(context, 8).apply {
         gravity = Gravity.CENTER_VERTICAL
         addView(UiKit.pill(context, "${"❤️".repeat(viewModel.hearts)}", 0xFFFFE8B1.toInt()), LinearLayout.LayoutParams(-2, -2))
+        addView(UiKit.pill(
+            context,
+            if (viewModel.runnerRoundResolved) "⏱️ Kết thúc lượt" else "⏱️ ${viewModel.runnerSecondsRemaining}s",
+            if (viewModel.runnerSecondsRemaining <= 3 && !viewModel.runnerRoundResolved)
+                0xFFFFC7C2.toInt() else 0xFFDFF3FF.toInt()
+        ), LinearLayout.LayoutParams(-2, -2))
         addView(UiKit.card(context, 0xFFF7FBFF.toInt(), 8).apply {
             val progress = (viewModel.runnerDistance * 100 / 300).coerceIn(0, 100)
             val milestones = listOf(
@@ -110,7 +117,7 @@ fun MinigameRunnerScreen(context: Context, viewModel: MainViewModel, navigate: (
     page.addView(UiKit.text(context, "Find the English word for", 15, UiKit.MUTED, gravity = Gravity.CENTER))
     page.addView(UiKit.text(
         context,
-        " ${viewModel.currentWord.vietnamese.uppercase()}",
+        " ${viewModel.runnerCurrentWord.vietnamese.uppercase()}",
         27,
         UiKit.INK,
         true,
@@ -137,6 +144,11 @@ fun MinigameRunnerScreen(context: Context, viewModel: MainViewModel, navigate: (
         } else "Round paused — check your answer, then continue."
     } else "Choose the lane with the correct English word.", 12, UiKit.MUTED, gravity = Gravity.CENTER))
     page.addView(UiKit.card(context, 0xFFB8DCB0.toInt(), 10).apply {
+        post {
+            scaleX = 0.94f
+            scaleY = 0.94f
+            animate().scaleX(1f).scaleY(1f).setDuration(260).start()
+        }
         addView(UiKit.text(context, "🏁  RUNNER TRACK  🏁", 13, 0xFF438B50.toInt(), true, Gravity.CENTER))
         addView(UiKit.row(context, 5).apply {
             for (lane in 0..2) {
@@ -150,7 +162,18 @@ fun MinigameRunnerScreen(context: Context, viewModel: MainViewModel, navigate: (
                     addView(UiKit.text(context, if (collision) "💥" else "🚧", 25, gravity = Gravity.CENTER))
                     addView(UiKit.text(context, if (collision) "🧱" else "│", 25, UiKit.WHITE, true, Gravity.CENTER))
                     if (isPlayerLane) {
-                        addView(RunnerBackView(context, collision))
+                        val runnerView = RunnerBackView(context, collision)
+                        addView(runnerView)
+                        runnerView.post {
+                            val movement = if (collision) {
+                                ObjectAnimator.ofFloat(runnerView, "translationX", 0f, -12f, 12f, 0f)
+                            } else {
+                                ObjectAnimator.ofFloat(runnerView, "translationY", 0f, -8f, 0f)
+                            }
+                            movement.duration = if (collision) 380 else 650
+                            if (!collision) movement.repeatCount = ObjectAnimator.INFINITE
+                            movement.start()
+                        }
                     } else {
                         addView(UiKit.text(context, "  ", 38, gravity = Gravity.CENTER))
                     }
@@ -176,6 +199,9 @@ fun MinigameRunnerScreen(context: Context, viewModel: MainViewModel, navigate: (
             addView(UiKit.text(context, "LEFT", 12, UiKit.WHITE, true, Gravity.CENTER))
             setOnClickListener {
                 if (enabled) {
+                    animate().scaleX(0.92f).scaleY(0.92f).setDuration(90).withEndAction {
+                        animate().scaleX(1f).scaleY(1f).setDuration(120).start()
+                    }
                     viewModel.moveRunner(0)
                     navigate("runner")
                 }
@@ -191,6 +217,9 @@ fun MinigameRunnerScreen(context: Context, viewModel: MainViewModel, navigate: (
             addView(UiKit.text(context, "MIDDLE", 12, UiKit.WHITE, true, Gravity.CENTER))
             setOnClickListener {
                 if (enabled) {
+                    animate().scaleX(0.92f).scaleY(0.92f).setDuration(90).withEndAction {
+                        animate().scaleX(1f).scaleY(1f).setDuration(120).start()
+                    }
                     viewModel.moveRunner(1)
                     navigate("runner")
                 }
@@ -206,6 +235,9 @@ fun MinigameRunnerScreen(context: Context, viewModel: MainViewModel, navigate: (
             addView(UiKit.text(context, "RIGHT", 12, UiKit.WHITE, true, Gravity.CENTER))
             setOnClickListener {
                 if (enabled) {
+                    animate().scaleX(0.92f).scaleY(0.92f).setDuration(90).withEndAction {
+                        animate().scaleX(1f).scaleY(1f).setDuration(120).start()
+                    }
                     viewModel.moveRunner(2)
                     navigate("runner")
                 }
