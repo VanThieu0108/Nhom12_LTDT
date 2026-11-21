@@ -38,6 +38,44 @@ class MainViewModel : ViewModel() {
         private set
     var runnerBestDistance = 0
         private set
+    var runnerReachedMilestones: Set<Int> = emptySet()
+        private set
+    var activeRunnerIndex = 0
+        private set
+    var runnerSecondsRemaining = 10
+        private set
+    var runnerRoundResolved = false
+        private set
+    var runnerLastAnswerCorrect: Boolean? = null
+        private set
+    private val runnerFallbackPool = listOf(
+        Word("Apple", "Quả táo", emptyList(), emptyList()),
+        Word("Cat", "Con mèo", emptyList(), emptyList()),
+        Word("Dog", "Con chó", emptyList(), emptyList()),
+        Word("Sun", "Mặt trời", emptyList(), emptyList()),
+        Word("Book", "Quyển sách", emptyList(), emptyList()),
+        Word("Fish", "Con cá", emptyList(), emptyList()),
+        Word("Milk", "Sữa", emptyList(), emptyList()),
+        Word("Star", "Ngôi sao", emptyList(), emptyList()),
+        Word("Bird", "Con chim", emptyList(), emptyList()),
+        Word("Tree", "Cây", emptyList(), emptyList()),
+        Word("Water", "Nước", emptyList(), emptyList()),
+        Word("Chair", "Cái ghế", emptyList(), emptyList()),
+        Word("Car", "Xe hơi", emptyList(), emptyList()),
+        Word("Flower", "Bông hoa", emptyList(), emptyList()),
+        Word("School", "Trường học", emptyList(), emptyList()),
+        Word("Pencil", "Cây bút chì", emptyList(), emptyList())
+    )
+    private var runnerPool: List<Word> = runnerFallbackPool
+    private var runnerRoundOptions: List<String> = listOf("Cat", "Dog", "Apple")
+    private var runnerRoundId = 0
+    val runnerCurrentWord: Word
+        get() = runnerPool.getOrNull(activeRunnerIndex) ?: runnerFallbackPool.first()
+    val runnerOptions: List<String> get() = runnerRoundOptions
+    val runnerCorrectLane: Int
+        get() = runnerOptions.indexOf(runnerCurrentWord.english)
+    val isRunnerGameOver: Boolean
+        get() = runnerDistance >= RUNNER_FINISH_DISTANCE || hearts <= 0
     var meteorInput = ""
         private set
     var activeWordIndex = 0
@@ -706,6 +744,10 @@ class MainViewModel : ViewModel() {
                             scrambledLetters = item.wordEn.toList().shuffled(Random(index + level))
                         )
                     }
+                    runnerPool = (words + runnerFallbackPool)
+                        .distinctBy { it.english.lowercase() }
+                    activeRunnerIndex = Random.nextInt(runnerPool.size)
+                    prepareRunnerRound()
                     activeWordIndex = 0
                     selectedAnswer = null
                     selectedLetters = ""
@@ -1060,19 +1102,109 @@ class MainViewModel : ViewModel() {
         if (lastGameScore?.gameName == "Word Match") lastGameScore = null
     }
 
+    private fun prepareRunnerRound() {
+        runnerRoundId += 1
+        val roundId = runnerRoundId
+        runnerRoundResolved = false
+        runnerLastAnswerCorrect = null
+        runnerSecondsRemaining = RUNNER_ANSWER_SECONDS
+        runnerLane = 1
+
+        val answer = runnerCurrentWord.english
+        val distractors = runnerPool.asSequence()
+            .map { it.english }
+            .filter { it != answer }
+            .distinct()
+            .take(2)
+            .toList()
+        runnerRoundOptions = (distractors + answer)
+            .shuffled(Random(activeRunnerIndex * 31 + runnerDistance + 7))
+        notifyVocabularyChanged()
+        prepareRunnerCountdown(roundId)
+    }
+
+    private fun prepareRunnerCountdown(roundId: Int) {
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (roundId != runnerRoundId || runnerRoundResolved || isRunnerGameOver) return@postDelayed
+            runnerSecondsRemaining -= 1
+            if (runnerSecondsRemaining <= 0) {
+                runnerRoundId += 1
+                runnerRoundResolved = true
+                runnerLastAnswerCorrect = false
+                hearts = (hearts - 1).coerceAtLeast(0)
+                runnerSecondsRemaining = 0
+                feedback = "Hết 10 giây! Không trả lời được — mất 1 mạng."
+                if (isRunnerGameOver) completeGame("Vocabulary Run")
+                notifyVocabularyChanged()
+            } else {
+                notifyVocabularyChanged()
+                prepareRunnerCountdown(roundId)
+            }
+        }, 1_000)
+    }
+
     fun moveRunner(lane: Int) {
+        if (runnerRoundResolved || isRunnerGameOver || lane !in 0..2) return
+        runnerRoundId += 1
+        runnerSecondsRemaining = 0
         runnerLane = lane.coerceIn(0, 2)
-        runnerDistance += 25
+        runnerDistance = (runnerDistance + 25).coerceAtMost(RUNNER_FINISH_DISTANCE)
         runnerBestDistance = maxOf(runnerBestDistance, runnerDistance)
-        if (runnerLane == 1) {
+        val correct = runnerLane == runnerCorrectLane
+        runnerLastAnswerCorrect = correct
+        runnerRoundResolved = true
+        if (correct) {
             score += 10
             user = user.copy(coins = user.coins + 2)
             feedback = "Correct gate! +10 points"
-            activeWordIndex = (activeWordIndex + 1) % words.size
+            val milestone = listOf(100, 200, 300).firstOrNull {
+                runnerDistance >= it && it !in runnerReachedMilestones
+            }
+            if (milestone != null) {
+                runnerReachedMilestones = runnerReachedMilestones + milestone
+                val reward = when (milestone) {
+                    100 -> 5
+                    200 -> 10
+                    else -> 20
+                }
+                user = user.copy(coins = user.coins + reward)
+                feedback = "Milestone $milestone m! +$reward coins 🎉"
+            }
         } else {
             hearts = (hearts - 1).coerceAtLeast(0)
-            feedback = "Missed the word gate!"
+            feedback = "Wrong lane! The answer was ${runnerOptions[runnerCorrectLane]}."
         }
+        if (isRunnerGameOver) completeGame("Vocabulary Run")
+    }
+
+    fun continueRunner() {
+        if (!runnerRoundResolved || isRunnerGameOver) return
+        var nextIndex = Random.nextInt(runnerPool.size)
+        if (runnerPool.size > 1) {
+            while (nextIndex == activeRunnerIndex) {
+                nextIndex = Random.nextInt(runnerPool.size)
+            }
+        }
+        activeRunnerIndex = nextIndex
+        runnerRoundResolved = false
+        runnerLastAnswerCorrect = null
+        feedback = ""
+        prepareRunnerRound()
+    }
+
+    fun resetRunnerGame() {
+        runnerDistance = 0
+        runnerLane = 1
+        runnerReachedMilestones = emptySet()
+        runnerPool = (runnerFallbackPool + words).distinctBy { it.english.lowercase() }
+        activeRunnerIndex = Random.nextInt(runnerPool.size)
+        prepareRunnerRound()
+        runnerRoundResolved = false
+        runnerLastAnswerCorrect = null
+        activeWordIndex = 0
+        hearts = 3
+        feedback = ""
+        if (lastGameScore?.gameName == "Vocabulary Run") lastGameScore = null
     }
 
     fun submitMeteorLetter(letter: Char): Boolean {
@@ -1152,5 +1284,7 @@ class MainViewModel : ViewModel() {
         private const val MATCH_PREFERENCES = "kids_english_match_progress"
         private const val KEY_MATCH_LEVEL = "match_game_level"
         private const val KEY_COMPLETED_MATCH_LEVELS = "completed_match_levels"
+        private const val RUNNER_FINISH_DISTANCE = 300
+        private const val RUNNER_ANSWER_SECONDS = 10
     }
 }
