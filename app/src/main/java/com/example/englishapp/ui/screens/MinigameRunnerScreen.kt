@@ -17,7 +17,7 @@ fun MinigameRunnerScreen(context: Context, viewModel: MainViewModel, navigate: (
         addView(UiKit.text(context, "🏁 Vocabulary Run", 19, UiKit.INK, true, Gravity.CENTER), LinearLayout.LayoutParams(0, -2, 1f))
         addView(UiKit.text(context, "${viewModel.runnerDistance} m", 14, UiKit.INK, true))
     })
-    page.addView(UiKit.pill(context, "Best: ${maxOf(1_500, viewModel.runnerBestDistance)} m     ❤️".plus("❤️".repeat(viewModel.hearts)), 0xFFFFE8B1.toInt()))
+    page.addView(UiKit.pill(context, "Best: ${maxOf(1_500, viewModel.runnerBestDistance)} m     ${"❤️".repeat(viewModel.hearts)}", 0xFFFFE8B1.toInt()))
     page.addView(UiKit.text(context, "Find the English word for", 15, UiKit.MUTED, gravity = Gravity.CENTER))
     page.addView(UiKit.text(
         context,
@@ -47,14 +47,28 @@ fun MinigameRunnerScreen(context: Context, viewModel: MainViewModel, navigate: (
             if (viewModel.hearts == 0) "Run over — you ran out of hearts." else "Finish line reached! Great run!"
         } else "Round paused — check your answer, then continue."
     } else "Choose the lane with the correct English word.", 12, UiKit.MUTED, gravity = Gravity.CENTER))
-    page.addView(UiKit.column(context, 0).apply {
-        gravity = Gravity.CENTER
-        setPadding(0, UiKit.dp(context, 10), 0, UiKit.dp(context, 10))
-        UiKit.background(this, 0xFFB8DCB0.toInt(), 26)
-        addView(UiKit.text(context, "🌲      🌿       🌳       🌿      🌲", 25, 0xFF438B50.toInt(), gravity = Gravity.CENTER))
-        addView(UiKit.text(context, "━━━━━━ 🛣️ ━━━━━━", 25, UiKit.WHITE, true, Gravity.CENTER))
-        addView(UiKit.text(context, "           🏃🏻‍♂️", 43))
-        addView(UiKit.text(context, "🌳      🍃       🌲       🍃      🌳", 25, 0xFF438B50.toInt(), gravity = Gravity.CENTER))
+    page.addView(UiKit.card(context, 0xFFB8DCB0.toInt(), 10).apply {
+        addView(UiKit.text(context, "🏁  RUNNER TRACK  🏁", 13, 0xFF438B50.toInt(), true, Gravity.CENTER))
+        addView(UiKit.row(context, 5).apply {
+            for (lane in 0..2) {
+                val isPlayerLane = lane == viewModel.runnerLane
+                val collision = viewModel.runnerRoundResolved &&
+                    viewModel.runnerLastAnswerCorrect == false && isPlayerLane
+                addView(UiKit.column(context, 0).apply {
+                    gravity = Gravity.CENTER
+                    setPadding(UiKit.dp(context, 3), UiKit.dp(context, 7), UiKit.dp(context, 3), UiKit.dp(context, 7))
+                    UiKit.background(this, if (isPlayerLane) 0xFFEAF7E7.toInt() else 0xFF8FBE91.toInt(), 14)
+                    addView(UiKit.text(context, if (collision) "💥" else "🚧", 25, gravity = Gravity.CENTER))
+                    addView(UiKit.text(context, if (collision) "🧱" else "│", 25, UiKit.WHITE, true, Gravity.CENTER))
+                    addView(UiKit.text(context, if (collision) "😵" else if (isPlayerLane) "🏃🏻‍♂️" else "  ", 38, gravity = Gravity.CENTER))
+                    addView(UiKit.text(context, when (lane) {
+                        0 -> "LEFT"
+                        1 -> "MIDDLE"
+                        else -> "RIGHT"
+                    }, 10, UiKit.INK, true, Gravity.CENTER))
+                }, LinearLayout.LayoutParams(0, UiKit.dp(context, 150), 1f))
+            }
+        })
     })
     page.addView(UiKit.text(context, "Choose a lane", 14, UiKit.MUTED, gravity = Gravity.CENTER))
     page.addView(UiKit.row(context, 12).apply {
