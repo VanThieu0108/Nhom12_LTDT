@@ -38,6 +38,8 @@ class MainViewModel : ViewModel() {
         private set
     var runnerBestDistance = 0
         private set
+    var runnerReachedMilestones: Set<Int> = emptySet()
+        private set
     var runnerRoundResolved = false
         private set
     var runnerLastAnswerCorrect: Boolean? = null
@@ -1083,7 +1085,7 @@ class MainViewModel : ViewModel() {
     fun moveRunner(lane: Int) {
         if (runnerRoundResolved || isRunnerGameOver || lane !in 0..2) return
         runnerLane = lane.coerceIn(0, 2)
-        runnerDistance += 25
+        runnerDistance = (runnerDistance + 25).coerceAtMost(RUNNER_FINISH_DISTANCE)
         runnerBestDistance = maxOf(runnerBestDistance, runnerDistance)
         val correct = runnerLane == runnerCorrectLane
         runnerLastAnswerCorrect = correct
@@ -1092,6 +1094,19 @@ class MainViewModel : ViewModel() {
             score += 10
             user = user.copy(coins = user.coins + 2)
             feedback = "Correct gate! +10 points"
+            val milestone = listOf(100, 200, 300).firstOrNull {
+                runnerDistance >= it && it !in runnerReachedMilestones
+            }
+            if (milestone != null) {
+                runnerReachedMilestones = runnerReachedMilestones + milestone
+                val reward = when (milestone) {
+                    100 -> 5
+                    200 -> 10
+                    else -> 20
+                }
+                user = user.copy(coins = user.coins + reward)
+                feedback = "Milestone $milestone m! +$reward coins 🎉"
+            }
         } else {
             hearts = (hearts - 1).coerceAtLeast(0)
             feedback = "Wrong lane! The answer was ${runnerOptions[runnerCorrectLane]}."
@@ -1110,6 +1125,7 @@ class MainViewModel : ViewModel() {
     fun resetRunnerGame() {
         runnerDistance = 0
         runnerLane = 1
+        runnerReachedMilestones = emptySet()
         runnerRoundResolved = false
         runnerLastAnswerCorrect = null
         activeWordIndex = 0
@@ -1195,6 +1211,6 @@ class MainViewModel : ViewModel() {
         private const val MATCH_PREFERENCES = "kids_english_match_progress"
         private const val KEY_MATCH_LEVEL = "match_game_level"
         private const val KEY_COMPLETED_MATCH_LEVELS = "completed_match_levels"
-        private const val RUNNER_FINISH_DISTANCE = 150
+        private const val RUNNER_FINISH_DISTANCE = 300
     }
 }
