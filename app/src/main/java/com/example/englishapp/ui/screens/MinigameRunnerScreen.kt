@@ -21,7 +21,7 @@ fun MinigameRunnerScreen(context: Context, viewModel: MainViewModel, navigate: (
     page.addView(UiKit.text(context, "Find the English word for", 15, UiKit.MUTED, gravity = Gravity.CENTER))
     page.addView(UiKit.text(
         context,
-        "🍎  ${viewModel.currentWord.vietnamese.uppercase()}",
+        " ${viewModel.currentWord.vietnamese.uppercase()}",
         27,
         UiKit.INK,
         true,
