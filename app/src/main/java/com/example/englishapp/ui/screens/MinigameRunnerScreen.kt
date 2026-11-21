@@ -27,24 +27,26 @@ fun MinigameRunnerScreen(context: Context, viewModel: MainViewModel, navigate: (
         true,
         Gravity.CENTER
     ))
-    val runnerOptions = viewModel.words.asSequence()
-        .filter { it.english != viewModel.currentWord.english }
-        .map { it.english.uppercase() }
-        .distinct()
-        .take(2)
-        .toList()
-        .let { (it + viewModel.currentWord.english.uppercase()).shuffled(kotlin.random.Random(viewModel.activeWordIndex)) }
-    val laneLabels = listOf(runnerOptions[0], viewModel.currentWord.english.uppercase(), runnerOptions[1])
+    val laneLabels = viewModel.runnerOptions.map(String::uppercase)
     page.addView(UiKit.row(context, 6).apply {
         laneLabels.forEachIndexed { lane, label ->
-            addView(UiKit.card(context, if (lane == viewModel.runnerLane) 0xFFFFE9AE.toInt() else 0xFFE7F4FE.toInt(), 8).apply {
+            val selected = lane == viewModel.runnerLane && viewModel.runnerRoundResolved
+            addView(UiKit.card(context, if (selected) {
+                if (viewModel.runnerLastAnswerCorrect == true) 0xFFD8F6E5.toInt() else 0xFFFFDCD6.toInt()
+            } else 0xFFE7F4FE.toInt(), 8).apply {
                 gravity = Gravity.CENTER
-                addView(UiKit.text(context, "🚧", 26, gravity = Gravity.CENTER))
+                addView(UiKit.text(context, if (selected) {
+                    if (viewModel.runnerLastAnswerCorrect == true) "✅" else "❌"
+                } else "🚧", 26, gravity = Gravity.CENTER))
                 addView(UiKit.text(context, label, 11, UiKit.INK, true, Gravity.CENTER))
             }, LinearLayout.LayoutParams(0, UiKit.dp(context, 90), 1f))
         }
     })
-    page.addView(UiKit.text(context, viewModel.vocabularyMessage, 11, UiKit.MUTED, gravity = Gravity.CENTER))
+    page.addView(UiKit.text(context, if (viewModel.runnerRoundResolved) {
+        if (viewModel.isRunnerGameOver) {
+            if (viewModel.hearts == 0) "Run over — you ran out of hearts." else "Finish line reached! Great run!"
+        } else "Round paused — check your answer, then continue."
+    } else "Choose the lane with the correct English word.", 12, UiKit.MUTED, gravity = Gravity.CENTER))
     page.addView(UiKit.column(context, 0).apply {
         gravity = Gravity.CENTER
         setPadding(0, UiKit.dp(context, 10), 0, UiKit.dp(context, 10))
@@ -56,20 +58,42 @@ fun MinigameRunnerScreen(context: Context, viewModel: MainViewModel, navigate: (
     })
     page.addView(UiKit.text(context, "Choose a lane", 14, UiKit.MUTED, gravity = Gravity.CENTER))
     page.addView(UiKit.row(context, 12).apply {
-        addView(UiKit.button(context, "⬅ Left", UiKit.BLUE, UiKit.WHITE) {
+        val enabled = !viewModel.runnerRoundResolved && !viewModel.isRunnerGameOver
+        val leftButton = UiKit.button(context, "⬅ Left", UiKit.BLUE, UiKit.WHITE) {
             viewModel.moveRunner(0)
             navigate("runner")
-        }, LinearLayout.LayoutParams(0, UiKit.dp(context, 60), 1f))
-        addView(UiKit.button(context, "⬆ Middle", UiKit.GREEN, UiKit.WHITE) {
+        }.apply { isEnabled = enabled }
+        val middleButton = UiKit.button(context, "⬆ Middle", UiKit.GREEN, UiKit.WHITE) {
             viewModel.moveRunner(1)
-            if (viewModel.runnerDistance >= 150) viewModel.completeGame("Vocabulary Run")
             navigate("runner")
-        }, LinearLayout.LayoutParams(0, UiKit.dp(context, 60), 1f))
-        addView(UiKit.button(context, "Right ➡", UiKit.ORANGE, UiKit.WHITE) {
+        }.apply { isEnabled = enabled }
+        val rightButton = UiKit.button(context, "Right ➡", UiKit.ORANGE, UiKit.WHITE) {
             viewModel.moveRunner(2)
             navigate("runner")
-        }, LinearLayout.LayoutParams(0, UiKit.dp(context, 60), 1f))
+        }.apply { isEnabled = enabled }
+        addView(leftButton, LinearLayout.LayoutParams(0, UiKit.dp(context, 60), 1f))
+        addView(middleButton, LinearLayout.LayoutParams(0, UiKit.dp(context, 60), 1f))
+        addView(rightButton, LinearLayout.LayoutParams(0, UiKit.dp(context, 60), 1f))
     })
-    if (viewModel.feedback.isNotBlank()) page.addView(UiKit.text(context, viewModel.feedback, 14, UiKit.GREEN, true, Gravity.CENTER))
+    if (viewModel.feedback.isNotBlank()) {
+        page.addView(UiKit.card(context, if (viewModel.runnerLastAnswerCorrect == false) 0xFFFFF0ED.toInt() else 0xFFEAF9F0.toInt(), 12).apply {
+            addView(UiKit.text(context, viewModel.feedback, 14, if (viewModel.runnerLastAnswerCorrect == false) UiKit.ORANGE else UiKit.GREEN, true, Gravity.CENTER))
+        })
+    }
+    if (viewModel.runnerRoundResolved) {
+        page.addView(UiKit.button(
+            context,
+            if (viewModel.isRunnerGameOver) "🔁 Play again" else "Continue ➜",
+            if (viewModel.isRunnerGameOver) UiKit.PURPLE else UiKit.GREEN,
+            UiKit.WHITE
+        ) {
+            if (viewModel.isRunnerGameOver) {
+                viewModel.resetRunnerGame()
+            } else {
+                viewModel.continueRunner()
+            }
+            navigate("runner")
+        })
+    }
     return UiKit.scrollContent(context, page)
 }
